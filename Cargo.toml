@@ -8,7 +8,7 @@ edition = "2018"
 
 [dependencies]
 palette = "0.4.1"
-rand = "0.5.4"
+rand = "0.6.0"
 structopt = "0.2.10"
 unicode_reader = "0.1.1"
 unicode-width = "0.1.5"
