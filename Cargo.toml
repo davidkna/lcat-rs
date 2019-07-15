@@ -15,4 +15,4 @@ unicode-segmentation = "1.2.1"
 unicode-width = "0.1.5"
 
 [target.'cfg(windows)'.dependencies]
-ansi_term = "0.11"
+ansi_term = "0.12"
