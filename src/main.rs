@@ -4,9 +4,9 @@ mod shapes;
 
 use crate::cow::Cow;
 use crate::shapes::CowShape;
+use lolcat::Rainbow;
 use std::io::{self, Read};
 use structopt::StructOpt;
-use lolcat::Rainbow;
 
 #[derive(StructOpt)]
 struct Opt {
