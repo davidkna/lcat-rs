@@ -6,6 +6,7 @@ use crate::cow::Cow;
 use crate::shapes::CowShape;
 use std::io::{self, Read};
 use structopt::StructOpt;
+use lolcat::Rainbow;
 
 #[derive(StructOpt)]
 struct Opt {
@@ -13,6 +14,8 @@ struct Opt {
     shape: CowShape,
     #[structopt(short = "W", long = "max-length", default_value = "40")]
     max_length: usize,
+    #[structopt(short = "l", long = "lolcat")]
+    lolcat: bool,
     #[structopt(name = "TEXT", default_value = "")]
     text: Vec<String>,
 }
@@ -30,6 +33,12 @@ fn main() {
     }
 
     let cow = Cow::new(opt.shape, text, opt.max_length);
+    let mut out = format!("{}", cow);
 
-    print!("{}", cow);
+    if opt.lolcat {
+        let mut rainbow = Rainbow::default();
+        out = rainbow.rainbowify(&out);
+    }
+
+    print!("{}", out);
 }
