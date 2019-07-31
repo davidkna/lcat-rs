@@ -1,5 +1,5 @@
 # cowsay-rs
-``` 
+```
  ___________
 < Hello 🌍! >
  -----------
@@ -13,14 +13,15 @@
 
 ## Flags
 ```
-cowsay-rs 0.1.0
+cowsay-rs 0.2.0
 David Knaack <davidkna@users.noreply.github.com>
 
 USAGE:
-    cowsay.exe [OPTIONS] [text]...
+    cowsay [FLAGS] [OPTIONS] [text]...
 
 FLAGS:
     -h, --help       Prints help information
+    -l, --lolcat
     -V, --version    Prints version information
 
 OPTIONS:
