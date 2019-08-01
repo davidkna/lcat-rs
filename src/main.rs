@@ -2,6 +2,8 @@ mod bubble;
 mod cow;
 mod shapes;
 
+#[cfg(windows)]
+use ansi_term;
 use crate::cow::Cow;
 use crate::shapes::CowShape;
 use lolcat::Rainbow;
@@ -36,6 +38,8 @@ fn main() {
     let mut out = format!("{}", cow);
 
     if opt.lolcat {
+        #[cfg(windows)]
+        ansi_term::enable_ansi_support().unwrap();
         let mut rainbow = Rainbow::default();
         out = rainbow.rainbowify(&out);
     }

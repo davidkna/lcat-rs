@@ -15,12 +15,15 @@ path = "src/main.rs"
 required-features = ["build-binary"]
 
 [features]
-build-binary = ["lolcat", "structopt"]
+default = ["build-binary"]
+build-binary = ["lolcat", "ansi_term", "structopt"]
 
 [dependencies]
 hyphenation = { version = "0.7.1", features = ["embed_all"] }
 textwrap = { version = "0.11", features = ["hyphenation"] }
 unicode-width = "0.1.5"
 
-lolcat = { git = "https://github.com/davidkna/lolcat-rs", optional = true }
+lolcat = { git = "https://github.com/davidkna/lolcat-rs", optional = true, default-features = false }
 structopt = { git = "https://github.com/TeXitoi/structopt", optional = true }
+[target.'cfg(windows)'.dependencies]
+ansi_term = { version = "0.12", optional = true }
