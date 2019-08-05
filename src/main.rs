@@ -2,13 +2,13 @@ mod bubble;
 mod cow;
 mod shapes;
 
-#[cfg(windows)]
-use ansi_term;
 use crate::cow::Cow;
 use crate::shapes::CowShape;
+#[cfg(windows)]
+use ansi_term;
+use lolcat::Rainbow;
 use std::io::{self, Read};
 use structopt::StructOpt;
-use lolcat::Rainbow;
 
 #[derive(StructOpt)]
 struct Opt {
@@ -29,9 +29,6 @@ fn main() {
     if text.trim() == "" {
         io::stdin().read_to_string(&mut text).unwrap();
         text = text.trim().to_string();
-        if text == "" {
-            panic!("No input given!")
-        }
     }
 
     let cow = Cow::new(opt.shape, text, opt.max_length);
@@ -41,7 +38,7 @@ fn main() {
         #[cfg(windows)]
         ansi_term::enable_ansi_support().unwrap();
         let mut rainbow = Rainbow::default();
-        out = rainbow.rainbowify(&out);
+        out = rainbow.colorize(&out);
     }
 
     print!("{}", out);
