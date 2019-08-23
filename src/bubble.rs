@@ -11,14 +11,15 @@ pub(crate) fn bubble(text: &str, width: usize) -> String {
     let text = wrapper.wrap(&text);
 
     let line_count = text.len();
-    let max_length = text
+    let line_lengths: Vec<usize> = text
         .iter()
         .map(|i| {
             let i: &str = i.borrow();
             UnicodeWidthStr::width(i)
         })
-        .max()
-        .unwrap();
+        .collect();
+
+    let max_length = line_lengths.iter().max().unwrap();
 
     let mut out = String::new();
     writeln!(out, " {:_<1$} ", "", max_length + 2).unwrap();
@@ -26,8 +27,10 @@ pub(crate) fn bubble(text: &str, width: usize) -> String {
         writeln!(out, "< {} >", &text[0]).unwrap();
     } else {
         writeln!(out, "/ {:1$} \\", &text[0], max_length).unwrap();
-        for line in text.iter().take(line_count - 1).skip(1) {
-            writeln!(out, "| {:1$} |", &line, max_length).unwrap();
+        for (i, line) in text.iter().take(line_count - 1).skip(1).enumerate() {
+            let i = i + 1;
+            let spaces_count = max_length - line_lengths[i];
+            writeln!(out, "| {}{} |", &line, " ".repeat(spaces_count)).unwrap();
         }
         writeln!(out, "\\ {:1$} /", &text[line_count - 1], max_length).unwrap();
     }
