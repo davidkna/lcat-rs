@@ -8,6 +8,7 @@ pub(crate) fn bubble(text: &str, width: usize) -> String {
     let hyphenator = Standard::from_embedded(Language::EnglishUS).unwrap();
     let wrapper = Wrapper::with_splitter(width, hyphenator);
 
+    let text = text.replace("\t", "    ");
     let text = wrapper.wrap(&text);
 
     let line_count = text.len();
