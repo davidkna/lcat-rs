@@ -24,6 +24,6 @@ textwrap = { version = "0.11", features = ["hyphenation"] }
 unicode-width = "0.1.5"
 
 lolcat = { git = "https://github.com/davidkna/lolcat-rs", optional = true, default-features = false }
-structopt = { git = "https://github.com/TeXitoi/structopt", optional = true }
+structopt = { version = "0.3" , optional = true }
 [target.'cfg(windows)'.dependencies]
 ansi_term = { version = "0.12", optional = true }
