@@ -2,8 +2,7 @@ mod bubble;
 mod cow;
 mod shapes;
 
-use crate::cow::Cow;
-use crate::shapes::CowShape;
+use crate::{cow::Cow, shapes::CowShape};
 #[cfg(windows)]
 use ansi_term;
 use lolcat::Rainbow;

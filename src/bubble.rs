@@ -1,6 +1,5 @@
 use hyphenation::{Language, Load, Standard};
-use std::borrow::Borrow;
-use std::fmt::Write;
+use std::{borrow::Borrow, fmt::Write};
 use textwrap::Wrapper;
 use unicode_width::UnicodeWidthStr;
 
