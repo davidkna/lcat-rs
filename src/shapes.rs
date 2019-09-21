@@ -13,8 +13,7 @@ const COW: &str = r#"
          \  (oo)\_______
             (__)\       )\/\
                 ||----w |
-                ||     ||
-"#;
+                ||     ||"#;
 
 const CLIPPY: &str = r#"
          \
@@ -27,8 +26,7 @@ const CLIPPY: &str = r#"
             || |/
             || ||
             |\_/|
-            \___/
-"#;
+            \___/"#;
 
 const FERRIS: &str = r#"
         \
@@ -36,8 +34,7 @@ const FERRIS: &str = r#"
             _~^~^~_
         \) /  o o  \ (/
           '_   -   _'
-          / '-----' \
-"#;
+          / '-----' \"#;
 
 const MOOSE: &str = r#"
   \
@@ -46,8 +43,7 @@ const MOOSE: &str = r#"
            (oo)\_______
            (__)\       )\/\
                ||----w |
-               ||     ||
-"#;
+               ||     ||"#;
 
 impl fmt::Display for CowShape {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {

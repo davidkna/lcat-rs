@@ -1,5 +1,5 @@
 [package]
-name = "cowsay-rs"
+name = "cowsay"
 version = "0.2.0"
 authors = ["David Knaack <davidkna@users.noreply.github.com>"]
 edition = "2018"
