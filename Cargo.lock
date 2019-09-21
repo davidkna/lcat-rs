@@ -104,7 +104,7 @@ dependencies = [
 [[package]]
 name = "cowsay"
 version = "0.2.0"
-source = "git+https://github.com/davidkna/cowsay-rs#3c0aac00eb50d36a783e4aa35fd942b34b00177e"
+source = "git+https://github.com/davidkna/cowsay-rs#0fe7ba786de2300b7637a7a34e1198b6a4397a6e"
 dependencies = [
  "hyphenation 0.7.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "textwrap 0.11.0 (registry+https://github.com/rust-lang/crates.io-index)",
