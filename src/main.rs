@@ -15,7 +15,7 @@ use std::{
 };
 use structopt::StructOpt;
 
-use libflate::gzip::Decoder;
+use flate2::read::GzDecoder;
 use reqwest;
 use std::path::Path;
 use tar::Archive;
@@ -49,7 +49,7 @@ fn get_project_dir() -> ProjectDirs {
 fn download() -> io::Result<()> {
     let request =
         reqwest::get("https://github.com/shlomif/fortune-mod/archive/master.tar.gz").unwrap();
-    let gz_data = Decoder::new(request).unwrap();
+    let gz_data = GzDecoder::new(request);
     let mut archive = Archive::new(gz_data);
 
     let project_dir = get_project_dir();
