@@ -1,5 +1,5 @@
 [package]
-name = "fortune"
+name = "neo-fortune"
 version = "0.1.0"
 authors = ["David Knaack <davidkna@users.noreply.github.com>"]
 edition = "2018"
@@ -8,18 +8,36 @@ edition = "2018"
 path = "src/lib.rs"
 
 [[bin]]
-name = "fortune"
+name = "neo-fortune"
 path = "src/main.rs"
 required-features = ["build-binary"]
 
 [features]
 default = ["build-binary"]
-build-binary = ["cowsay", "directories", "lolcat", "ansi_term", "structopt"]
+build-binary = [
+    "ansi_term",
+    "cowsay",
+    "directories",
+    "libflate",
+    "lolcat",
+    "reqwest",
+    "structopt",
+    "tar",
+]
 
 [dependencies]
+# Lib
+memchr = "2.2.1"
 rand = { version = "0.7.0", features = ["std", "small_rng"] }
+
+# Binary
 directories = { version = "2.0.2", optional = true }
 structopt =  { version = "0.3.1", optional = true }
+
+# Download
+reqwest = { version = "0.9", optional = true }
+libflate = { version = "0.1.27", optional = true }
+tar = { version = "0.4.26", optional = true }
 
 [dependencies.cowsay]
 git = "https://github.com/davidkna/cowsay-rs"

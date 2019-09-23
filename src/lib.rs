@@ -1,3 +1,4 @@
+use memchr::Memchr;
 use rand::prelude::*;
 use std::{
     fs::File,
@@ -5,6 +6,7 @@ use std::{
     io::{prelude::*, Seek, SeekFrom},
     path::PathBuf,
 };
+
 pub struct Strfile {
     file: File,
     metadata: Vec<u8>,
@@ -103,7 +105,46 @@ impl Strfile {
         self.file.read_exact(&mut buf)?;
         let quote = String::from_utf8_lossy(&buf);
         Ok(quote
-            .trim_matches(|c| self.delim() == c || c.is_whitespace())
+            .trim_matches(|c: char| self.delim() == c || c.is_whitespace())
             .into())
     }
+}
+
+pub fn build_dat_file(strfile: &[u8], delim: u8, flags: u32) -> Vec<u8> {
+    let mut pointers: Vec<u32> = Memchr::new(delim, strfile).map(|i| i as u32).collect();
+    pointers.push(strfile.len() as u32);
+
+    let mut out = Vec::new();
+    let version = u32::to_be_bytes(1);
+    let count = u32::to_be_bytes(pointers.len() as u32);
+    let max_length = u32::to_be_bytes(
+        pointers
+            .iter()
+            .zip(pointers.iter().skip(1))
+            .map(|(a, b)| b - a)
+            .max()
+            .unwrap(),
+    );
+    let min_length = u32::to_be_bytes(
+        pointers
+            .iter()
+            .zip(pointers.iter().skip(1))
+            .map(|(a, b)| b - a)
+            .min()
+            .unwrap(),
+    );
+    let flags = u32::to_be_bytes(flags);
+    let del = [delim, 0, 0, 0];
+
+    out.extend_from_slice(&version);
+    out.extend_from_slice(&count);
+    out.extend_from_slice(&max_length);
+    out.extend_from_slice(&min_length);
+    out.extend_from_slice(&flags);
+    out.extend_from_slice(&del);
+    pointers
+        .iter()
+        .for_each(|i| out.extend_from_slice(&u32::to_be_bytes(*i)));
+
+    out
 }

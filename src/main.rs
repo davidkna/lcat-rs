@@ -2,11 +2,23 @@
 use ansi_term;
 use cowsay::{Cow, CowShape};
 use directories::ProjectDirs;
-use fortune::*;
 use lolcat::Rainbow;
+use neo_fortune::*;
 use rand::prelude::*;
-use std::{env, io, path::PathBuf, str};
+use std::{
+    env, fs,
+    fs::File,
+    io,
+    io::{Read, Write},
+    path::PathBuf,
+    str,
+};
 use structopt::StructOpt;
+
+use libflate::gzip::Decoder;
+use reqwest;
+use std::path::Path;
+use tar::Archive;
 
 #[derive(StructOpt)]
 struct Opt {
@@ -26,11 +38,52 @@ enum Command {
         #[structopt(short = "l", long = "lolcat")]
         lolcat: bool,
     },
-    Say,
+    Download,
+    Tell,
 }
 
 fn get_project_dir() -> ProjectDirs {
     ProjectDirs::from("moe", "knaack", "fortune").unwrap()
+}
+
+fn download() -> io::Result<()> {
+    let request =
+        reqwest::get("https://github.com/shlomif/fortune-mod/archive/master.tar.gz").unwrap();
+    let gz_data = Decoder::new(request).unwrap();
+    let mut archive = Archive::new(gz_data);
+
+    let project_dir = get_project_dir();
+    let target_dir = project_dir.data_dir();
+
+    for file in archive.entries()? {
+        let mut file = file?;
+        if !file.header().entry_type().is_file() {
+            continue;
+        }
+        let p = file.path()?.into_owned();
+        if let Ok(path) = p.strip_prefix("fortune-mod-master/fortune-mod/datfiles") {
+            if path.extension() != None
+                || path.parent() != None && path.parent() != Some(&Path::new(""))
+            {
+                continue;
+            }
+            println!("Downloaded {}…", path.display());
+            let target = target_dir.join(path);
+            if let Some(parent) = target.parent() {
+                fs::create_dir_all(parent)?;
+            }
+            let mut buffer = Vec::new();
+            file.read_to_end(&mut buffer)?;
+            let mut str_file = File::create(&target)?;
+            str_file.write(&buffer)?;
+
+            let dat_file = build_dat_file(&buffer, '%' as u8, 0);
+            let mut dat = File::create(target.with_extension("dat"))?;
+            dat.write(&dat_file)?;
+        }
+    }
+
+    Ok(())
 }
 
 fn get_fortune_dirs(from_opts: Option<String>) -> Vec<PathBuf> {
@@ -86,25 +139,27 @@ fn get_fortune_files(dirs: &Vec<PathBuf>) -> Option<Vec<(PathBuf, PathBuf)>> {
     })
 }
 
-fn main() -> Result<(), io::Error> {
-    let opt = Opt::from_args();
+fn get_random_quote(cmd_path: Option<String>) -> io::Result<String> {
     let mut rng = SmallRng::from_entropy();
 
-    let data_dirs = get_fortune_dirs(opt.strfiles);
+    let data_dirs = get_fortune_dirs(cmd_path);
     let fortune_files = get_fortune_files(&data_dirs).expect("Unable to find any fortune dbs.");
 
     let (dat_file, str_file) = fortune_files.choose(&mut rng).unwrap();
-
     let mut strfile = Strfile::new(str_file, dat_file)?;
-    let quote = strfile.random_quote()?;
+    strfile.random_quote()
+}
+
+fn main() -> Result<(), io::Error> {
+    let opt = Opt::from_args();
 
     match opt.cmd {
-        Command::Say => print!("{}", quote),
         Command::Cowsay {
             shape,
             max_length,
             lolcat,
         } => {
+            let quote = get_random_quote(opt.strfiles)?;
             let cow = Cow::new(shape, quote, max_length);
             let mut cow = format!("{}", cow);
 
@@ -115,6 +170,14 @@ fn main() -> Result<(), io::Error> {
                 cow = rainbow.colorize(&cow);
             }
             print!("{}", &cow);
+        }
+        Command::Download => {
+            download()?;
+            println!("Done!");
+        }
+        Command::Tell => {
+            let quote = get_random_quote(opt.strfiles)?;
+            print!("{}", quote);
         }
     };
     Ok(())
