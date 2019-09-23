@@ -14,13 +14,24 @@ required-features = ["build-binary"]
 
 [features]
 default = ["build-binary"]
-build-binary = ["cowsay", "lolcat", "ansi_term", "structopt"]
+build-binary = ["cowsay", "directories", "lolcat", "ansi_term", "structopt"]
 
 [dependencies]
 rand = { version = "0.7.0", features = ["std", "small_rng"] }
+directories = { version = "2.0.2", optional = true }
 structopt =  { version = "0.3.1", optional = true }
-cowsay = { git = "https://github.com/davidkna/cowsay-rs", optional = true, default-features = false }
-lolcat = { git = "https://github.com/davidkna/lolcat-rs", optional = true, default-features = false }
+
+[dependencies.cowsay]
+git = "https://github.com/davidkna/cowsay-rs"
+rev = "0fe7ba786de2300b7637a7a34e1198b6a4397a6e"
+optional = true
+default-features = false
+
+[dependencies.lolcat]
+git = "https://github.com/davidkna/lolcat-rs"
+rev = "d1df6cbd36a5516ab6b233e28472d8a7aa2be1eb"
+optional = true
+default-features = false
 
 [target.'cfg(windows)'.dependencies]
 ansi_term = { version = "0.12", optional = true }

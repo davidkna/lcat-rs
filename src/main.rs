@@ -1,6 +1,7 @@
 #[cfg(windows)]
 use ansi_term;
 use cowsay::{Cow, CowShape};
+use directories::ProjectDirs;
 use fortune::*;
 use lolcat::Rainbow;
 use rand::prelude::*;
@@ -28,6 +29,10 @@ enum Command {
     Say,
 }
 
+fn get_project_dir() -> ProjectDirs {
+    ProjectDirs::from("moe", "knaack", "fortune").unwrap()
+}
+
 fn get_fortune_dirs(from_opts: Option<String>) -> Vec<PathBuf> {
     let mut dirs = Vec::new();
     if let Some(files) = from_opts {
@@ -36,6 +41,7 @@ fn get_fortune_dirs(from_opts: Option<String>) -> Vec<PathBuf> {
             .map(PathBuf::from)
             .for_each(|i| dirs.push(i));
     }
+    dirs.push(get_project_dir().data_dir().to_path_buf());
     if let Ok(files) = env::var("FORTUNE_PATH") {
         files
             .split(':')
@@ -46,6 +52,7 @@ fn get_fortune_dirs(from_opts: Option<String>) -> Vec<PathBuf> {
         dirs.push("/usr/share/games/fortune/".into());
         dirs.push("/usr/share/fortune".into());
     }
+
     dirs
 }
 
