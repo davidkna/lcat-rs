@@ -1,6 +1,7 @@
 use memchr::Memchr;
 use rand::prelude::*;
 use std::{
+    cmp,
     convert::TryInto,
     fs::File,
     io,
@@ -23,6 +24,8 @@ impl Strfile {
         let file = File::open(strfile)?;
         let rng = SmallRng::from_entropy();
 
+        assert!(metadata.len() >= 32);
+
         Ok(Self {
             metadata,
             file,
@@ -35,7 +38,10 @@ impl Strfile {
     }
 
     pub fn count(&self) -> u32 {
-        u32::from_be_bytes(self.metadata[4..8].try_into().unwrap())
+        cmp::min(
+            u32::from_be_bytes(self.metadata[4..8].try_into().unwrap()),
+            (((self.metadata.len() - 24) / 4) - 1).try_into().unwrap(),
+        )
     }
 
     pub fn max_length(&self) -> u32 {
