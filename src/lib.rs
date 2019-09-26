@@ -1,6 +1,7 @@
 use memchr::Memchr;
 use rand::prelude::*;
 use std::{
+    convert::TryInto,
     fs::File,
     io,
     io::{prelude::*, Seek, SeekFrom},
@@ -30,48 +31,23 @@ impl Strfile {
     }
 
     pub fn version(&self) -> u32 {
-        u32::from_be_bytes([
-            self.metadata[0],
-            self.metadata[1],
-            self.metadata[2],
-            self.metadata[3],
-        ])
+        u32::from_be_bytes(self.metadata[0..4].try_into().unwrap())
     }
 
     pub fn count(&self) -> u32 {
-        u32::from_be_bytes([
-            self.metadata[4],
-            self.metadata[5],
-            self.metadata[6],
-            self.metadata[7],
-        ])
+        u32::from_be_bytes(self.metadata[4..8].try_into().unwrap())
     }
 
     pub fn max_length(&self) -> u32 {
-        u32::from_be_bytes([
-            self.metadata[8],
-            self.metadata[9],
-            self.metadata[10],
-            self.metadata[11],
-        ])
+        u32::from_be_bytes(self.metadata[8..12].try_into().unwrap())
     }
 
     pub fn min_length(&self) -> u32 {
-        u32::from_be_bytes([
-            self.metadata[12],
-            self.metadata[13],
-            self.metadata[14],
-            self.metadata[15],
-        ])
+        u32::from_be_bytes(self.metadata[12..14].try_into().unwrap())
     }
 
     pub fn is_encrypted(&self) -> bool {
-        u32::from_be_bytes([
-            self.metadata[12],
-            self.metadata[13],
-            self.metadata[14],
-            self.metadata[15],
-        ]) == 0x4
+        u32::from_be_bytes(self.metadata[14..16].try_into().unwrap()) == 0x4
     }
 
     pub fn delim(&self) -> char {
@@ -86,19 +62,10 @@ impl Strfile {
     pub fn get_quote(&mut self, index: usize) -> io::Result<String> {
         let index = index * 4 + 24;
 
-        let start = u32::from_be_bytes([
-            self.metadata[index],
-            self.metadata[index + 1],
-            self.metadata[index + 2],
-            self.metadata[index + 3],
-        ]) as usize;
-        let index = index + 4;
-        let end = u32::from_be_bytes([
-            self.metadata[index],
-            self.metadata[index + 1],
-            self.metadata[index + 2],
-            self.metadata[index + 3],
-        ]) as usize;
+        let start =
+            u32::from_be_bytes(self.metadata[index..index + 4].try_into().unwrap()) as usize;
+        let end =
+            u32::from_be_bytes(self.metadata[index + 4..index + 8].try_into().unwrap()) as usize;
 
         self.file.seek(SeekFrom::Start(start as u64))?;
         let mut buf = vec![0; end - start];
