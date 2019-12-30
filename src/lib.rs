@@ -84,31 +84,48 @@ impl Strfile {
 }
 
 pub fn build_dat_file(strfile: &[u8], delim: u8, flags: u32) -> Vec<u8> {
-    let mut pointers: Vec<u32> = Memchr::new(delim, strfile).map(|i| i as u32).collect();
+    let mut pointers: Vec<u32> = vec![0];
+    let mut x: Vec<u32> = Memchr::new(delim, strfile).map(|i| i as u32).collect();
+    pointers.append(&mut x);
     pointers.push(strfile.len() as u32);
 
-    let mut out = Vec::new();
-    let version = u32::to_be_bytes(1);
+    let mut max_length: u32 = 0;
+    let mut min_length: u32 = std::u32::MAX;
+
+    let mut x: Vec<u32> = pointers
+        .iter()
+        .zip(pointers.iter().skip(1))
+        .filter_map(|(a, b)| {
+            let a = *a;
+            let b = *b;
+            if b > a
+                && !String::from_utf8_lossy(&strfile[a as usize..b as usize])
+                    .chars()
+                    .all(|c: char| delim as char == c || c.is_whitespace())
+            {
+                let diff = (b - a) as u32;
+                if diff > max_length {
+                    max_length = diff;
+                }
+                if diff < min_length {
+                    min_length = diff;
+                }
+                return Some(b);
+            };
+            None
+        })
+        .collect();
+    let mut pointers = vec![0];
+    pointers.append(&mut x);
+
+    let version = u32::to_be_bytes(2);
     let count = u32::to_be_bytes(pointers.len() as u32);
-    let max_length = u32::to_be_bytes(
-        pointers
-            .iter()
-            .zip(pointers.iter().skip(1))
-            .map(|(a, b)| b - a)
-            .max()
-            .unwrap(),
-    );
-    let min_length = u32::to_be_bytes(
-        pointers
-            .iter()
-            .zip(pointers.iter().skip(1))
-            .map(|(a, b)| b - a)
-            .min()
-            .unwrap(),
-    );
+    let max_length = u32::to_be_bytes(max_length);
+    let min_length = u32::to_be_bytes(min_length);
     let flags = u32::to_be_bytes(flags);
     let del = [delim, 0, 0, 0];
 
+    let mut out = Vec::new();
     out.extend_from_slice(&version);
     out.extend_from_slice(&count);
     out.extend_from_slice(&max_length);

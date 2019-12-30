@@ -41,13 +41,11 @@ tar = { version = "0.4.26", optional = true }
 
 [dependencies.cowsay]
 git = "https://github.com/davidkna/cowsay-rs"
-rev = "0fe7ba786de2300b7637a7a34e1198b6a4397a6e"
 optional = true
 default-features = false
 
 [dependencies.lolcat]
 git = "https://github.com/davidkna/lolcat-rs"
-rev = "d1df6cbd36a5516ab6b233e28472d8a7aa2be1eb"
 optional = true
 default-features = false
 

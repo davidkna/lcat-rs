@@ -75,11 +75,11 @@ fn download() -> io::Result<()> {
             let mut buffer = Vec::new();
             file.read_to_end(&mut buffer)?;
             let mut str_file = File::create(&target)?;
-            str_file.write(&buffer)?;
+            str_file.write_all(&buffer)?;
 
-            let dat_file = build_dat_file(&buffer, '%' as u8, 0);
+            let dat_file = build_dat_file(&buffer, b'%', 0);
             let mut dat = File::create(target.with_extension("dat"))?;
-            dat.write(&dat_file)?;
+            dat.write_all(&dat_file)?;
         }
     }
 
@@ -109,7 +109,7 @@ fn get_fortune_dirs(from_opts: Option<String>) -> Vec<PathBuf> {
     dirs
 }
 
-fn get_fortune_files(dirs: &Vec<PathBuf>) -> Option<Vec<(PathBuf, PathBuf)>> {
+fn get_fortune_files(dirs: &[PathBuf]) -> Option<Vec<(PathBuf, PathBuf)>> {
     dirs.iter().find_map(|i| {
         let dat_files: Vec<(PathBuf, PathBuf)> = i
             .read_dir()
@@ -121,9 +121,9 @@ fn get_fortune_files(dirs: &Vec<PathBuf>) -> Option<Vec<(PathBuf, PathBuf)>> {
                             && path.extension().map(|ext| ext == "dat").unwrap_or(false)
                         {
                             if path.with_extension("u8").exists() {
-                                return Some((path.clone(), path.clone().with_extension("u8")));
+                                return Some((path.clone(), path.with_extension("u8")));
                             } else if path.with_extension("").exists() {
-                                return Some((path.clone(), path.clone().with_extension("")));
+                                return Some((path.clone(), path.with_extension("")));
                             }
                         }
                         None
