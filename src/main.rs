@@ -48,7 +48,8 @@ fn get_project_dir() -> ProjectDirs {
 
 fn download() -> io::Result<()> {
     let request =
-        reqwest::get("https://github.com/shlomif/fortune-mod/archive/master.tar.gz").unwrap();
+        reqwest::blocking::get("https://github.com/shlomif/fortune-mod/archive/master.tar.gz")
+            .unwrap();
     let gz_data = GzDecoder::new(request);
     let mut archive = Archive::new(gz_data);
 
