@@ -27,7 +27,7 @@ build-binary = [
 
 [dependencies]
 # Lib
-memchr = "2.2.1"
+memchr = "2.3.0"
 rand = { version = "0.7.3", features = ["std", "small_rng"] }
 
 # Binary
