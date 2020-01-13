@@ -28,7 +28,7 @@ build-binary = [
 [dependencies]
 # Lib
 memchr = "2.2.1"
-rand = { version = "0.7.0", features = ["std", "small_rng"] }
+rand = { version = "0.7.3", features = ["std", "small_rng"] }
 
 # Binary
 directories = { version = "2.0.2", optional = true }
