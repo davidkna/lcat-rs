@@ -15,8 +15,8 @@ use std::{
 };
 use structopt::StructOpt;
 
+use attohttpc;
 use flate2::read::GzDecoder;
-use ureq;
 use std::path::Path;
 use tar::Archive;
 
@@ -47,8 +47,13 @@ fn get_project_dir() -> ProjectDirs {
 }
 
 fn download() -> io::Result<()> {
-    let request = ureq::get("https://github.com/shlomif/fortune-mod/archive/master.tar.gz").call();
-    let gz_data = GzDecoder::new(request.into_reader());
+    let request =
+        attohttpc::get("https://github.com/shlomif/fortune-mod/archive/master.tar.gz").send()?;
+    if !request.is_success() {
+        return Err(io::Error::new(io::ErrorKind::Other, "Error status code"));
+    }
+    let (_, _, request) = request.split();
+    let gz_data = GzDecoder::new(request);
     let mut archive = Archive::new(gz_data);
 
     let project_dir = get_project_dir();
