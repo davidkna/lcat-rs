@@ -51,7 +51,7 @@ dependencies = [
 
 [[package]]
 name = "attohttpc"
-version = "0.11.1"
+version = "0.12.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "http 0.2.0 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -400,7 +400,7 @@ name = "neo-fortune"
 version = "0.1.0"
 dependencies = [
  "ansi_term 0.12.1 (registry+https://github.com/rust-lang/crates.io-index)",
- "attohttpc 0.11.1 (registry+https://github.com/rust-lang/crates.io-index)",
+ "attohttpc 0.12.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "cowsay 0.2.0 (git+https://github.com/davidkna/cowsay-rs)",
  "directories 2.0.2 (registry+https://github.com/rust-lang/crates.io-index)",
  "flate2 1.0.13 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -882,7 +882,7 @@ dependencies = [
 "checksum arrayref 0.3.6 (registry+https://github.com/rust-lang/crates.io-index)" = "a4c527152e37cf757a3f78aae5a06fbeefdb07ccc535c980a3208ee3060dd544"
 "checksum arrayvec 0.5.1 (registry+https://github.com/rust-lang/crates.io-index)" = "cff77d8686867eceff3105329d4698d96c2391c176d5d03adc90c7389162b5b8"
 "checksum atlatl 0.1.2 (registry+https://github.com/rust-lang/crates.io-index)" = "32bb156841d2e2a888185b5b4f7d93d30efd3a40d1671d9628ab39536adb7ea2"
-"checksum attohttpc 0.11.1 (registry+https://github.com/rust-lang/crates.io-index)" = "ac9fd7bdf8ff0a1b9d73b41f95cb189d77528110295c80e3c858bf343db24fa3"
+"checksum attohttpc 0.12.0 (registry+https://github.com/rust-lang/crates.io-index)" = "de33d017f0add8b019c6d98c3132c82c8815ca96bbed8e8006e7402c840562b3"
 "checksum atty 0.2.14 (registry+https://github.com/rust-lang/crates.io-index)" = "d9b39be18770d11421cdb1b9947a45dd3f37e93092cbf377614828a319d5fee8"
 "checksum autocfg 0.1.7 (registry+https://github.com/rust-lang/crates.io-index)" = "1d49d90015b3c36167a20fe2810c5cd875ad504b39cff3d4eae7977e6b7c1cb2"
 "checksum autocfg 1.0.0 (registry+https://github.com/rust-lang/crates.io-index)" = "f8aac770f1885fd7e387acedd76065302551364496e46b3dd00860b2f8359b9d"
