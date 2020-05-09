@@ -2,7 +2,7 @@
 `fortunes` combined with `lolcat` and `cowsay`!
 
 ```
-lolcow-fortune 0.1.0
+lolcow-fortune 0.0.1
 
 USAGE:
     lolcow-fortune.exe [OPTIONS] <SUBCOMMAND>

@@ -1,8 +1,12 @@
 [package]
 name = "lolcow-fortune"
-version = "0.1.0"
+version = "0.0.1"
 authors = ["David Knaack <davidkna@users.noreply.github.com>"]
 edition = "2018"
+description = "`fortunes` combined with `lolcat` and `cowsay`!"
+readme = "README.md"
+repository = "https://github.com/davidkna/lolcow-fortune-rs"
+license = "MIT OR Apache-2.0"
 
 [lib]
 path = "src/lib.rs"
@@ -39,9 +43,9 @@ attohttpc = { version = "0.13", optional = true, default-features = false, featu
 tar = { version = "0.4", optional = true }
 
 [dependencies.lcowsay]
-git = "https://github.com/davidkna/lcowsay-rs"
+version = "0.1"
 optional = true
 
 [dependencies.lcat]
-git = "https://github.com/davidkna/lcat-rs"
+version = "0.1"
 optional = true
