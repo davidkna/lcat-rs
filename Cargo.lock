@@ -226,7 +226,8 @@ checksum = "e2abad23fbc42b3700f2f279844dc832adb2b2eb069b2df918f455c4e18cc646"
 [[package]]
 name = "lcat"
 version = "0.1.0"
-source = "git+https://github.com/davidkna/lcat-rs#adba037678b1f7318b71372bb1793887ddb62e02"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f00438006c8d61b427364ce444f5c908dc49f449a0e26887175926f5744c87db"
 dependencies = [
  "bstr",
  "rand",
@@ -238,7 +239,7 @@ dependencies = [
 
 [[package]]
 name = "lcowsay"
-version = "0.2.0"
+version = "0.1.0"
 dependencies = [
  "hyphenation",
  "lcat",

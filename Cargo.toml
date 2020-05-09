@@ -1,8 +1,12 @@
 [package]
 name = "lcowsay"
-version = "0.2.0"
+version = "0.1.0"
 authors = ["David Knaack <davidkna@users.noreply.github.com>"]
 edition = "2018"
+description = "Cowsay, but combined with lolcat."
+readme = "README.md"
+repository = "https://github.com/davidkna/lcowsay-rs"
+license = "MIT OR Apache-2.0"
 
 [lib]
 path = "src/lib.rs"
@@ -21,5 +25,5 @@ hyphenation = { version = "0.7", features = ["embed_all"] }
 textwrap = { version = "0.11", features = ["hyphenation"] }
 unicode-width = "0.1.5"
 
-lcat = { git = "https://github.com/davidkna/lcat-rs", optional = true }
+lcat = { version = "0.1", optional = true }
 structopt = { version = "0.3" , optional = true }
