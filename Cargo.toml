@@ -1,29 +1,25 @@
 [package]
-name = "cowsay"
+name = "lcowsay"
 version = "0.2.0"
 authors = ["David Knaack <davidkna@users.noreply.github.com>"]
 edition = "2018"
-
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [lib]
 path = "src/lib.rs"
 
 [[bin]]
-name = "cowsay"
+name = "lcowsay"
 path = "src/main.rs"
 required-features = ["build-binary"]
 
 [features]
 default = ["build-binary"]
-build-binary = ["lolcat", "ansi_term", "structopt"]
+build-binary = ["lcat", "structopt"]
 
 [dependencies]
-hyphenation = { version = "0.7.1", features = ["embed_all"] }
+hyphenation = { version = "0.7", features = ["embed_all"] }
 textwrap = { version = "0.11", features = ["hyphenation"] }
 unicode-width = "0.1.5"
 
-lolcat = { git = "https://github.com/davidkna/lolcat-rs", optional = true, default-features = false }
+lcat = { git = "https://github.com/davidkna/lcat-rs", optional = true }
 structopt = { version = "0.3" , optional = true }
-[target.'cfg(windows)'.dependencies]
-ansi_term = { version = "0.12", optional = true }

@@ -3,9 +3,7 @@ mod cow;
 mod shapes;
 
 use crate::{cow::Cow, shapes::CowShape};
-#[cfg(windows)]
-use ansi_term;
-use lolcat::Rainbow;
+use lcat::{Rainbow, RainbowCmd};
 use std::io::{self, Read};
 use structopt::StructOpt;
 
@@ -15,13 +13,15 @@ struct Opt {
     shape: CowShape,
     #[structopt(short = "W", long = "max-length", default_value = "40")]
     max_length: usize,
-    #[structopt(short = "l", long = "lolcat")]
-    lolcat: bool,
+    #[structopt(long = "lolcat")]
+    nololcat: bool,
     #[structopt(name = "TEXT", default_value = "")]
     text: Vec<String>,
+    #[structopt(flatten)]
+    rainbow: RainbowCmd,
 }
 
-fn main() {
+fn main() -> io::Result<()> {
     let opt = Opt::from_args();
     let mut text = opt.text.join(" ");
 
@@ -31,14 +31,16 @@ fn main() {
     }
 
     let cow = Cow::new(opt.shape, text, opt.max_length);
-    let mut out = format!("{}", cow);
+    let cow = format!("{}", cow);
 
-    if opt.lolcat {
-        #[cfg(windows)]
-        ansi_term::enable_ansi_support().unwrap();
-        let mut rainbow = Rainbow::default();
-        out = rainbow.colorize(&out);
+    if !opt.nololcat {
+        let mut rainbow: Rainbow = opt.rainbow.into();
+        let stdout = io::stdout();
+        let mut stdout = stdout.lock();
+        rainbow.colorize_str(&cow, &mut stdout)?;
+    } else {
+        print!("{}", cow);
     }
+    Ok(())
 
-    print!("{}", out);
 }
