@@ -1,9 +1,7 @@
-#[cfg(windows)]
-use ansi_term;
-use cowsay::{Cow, CowShape};
 use directories::ProjectDirs;
-use lolcat::Rainbow;
-use neo_fortune::*;
+use lcat::{Rainbow, RainbowCmd};
+use lcowsay::{Cow, CowShape};
+use lolcow_fortune::*;
 use rand::prelude::*;
 use std::{
     env, fs,
@@ -30,15 +28,20 @@ struct Opt {
 
 #[derive(StructOpt)]
 enum Command {
+    /// Cowsay a fortune
     Cowsay {
         #[structopt(short = "f", long = "cow-shape", possible_values = &["cow", "clippy", "ferris", "moose"], case_insensitive = true, default_value = "cow")]
         shape: CowShape,
         #[structopt(short = "W", long = "max-length", default_value = "40")]
         max_length: usize,
-        #[structopt(short = "l", long = "lolcat")]
+        #[structopt(short = "L", long = "lolcat")]
         lolcat: bool,
+        #[structopt(flatten)]
+        rainbow: RainbowCmd,
     },
+    /// Download a fortune database
     Download,
+    /// Tell a fortune
     Tell,
 }
 
@@ -162,18 +165,19 @@ fn main() -> Result<(), io::Error> {
             shape,
             max_length,
             lolcat,
+            rainbow,
         } => {
             let quote = get_random_quote(opt.strfiles)?;
             let cow = Cow::new(shape, quote, max_length);
-            let mut cow = format!("{}", cow);
+            let cow = format!("{}", cow);
 
             if lolcat {
-                #[cfg(windows)]
-                ansi_term::enable_ansi_support().unwrap();
-                let mut rainbow = Rainbow::default();
-                cow = rainbow.colorize(&cow);
+                let mut rainbow: Rainbow = rainbow.into();
+                let stdout = io::stdout();
+                rainbow.colorize_str(&cow, &mut stdout.lock())?;
+            } else {
+                print!("{}", &cow);
             }
-            print!("{}", &cow);
         }
         Command::Download => {
             download()?;
