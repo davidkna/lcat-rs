@@ -4,16 +4,16 @@ mod shapes;
 
 use crate::{cow::Cow, shapes::CowShape};
 use lcat::{Rainbow, RainbowCmd};
-use std::io::{self, Read};
+use std::io::{self, Read, Write};
 use structopt::StructOpt;
 
 #[derive(StructOpt)]
 struct Opt {
-    #[structopt( short = "f", long = "cow-shape", possible_values = &["cow", "clippy", "ferris", "moose"], case_insensitive = true, default_value = "cow")]
+    #[structopt(short = "f", long = "cow-shape", possible_values = &["cow", "clippy", "ferris", "moose"], case_insensitive = true, default_value = "cow")]
     shape: CowShape,
     #[structopt(short = "W", long = "max-length", default_value = "40")]
     max_length: usize,
-    #[structopt(long = "lolcat")]
+    #[structopt(long = "no-lolcat")]
     nololcat: bool,
     #[structopt(name = "TEXT", default_value = "")]
     text: Vec<String>,
@@ -30,17 +30,16 @@ fn main() -> io::Result<()> {
         text = text.trim().to_string();
     }
 
-    let cow = Cow::new(opt.shape, text, opt.max_length);
-    let cow = format!("{}", cow);
+    let stdout = io::stdout();
+    let mut stdout = stdout.lock();
 
+    let cow = Cow::new(opt.shape, text, opt.max_length);
+    let cow = format!("{}\n", cow);
     if !opt.nololcat {
         let mut rainbow: Rainbow = opt.rainbow.into();
-        let stdout = io::stdout();
-        let mut stdout = stdout.lock();
         rainbow.colorize_str(&cow, &mut stdout)?;
     } else {
-        print!("{}", cow);
+        stdout.write_all(cow.as_bytes())?;
     }
-    Ok(())
-
+    stdout.flush()
 }
