@@ -24,7 +24,6 @@ build-binary = [
     "directories",
     "flate2",
     "lcat",
-    "mimalloc",
     "structopt",
     "tar",
 ]

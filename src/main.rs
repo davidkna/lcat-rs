@@ -3,7 +3,6 @@ use flate2::read::GzDecoder;
 use lcat::{Rainbow, RainbowCmd};
 use lcowsay::{Cow, CowShape};
 use lolcow_fortune::*;
-use mimalloc::MiMalloc;
 use rand::prelude::*;
 use std::{
     env, fs,
@@ -16,6 +15,7 @@ use std::{
 use structopt::StructOpt;
 use tar::Archive;
 
+#[cfg(feature = "mimalloc")]
 #[global_allocator]
 static GLOBAL: MiMalloc = MiMalloc;
 
