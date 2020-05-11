@@ -17,7 +17,7 @@ use tar::Archive;
 
 #[cfg(feature = "mimalloc")]
 #[global_allocator]
-static GLOBAL: MiMalloc = MiMalloc;
+static GLOBAL: mimalloc::MiMalloc = mimalloc::MiMalloc;
 
 #[derive(StructOpt)]
 struct Opt {
