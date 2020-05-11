@@ -81,6 +81,12 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "08c48aae112d48ed9f069b33538ea9e3e90aa263cfa3d1c24309612b1f7472de"
 
 [[package]]
+name = "cc"
+version = "1.0.52"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "c3d87b23d6a92cd03af510a5ade527033f6aa6fa92161e2d5863a907d4c5e31d"
+
+[[package]]
 name = "cfg-if"
 version = "0.1.10"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -99,6 +105,15 @@ dependencies = [
  "textwrap",
  "unicode-width",
  "vec_map",
+]
+
+[[package]]
+name = "cmake"
+version = "0.1.42"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "81fb25b677f8bf1eb325017cb6bb8452f87969db0fedb4f757b297bee78a7c62"
+dependencies = [
+ "cc",
 ]
 
 [[package]]
@@ -243,6 +258,7 @@ version = "0.1.0"
 dependencies = [
  "hyphenation",
  "lcat",
+ "mimalloc",
  "structopt",
  "textwrap",
  "unicode-width",
@@ -253,6 +269,15 @@ name = "libc"
 version = "0.2.69"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "99e85c08494b21a9054e7fe1374a732aeadaff3980b6990b94bfd3a70f690005"
+
+[[package]]
+name = "libmimalloc-sys"
+version = "0.1.15"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "a27252ec1d0c4e0dd6142cbc572da50b363ab56fc334f7aa8fadf295b2e24e74"
+dependencies = [
+ "cmake",
+]
 
 [[package]]
 name = "maplit"
@@ -274,6 +299,15 @@ name = "memchr"
 version = "2.3.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "3728d817d99e5ac407411fa471ff9800a778d88a24685968b36824eaf4bee400"
+
+[[package]]
+name = "mimalloc"
+version = "0.1.19"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "6c52de2069999f01bd26436564dbe7de3a87898feeb7a0d0ff9eb20a05bb7ca0"
+dependencies = [
+ "libmimalloc-sys",
+]
 
 [[package]]
 name = "num"

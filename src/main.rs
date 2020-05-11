@@ -7,6 +7,10 @@ use lcat::{Rainbow, RainbowCmd};
 use std::io::{self, Read, Write};
 use structopt::StructOpt;
 
+#[cfg(feature = "mimalloc")]
+#[global_allocator]
+static GLOBAL: mimalloc::MiMalloc = mimalloc::MiMalloc;
+
 #[derive(StructOpt)]
 struct Opt {
     #[structopt(short = "f", long = "cow-shape", possible_values = &["cow", "clippy", "ferris", "moose"], case_insensitive = true, default_value = "cow")]
