@@ -1,22 +1,23 @@
 use directories::ProjectDirs;
+use flate2::read::GzDecoder;
 use lcat::{Rainbow, RainbowCmd};
 use lcowsay::{Cow, CowShape};
 use lolcow_fortune::*;
+use mimalloc::MiMalloc;
 use rand::prelude::*;
 use std::{
     env, fs,
     fs::File,
     io,
     io::{Read, Write},
-    path::PathBuf,
+    path::{Path, PathBuf},
     str,
 };
 use structopt::StructOpt;
-
-use attohttpc;
-use flate2::read::GzDecoder;
-use std::path::Path;
 use tar::Archive;
+
+#[global_allocator]
+static GLOBAL: MiMalloc = MiMalloc;
 
 #[derive(StructOpt)]
 struct Opt {
@@ -169,15 +170,18 @@ fn main() -> Result<(), io::Error> {
         } => {
             let quote = get_random_quote(opt.strfiles)?;
             let cow = Cow::new(shape, quote, max_length);
-            let cow = format!("{}", cow);
+            let cow = format!("{}\n", cow);
+            let stdout = io::stdout();
+            let mut stdout = stdout.lock();
 
             if lolcat {
                 let mut rainbow: Rainbow = rainbow.into();
-                let stdout = io::stdout();
-                rainbow.colorize_str(&cow, &mut stdout.lock())?;
+
+                rainbow.colorize_str(&cow, &mut stdout)?;
             } else {
-                print!("{}", &cow);
+                stdout.write_all(cow.as_bytes())?;
             }
+            stdout.flush()?;
         }
         Command::Download => {
             download()?;
