@@ -432,13 +432,27 @@ dependencies = [
 ]
 
 [[package]]
+name = "lcat"
+version = "0.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "419bab6f669d98f144e488656fdd64ece13854a640dc5d94947610a9d89e4555"
+dependencies = [
+ "bstr",
+ "rand",
+ "scarlet",
+ "structopt",
+ "unicode-segmentation",
+ "unicode-width",
+]
+
+[[package]]
 name = "lcowsay"
 version = "0.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "33db9a90f318316145a94eb3627aace20b24bd8c92d6845498cdc61efecb5079"
 dependencies = [
  "hyphenation",
- "lcat",
+ "lcat 0.1.0",
  "structopt",
  "textwrap",
  "unicode-width",
@@ -475,7 +489,7 @@ dependencies = [
  "attohttpc",
  "directories",
  "flate2",
- "lcat",
+ "lcat 0.2.0",
  "lcowsay",
  "memchr",
  "mimalloc",
