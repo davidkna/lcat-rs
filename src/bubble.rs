@@ -22,7 +22,7 @@ pub(crate) fn bubble(text: &str, width: usize) -> String {
     let max_length = line_lengths.iter().max().unwrap();
 
     let mut out = String::new();
-    writeln!(out, " {:_<1$} ", "", max_length + 2).unwrap();
+    writeln!(out, " {:_<1$}", "", max_length + 2).unwrap();
     if line_count == 1 {
         writeln!(out, "< {} >", &text[0]).unwrap();
     } else {
@@ -34,7 +34,45 @@ pub(crate) fn bubble(text: &str, width: usize) -> String {
         }
         writeln!(out, "\\ {:1$} /", &text[line_count - 1], max_length).unwrap();
     }
-    write!(out, " {:-<1$} ", "", max_length + 2).unwrap();
+    write!(out, " {:-<1$}", "", max_length + 2).unwrap();
 
     out
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_bubble_sl() {
+        let test = "foobar";
+        let bubble_t = " ________\n< foobar >\n --------";
+
+        assert_eq!(bubble(test, 20), bubble_t);
+    }
+
+    #[test]
+    fn test_bubble_break() {
+        let test = "foobar";
+        let bubble_t = " ______\n/ foo- \\\n\\ bar  /\n ------";
+
+        assert_eq!(bubble(test, 5), bubble_t);
+    }
+
+    #[test]
+    fn test_bubble_ml() {
+        let test = "mul\ntiple\nlines";
+        let bubble_t = " _______\n/ mul   \\\n| tiple |\n\\ lines /\n -------";
+
+        assert_eq!(bubble(test, 10), bubble_t);
+    }
+
+    #[test]
+    fn test_bubble_tab() {
+        let test = "\t";
+        let bubble_t = " ______\n<      >\n ------";
+
+        assert_eq!(bubble(test, 10), bubble_t);
+    }
+
 }
