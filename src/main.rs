@@ -1,8 +1,4 @@
-mod bubble;
-mod cow;
-mod shapes;
-
-use crate::{cow::Cow, shapes::CowShape};
+use lcowsay::{Cow, CowShape};
 use lcat::{Rainbow, RainbowCmd};
 use std::io::{self, Read, Write};
 use structopt::StructOpt;
