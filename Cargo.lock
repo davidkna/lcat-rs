@@ -240,9 +240,9 @@ checksum = "e2abad23fbc42b3700f2f279844dc832adb2b2eb069b2df918f455c4e18cc646"
 
 [[package]]
 name = "lcat"
-version = "0.2.0"
+version = "0.3.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "419bab6f669d98f144e488656fdd64ece13854a640dc5d94947610a9d89e4555"
+checksum = "acb074e5a542977b3cb7894aa7ff4cbbb42bb0a869f8faaf7ebf1c481a876c4c"
 dependencies = [
  "bstr",
  "rand",
@@ -254,9 +254,8 @@ dependencies = [
 
 [[package]]
 name = "lcowsay"
-version = "0.1.0"
+version = "0.2.0"
 dependencies = [
- "hyphenation",
  "lcat",
  "mimalloc",
  "structopt",

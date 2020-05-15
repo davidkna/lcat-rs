@@ -1,14 +1,10 @@
-use hyphenation::{Language, Load, Standard};
 use std::{borrow::Borrow, fmt::Write};
-use textwrap::Wrapper;
+use textwrap::wrap;
 use unicode_width::UnicodeWidthStr;
 
 pub(crate) fn bubble(text: &str, width: usize) -> String {
-    let hyphenator = Standard::from_embedded(Language::EnglishUS).unwrap();
-    let wrapper = Wrapper::with_splitter(width, hyphenator);
-
     let text = text.replace("\t", "    ");
-    let text = wrapper.wrap(&text);
+    let text = wrap(&text, width);
 
     let line_count = text.len();
     let line_lengths: Vec<usize> = text

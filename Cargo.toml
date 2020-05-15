@@ -1,11 +1,12 @@
 [package]
 name = "lcowsay"
-version = "0.1.0"
+version = "0.2.0"
 authors = ["David Knaack <davidkna@users.noreply.github.com>"]
 edition = "2018"
 description = "Cowsay, but combined with lolcat."
 readme = "README.md"
 repository = "https://github.com/davidkna/lcowsay-rs"
+documentation = "https://docs.rs/lcowsay/"
 license = "MIT OR Apache-2.0"
 
 [lib]
@@ -21,11 +22,10 @@ default = ["build-binary"]
 build-binary = ["lcat", "structopt"]
 
 [dependencies]
-hyphenation = { version = "0.7", features = ["embed_all"] }
 textwrap = { version = "0.11", features = ["hyphenation"] }
 unicode-width = "0.1.5"
 
-lcat = { version = "0.2", optional = true }
+lcat = { version = "0.3", optional = true }
 structopt = { version = "0.3" , optional = true }
 
 # Allocator

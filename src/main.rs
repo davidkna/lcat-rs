@@ -1,5 +1,5 @@
-use lcowsay::{Cow, CowShape};
 use lcat::{Rainbow, RainbowCmd};
+use lcowsay::{Cow, CowShape};
 use std::io::{self, Read, Write};
 use structopt::StructOpt;
 
