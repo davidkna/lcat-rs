@@ -1,6 +1,6 @@
 [package]
 name = "lolcow-fortune"
-version = "0.0.1"
+version = "0.0.2"
 authors = ["David Knaack <davidkna@users.noreply.github.com>"]
 edition = "2018"
 description = "`fortunes` combined with `lolcat` and `cowsay`!"
@@ -46,9 +46,9 @@ tar = { version = "0.4", optional = true }
 mimalloc = { version = "0.1.19", optional = true, default-features = false }
 
 [dependencies.lcowsay]
-version = "0.1"
+version = "0.2"
 optional = true
 
 [dependencies.lcat]
-version = "0.2"
+version = "0.3"
 optional = true
