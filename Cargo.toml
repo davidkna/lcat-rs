@@ -22,6 +22,7 @@ default = ["build-binary"]
 build-binary = ["lcat", "structopt"]
 
 [dependencies]
+hyphenation = "0.7"
 textwrap = { version = "0.11", features = ["hyphenation"] }
 unicode-width = "0.1.5"
 
