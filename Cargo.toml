@@ -30,4 +30,4 @@ lcat = { version = "0.3", optional = true }
 structopt = { version = "0.3" , optional = true }
 
 # Allocator
-mimalloc = { version = "0.1.19", optional = true, default-features = false }
+mimalloc = { version = "0.1.20", optional = true, default-features = false }
