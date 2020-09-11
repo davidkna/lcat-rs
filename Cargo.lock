@@ -431,9 +431,9 @@ dependencies = [
 
 [[package]]
 name = "lcat"
-version = "0.4.0"
+version = "0.4.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7d802c186762167ca9f8216f4b2c856b5490405dc2da7ba68c60751aa2a1c6ae"
+checksum = "9aafa12bc39bebf883c704675bc6d972d95f11647786e73ff3e5ee1d84b8d966"
 dependencies = [
  "bstr",
  "rand",
@@ -486,7 +486,7 @@ dependencies = [
  "attohttpc",
  "directories",
  "flate2",
- "lcat 0.4.0",
+ "lcat 0.4.1",
  "lcowsay",
  "memchr",
  "mimalloc",
