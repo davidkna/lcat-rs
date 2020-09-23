@@ -1,28 +1,28 @@
+use clap::Clap;
 use lcat::{Rainbow, RainbowCmd};
 use lcowsay::{Cow, CowShape};
 use std::io::{self, Read, Write};
-use structopt::StructOpt;
 
 #[cfg(feature = "mimalloc")]
 #[global_allocator]
 static GLOBAL: mimalloc::MiMalloc = mimalloc::MiMalloc;
 
-#[derive(StructOpt)]
+#[derive(Clap)]
 struct Opt {
-    #[structopt(short = "f", long = "cow-shape", possible_values = &["cow", "clippy", "ferris", "moose"], case_insensitive = true, default_value = "cow")]
+    #[clap(short = 'f', long = "cow-shape", possible_values = &["cow", "clippy", "ferris", "moose"], case_insensitive = true, default_value = "cow")]
     shape: CowShape,
-    #[structopt(short = "W", long = "max-length", default_value = "40")]
+    #[clap(short = 'W', long = "max-length", default_value = "40")]
     max_length: usize,
-    #[structopt(long = "no-lolcat")]
+    #[clap(long = "no-lolcat")]
     nololcat: bool,
-    #[structopt(name = "TEXT", default_value = "")]
+    #[clap(name = "TEXT", default_value = "")]
     text: Vec<String>,
-    #[structopt(flatten)]
+    #[clap(flatten)]
     rainbow: RainbowCmd,
 }
 
 fn main() -> io::Result<()> {
-    let opt = Opt::from_args();
+    let opt = Opt::parse();
     let mut text = opt.text.join(" ");
 
     if text.trim() == "" {
