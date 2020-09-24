@@ -46,7 +46,7 @@ tar = { version = "0.4", optional = true }
 mimalloc = { version = "0.1.20", optional = true, default-features = false }
 
 [dependencies.lcowsay]
-version = "0.2"
+version = "0.3"
 optional = true
 
 [dependencies.lcat]
