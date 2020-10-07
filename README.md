@@ -2,10 +2,10 @@
 `fortunes` combined with `lolcat` and `cowsay`!
 
 ```
-lolcow-fortune 0.0.1
+lolcow-fortune 
 
 USAGE:
-    lolcow-fortune.exe [OPTIONS] <SUBCOMMAND>
+    lolcow-fortune [OPTIONS] <SUBCOMMAND>
 
 FLAGS:
     -h, --help       Prints help information

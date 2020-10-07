@@ -1,3 +1,4 @@
+use clap::Clap;
 use directories::ProjectDirs;
 use flate2::read::GzDecoder;
 use lcat::{Rainbow, RainbowCmd};
@@ -10,34 +11,34 @@ use std::{
     io,
     io::{Read, Write},
     path::{Path, PathBuf},
+    result::Result,
     str,
 };
-use structopt::StructOpt;
 use tar::Archive;
 
 #[cfg(feature = "mimalloc")]
 #[global_allocator]
 static GLOBAL: mimalloc::MiMalloc = mimalloc::MiMalloc;
 
-#[derive(StructOpt)]
+#[derive(Clap)]
 struct Opt {
-    #[structopt(short = "f", long = "files")]
+    #[clap(short = 'f', long = "files")]
     strfiles: Option<String>,
-    #[structopt(subcommand)]
+    #[clap(subcommand)]
     cmd: Command,
 }
 
-#[derive(StructOpt)]
+#[derive(Clap)]
 enum Command {
     /// Cowsay a fortune
     Cowsay {
-        #[structopt(short = "f", long = "cow-shape", possible_values = &["cow", "clippy", "ferris", "moose"], case_insensitive = true, default_value = "cow")]
+        #[clap(short = 'f', long = "cow-shape", possible_values = &["cow", "clippy", "ferris", "moose"], case_insensitive = true, default_value = "cow")]
         shape: CowShape,
-        #[structopt(short = "W", long = "max-length", default_value = "40")]
+        #[clap(short = 'W', long = "max-length", default_value = "40")]
         max_length: usize,
-        #[structopt(short = "L", long = "lolcat")]
+        #[clap(short = 'L', long = "lolcat")]
         lolcat: bool,
-        #[structopt(flatten)]
+        #[clap(flatten)]
         rainbow: RainbowCmd,
     },
     /// Download a fortune database
@@ -147,7 +148,7 @@ fn get_fortune_files(dirs: &[PathBuf]) -> Option<Vec<(PathBuf, PathBuf)>> {
     })
 }
 
-fn get_random_quote(cmd_path: Option<String>) -> io::Result<String> {
+fn get_random_quote(cmd_path: Option<String>) -> Result<String, StrfileError> {
     let mut rng = SmallRng::from_entropy();
 
     let data_dirs = get_fortune_dirs(cmd_path);
@@ -158,8 +159,8 @@ fn get_random_quote(cmd_path: Option<String>) -> io::Result<String> {
     strfile.random_quote()
 }
 
-fn main() -> Result<(), io::Error> {
-    let opt = Opt::from_args();
+fn main() -> Result<(), lolcow_fortune::StrfileError> {
+    let opt = Opt::parse();
 
     match opt.cmd {
         Command::Cowsay {

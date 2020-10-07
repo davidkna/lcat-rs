@@ -6,25 +6,47 @@ use std::{
     fs::File,
     io,
     io::{prelude::*, Seek, SeekFrom},
-    path::PathBuf,
+    path::Path,
+    result::Result,
 };
+
+#[derive(thiserror::Error, Debug)]
+pub enum StrfileError {
+    #[error("failed to open file {0}")]
+    Open(io::Error),
+    #[error("invalid header size")]
+    HeaderSize,
+    #[error("failed to get quote {0}")]
+    GetQuote(io::Error),
+    #[error("IO Error {0}")]
+    IO(#[from] io::Error),
+}
 
 pub struct Strfile {
     file: File,
-    metadata: Vec<u8>,
+    metadata: Vec<u32>,
     rng: SmallRng,
 }
 
 impl Strfile {
-    pub fn new(strfile: &PathBuf, datfile: &PathBuf) -> io::Result<Self> {
-        let mut datfile = File::open(datfile)?;
+    pub fn new(strfile: &Path, datfile: &Path) -> Result<Self, StrfileError> {
+        let mut datfile = File::open(datfile).map_err(StrfileError::Open)?;
         let mut metadata = Vec::new();
-        datfile.read_to_end(&mut metadata)?;
+        datfile
+            .read_to_end(&mut metadata)
+            .map_err(StrfileError::Open)?;
 
-        let file = File::open(strfile)?;
+        let file = File::open(strfile).map_err(StrfileError::Open)?;
         let rng = SmallRng::from_entropy();
 
-        assert!(metadata.len() >= 32);
+        if metadata.len() < 32 {
+            return Err(StrfileError::HeaderSize);
+        }
+
+        let metadata = metadata
+            .chunks_exact(4)
+            .map(|i| u32::from_be_bytes(i.try_into().unwrap()))
+            .collect();
 
         Ok(Self {
             metadata,
@@ -34,52 +56,58 @@ impl Strfile {
     }
 
     pub fn version(&self) -> u32 {
-        u32::from_be_bytes(self.metadata[0..4].try_into().unwrap())
+        self.metadata[0]
     }
 
     pub fn count(&self) -> u32 {
         cmp::min(
-            u32::from_be_bytes(self.metadata[4..8].try_into().unwrap()),
-            (((self.metadata.len() - 24) / 4) - 1).try_into().unwrap(),
+            self.metadata[1],
+            (self.metadata.len() - 6 - 1).try_into().unwrap(),
         )
     }
 
     pub fn max_length(&self) -> u32 {
-        u32::from_be_bytes(self.metadata[8..12].try_into().unwrap())
+        self.metadata[2]
     }
 
     pub fn min_length(&self) -> u32 {
-        u32::from_be_bytes(self.metadata[12..14].try_into().unwrap())
+        self.metadata[3]
     }
 
     pub fn is_encrypted(&self) -> bool {
-        u32::from_be_bytes(self.metadata[14..16].try_into().unwrap()) == 0x4
+        self.metadata[4] == 0x4
     }
 
     pub fn delim(&self) -> char {
-        char::from(self.metadata[20])
+        std::str::from_utf8(&self.metadata[5].to_be_bytes())
+            .unwrap()
+            .chars()
+            .next()
+            .unwrap()
     }
 
-    pub fn random_quote(&mut self) -> io::Result<String> {
+    pub fn random_quote(&mut self) -> Result<String, StrfileError> {
         let index = self.rng.gen_range(0, self.count() as usize);
         self.get_quote(index)
     }
 
-    pub fn get_quote(&mut self, index: usize) -> io::Result<String> {
-        let index = index * 4 + 24;
+    pub fn get_quote(&mut self, index: usize) -> Result<String, StrfileError> {
+        let index = index + 6;
 
-        let start =
-            u32::from_be_bytes(self.metadata[index..index + 4].try_into().unwrap()) as usize;
-        let end =
-            u32::from_be_bytes(self.metadata[index + 4..index + 8].try_into().unwrap()) as usize;
+        let start = self.metadata[index] as usize;
+        let end = self.metadata[index + 1] as usize;
+        let delim = self.delim();
 
-        self.file.seek(SeekFrom::Start(start as u64))?;
+        self.file
+            .seek(SeekFrom::Start(start as u64))
+            .map_err(StrfileError::GetQuote)?;
         let mut buf = vec![0; end - start];
-        self.file.read_exact(&mut buf)?;
+        self.file
+            .read_exact(&mut buf)
+            .map_err(StrfileError::GetQuote)?;
         let quote = String::from_utf8_lossy(&buf);
-        Ok(quote
-            .trim_matches(|c: char| self.delim() == c || c.is_whitespace())
-            .into())
+
+        Ok(quote.trim_matches(|c: char| delim == c || c == '\n').into())
     }
 }
 
