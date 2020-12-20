@@ -31,7 +31,7 @@ build-binary = [
 [dependencies]
 # Lib
 memchr = "2.3"
-rand = { version = "0.7", features = ["std", "small_rng"] }
+rand = { version = "0.8", features = ["std", "small_rng"] }
 thiserror = "1.0"
 
 # Binary

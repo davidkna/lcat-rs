@@ -87,7 +87,7 @@ impl Strfile {
     }
 
     pub fn random_quote(&mut self) -> Result<String, StrfileError> {
-        let index = self.rng.gen_range(0, self.count() as usize);
+        let index = self.rng.gen_range(0..self.count() as usize);
         self.get_quote(index)
     }
 
