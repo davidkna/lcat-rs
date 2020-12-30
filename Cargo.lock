@@ -488,9 +488,9 @@ dependencies = [
 
 [[package]]
 name = "lcat"
-version = "0.6.0"
+version = "0.6.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "17ab6c7a2fa2e3cf9a911759150079283dbbc4159ed0b6b6d2d87ac4d159067a"
+checksum = "e345b1e319f2dea6d47bbe6117ebb93d42370ce1871d2f857a75ae537217eb4b"
 dependencies = [
  "bstr",
  "clap",
@@ -545,7 +545,7 @@ dependencies = [
  "clap",
  "directories",
  "flate2",
- "lcat 0.6.0",
+ "lcat 0.6.1",
  "lcowsay",
  "memchr",
  "mimalloc",
