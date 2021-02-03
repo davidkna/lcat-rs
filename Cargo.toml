@@ -21,4 +21,4 @@ unicode-segmentation = "1.7"
 unicode-width = "0.1"
 
 # Allocator
-mimalloc = { version = "0.1.22", optional = true, default-features = false }
+mimalloc = { version = "0.1.23", optional = true, default-features = false }
