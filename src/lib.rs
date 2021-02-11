@@ -17,8 +17,8 @@ pub enum StrfileError {
     HeaderSize,
     #[error("failed to get quote {0}")]
     GetQuote(io::Error),
-    #[error("IO Error {0}")]
-    IO(#[from] io::Error),
+    #[error("I/O Error {0}")]
+    Io(#[from] io::Error),
 }
 
 pub struct Strfile {
