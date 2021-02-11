@@ -1,5 +1,8 @@
-use std::{fmt, str::FromStr};
+use clap::ArgEnum;
+use std::fmt;
 
+#[derive(Debug)]
+#[cfg_attr(feature = "clap", derive(ArgEnum))]
 pub enum CowShape {
     Clippy,
     Cow,
@@ -53,19 +56,5 @@ impl fmt::Display for CowShape {
             CowShape::Moose => MOOSE,
         };
         f.write_str(display)
-    }
-}
-
-impl FromStr for CowShape {
-    type Err = &'static str;
-
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
-        match s {
-            "cow" => Ok(CowShape::Cow),
-            "clippy" => Ok(CowShape::Clippy),
-            "ferris" => Ok(CowShape::Ferris),
-            "moose" => Ok(CowShape::Moose),
-            _ => Err("Unknown Value"),
-        }
     }
 }

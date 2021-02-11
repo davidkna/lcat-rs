@@ -9,7 +9,7 @@ static GLOBAL: mimalloc::MiMalloc = mimalloc::MiMalloc;
 
 #[derive(Clap)]
 struct Opt {
-    #[clap(short = 'f', long = "cow-shape", possible_values = &["cow", "clippy", "ferris", "moose"], case_insensitive = true, default_value = "cow")]
+    #[clap(short = 'f', long = "cow-shape", arg_enum, default_value = "cow")]
     shape: CowShape,
     #[clap(short = 'W', long = "max-length", default_value = "40")]
     max_length: usize,
