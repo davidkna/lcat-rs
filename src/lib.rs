@@ -1,5 +1,4 @@
 use memchr::Memchr;
-use rand::prelude::*;
 use std::{
     cmp,
     convert::TryInto,
@@ -25,7 +24,6 @@ pub enum StrfileError {
 pub struct Strfile {
     file: File,
     metadata: Vec<u32>,
-    rng: SmallRng,
 }
 
 impl Strfile {
@@ -37,7 +35,6 @@ impl Strfile {
             .map_err(StrfileError::Open)?;
 
         let file = File::open(strfile).map_err(StrfileError::Open)?;
-        let rng = SmallRng::from_entropy();
 
         if metadata.len() < 32 {
             return Err(StrfileError::HeaderSize);
@@ -48,11 +45,7 @@ impl Strfile {
             .map(|i| u32::from_be_bytes(i.try_into().unwrap()))
             .collect();
 
-        Ok(Self {
-            metadata,
-            file,
-            rng,
-        })
+        Ok(Self { metadata, file })
     }
 
     pub fn version(&self) -> u32 {
@@ -87,7 +80,7 @@ impl Strfile {
     }
 
     pub fn random_quote(&mut self) -> Result<String, StrfileError> {
-        let index = self.rng.gen_range(0..self.count() as usize);
+        let index = fastrand::usize(..self.count() as usize);
         self.get_quote(index)
     }
 

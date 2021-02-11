@@ -4,7 +4,6 @@ use flate2::read::GzDecoder;
 use lcat::{Rainbow, RainbowCmd};
 use lcowsay::{Cow, CowShape};
 use lolcow_fortune::*;
-use rand::prelude::*;
 use std::{
     env, fs,
     fs::File,
@@ -32,7 +31,7 @@ struct Opt {
 enum Command {
     /// Cowsay a fortune
     Cowsay {
-        #[clap(short = 'f', long = "cow-shape", possible_values = &["cow", "clippy", "ferris", "moose"], case_insensitive = true, default_value = "cow")]
+        #[clap(short = 'f', long = "cow-shape", arg_enum, default_value = "cow")]
         shape: CowShape,
         #[clap(short = 'W', long = "max-length", default_value = "40")]
         max_length: usize,
@@ -149,13 +148,12 @@ fn get_fortune_files(dirs: &[PathBuf]) -> Option<Vec<(PathBuf, PathBuf)>> {
 }
 
 fn get_random_quote(cmd_path: Option<String>) -> Result<String, StrfileError> {
-    let mut rng = SmallRng::from_entropy();
-
     let data_dirs = get_fortune_dirs(cmd_path);
     let fortune_files = get_fortune_files(&data_dirs).expect("Unable to find any fortune dbs.");
 
-    let (dat_file, str_file) = fortune_files.choose(&mut rng).unwrap();
-    let mut strfile = Strfile::new(str_file, dat_file)?;
+    let idx = fastrand::usize(..fortune_files.len());
+    let (dat_file, str_file) = &fortune_files[idx];
+    let mut strfile = Strfile::new(&str_file, &dat_file)?;
     strfile.random_quote()
 }
 

@@ -1,6 +1,6 @@
 [package]
 name = "lolcow-fortune"
-version = "0.0.4"
+version = "0.0.5"
 authors = ["David Knaack <davidkna@users.noreply.github.com>"]
 edition = "2018"
 description = "`fortunes` combined with `lolcat` and `cowsay`!"
@@ -30,8 +30,8 @@ build-binary = [
 
 [dependencies]
 # Lib
+fastrand = "1.4.0"
 memchr = "2.3"
-rand = { version = "0.8", features = ["std", "small_rng"] }
 thiserror = "1.0"
 
 # Binary
@@ -47,9 +47,9 @@ tar = { version = "0.4", optional = true }
 mimalloc = { version = "0.1.24", optional = true, default-features = false }
 
 [dependencies.lcowsay]
-version = "0.3"
+version = "0.4.0"
 optional = true
 
 [dependencies.lcat]
-version = "0.6"
+version = "0.7.0"
 optional = true
