@@ -45,7 +45,7 @@ impl Strfile {
             .map(|i| u32::from_be_bytes(i.try_into().unwrap()))
             .collect();
 
-        Ok(Self { metadata, file })
+        Ok(Self { file, metadata })
     }
 
     pub fn version(&self) -> u32 {
