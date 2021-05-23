@@ -31,7 +31,7 @@ build-binary = [
 [dependencies]
 # Lib
 fastrand = "1.4.1"
-memchr = "2.3"
+memchr = "2.4"
 thiserror = "1.0"
 
 # Binary
