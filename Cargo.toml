@@ -26,7 +26,7 @@ hyphenation = "0.8.0"
 textwrap = { version = "0.13.4", features = ["hyphenation"] }
 unicode-width = "0.1.8"
 
-lcat = { version = "0.7.1", optional = true }
+lcat = { version = "0.7.2", optional = true }
 clap = { version = "3.0.0-beta.2", optional = true }
 
 # Allocator
