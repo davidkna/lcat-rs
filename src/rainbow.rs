@@ -10,10 +10,11 @@ pub struct Rainbow {
     shift_row: f64,
     position: f64,
     gradient: colorgrad::Gradient,
+    invert: bool,
 }
 
 impl Rainbow {
-    pub fn new(gradient: colorgrad::Gradient, start: f64, shift_col: f64, shift_row: f64) -> Self {
+    pub fn new(gradient: colorgrad::Gradient, start: f64, shift_col: f64, shift_row: f64, invert: bool) -> Self {
         Self {
             gradient,
             shift_col,
@@ -21,6 +22,7 @@ impl Rainbow {
             position: start,
             current_row: 0,
             current_col: 0,
+            invert,
         }
     }
 
@@ -74,13 +76,17 @@ impl Rainbow {
         if grapheme == "\n" {
             self.reset_col();
             self.step_row(1);
-            out.write_all(b"\n")?;
+            out.write_all(b"\x1B[0m\n")?;
             return Ok(false);
         }
 
         if !escaping {
             let (r, g, b) = self.get_color();
-            write!(out, "\x1B[38;2;{};{};{}m{}", r, g, b, grapheme)?;
+            if self.invert {
+                write!(out, "\x1B[38;2;0;0;0;48;2;{};{};{}m{}", r, g, b, grapheme)?;
+            } else {
+                write!(out, "\x1B[38;2;{};{};{}m{}", r, g, b, grapheme)?;
+            }
             self.step_col(grapheme.chars().next().and_then(|c| c.width()).unwrap_or(0));
         } else {
             out.write_all(grapheme.as_bytes())?;
