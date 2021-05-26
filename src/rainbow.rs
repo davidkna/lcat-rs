@@ -135,7 +135,7 @@ mod tests {
     use super::*;
 
     fn create_rb() -> Rainbow {
-        Rainbow::new(colorgrad::rainbow(), 0.0, 0.1, 0.2)
+        Rainbow::new(colorgrad::rainbow(), 0.0, 0.1, 0.2, false)
     }
 
     #[test]
