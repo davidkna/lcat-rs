@@ -14,7 +14,13 @@ pub struct Rainbow {
 }
 
 impl Rainbow {
-    pub fn new(gradient: colorgrad::Gradient, start: f64, shift_col: f64, shift_row: f64, invert: bool) -> Self {
+    pub fn new(
+        gradient: colorgrad::Gradient,
+        start: f64,
+        shift_col: f64,
+        shift_row: f64,
+        invert: bool,
+    ) -> Self {
         Self {
             gradient,
             shift_col,
