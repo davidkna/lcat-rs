@@ -166,9 +166,9 @@ dependencies = [
 
 [[package]]
 name = "hyphenation"
-version = "0.8.2"
+version = "0.8.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7f65b773d8e14c75a49163a9e50124d402b55e1be3cb40c9aafe06166ad463e4"
+checksum = "6857e4da0900a4ada2bdc11847ae6a9ea85e24ed4209f73bff0e0ed56e62b633"
 dependencies = [
  "bincode",
  "fst",
@@ -180,9 +180,9 @@ dependencies = [
 
 [[package]]
 name = "hyphenation_commons"
-version = "0.8.1"
+version = "0.8.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "058162ec3f9b958e0092bf8e225cadec15890dcef7111adb253e2c486d833b00"
+checksum = "df820359bb5d7487efca6d058f726a9444acff641283aef82f4f07c892a9554d"
 dependencies = [
  "fst",
  "serde",
