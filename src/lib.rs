@@ -1,3 +1,5 @@
+#![warn(clippy::pedantic, clippy::nursery)]
+
 mod bubble;
 mod cow;
 mod shapes;

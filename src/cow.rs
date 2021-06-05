@@ -8,7 +8,8 @@ pub struct Cow {
 }
 
 impl Cow {
-    pub fn new(shape: CowShape, text: String, max_length: usize) -> Self {
+    #[must_use]
+    pub const fn new(shape: CowShape, text: String, max_length: usize) -> Self {
         Self {
             shape,
             text,

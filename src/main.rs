@@ -1,3 +1,5 @@
+#![warn(clippy::pedantic, clippy::nursery)]
+
 use clap::Clap;
 use lcat::{Rainbow, RainbowCmd};
 use lcowsay::{Cow, CowShape};
@@ -35,11 +37,11 @@ fn main() -> io::Result<()> {
 
     let cow = Cow::new(opt.shape, text, opt.max_length);
     let cow = format!("{}\n", cow);
-    if !opt.nololcat {
+    if opt.nololcat {
+        stdout.write_all(cow.as_bytes())?;
+    } else {
         let mut rainbow: Rainbow = opt.rainbow.into();
         rainbow.colorize_str(&cow, &mut stdout)?;
-    } else {
-        stdout.write_all(cow.as_bytes())?;
     }
     stdout.flush()
 }

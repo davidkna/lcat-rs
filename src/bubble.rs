@@ -2,10 +2,10 @@ use hyphenation::{Language, Load, Standard};
 use std::fmt::Write;
 use unicode_width::UnicodeWidthStr;
 
-pub(crate) fn bubble(text: &str, width: usize) -> String {
+pub fn bubble(text: &str, width: usize) -> String {
     let text = text.replace("\t", "    ");
     let hyphenator = Standard::from_embedded(Language::EnglishUS).unwrap();
-    let options = textwrap::Options::new(width).splitter(hyphenator);
+    let options = textwrap::Options::new(width).word_splitter(hyphenator);
     let text = textwrap::wrap(&text, options);
 
     let line_count = text.len();
