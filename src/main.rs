@@ -71,7 +71,7 @@ fn download() -> io::Result<()> {
         let p = file.path()?.into_owned();
         if let Ok(path) = p.strip_prefix("fortune-mod-master/fortune-mod/datfiles") {
             if path.extension() != None
-                || path.parent() != None && path.parent() != Some(&Path::new(""))
+                || path.parent() != None && path.parent() != Some(Path::new(""))
             {
                 continue;
             }
@@ -153,7 +153,7 @@ fn get_random_quote(cmd_path: Option<String>) -> Result<String, StrfileError> {
 
     let idx = fastrand::usize(..fortune_files.len());
     let (dat_file, str_file) = &fortune_files[idx];
-    let mut strfile = Strfile::new(&str_file, &dat_file)?;
+    let mut strfile = Strfile::new(str_file, dat_file)?;
     strfile.random_quote()
 }
 
