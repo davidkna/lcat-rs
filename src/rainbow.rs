@@ -82,7 +82,10 @@ impl Rainbow {
         if grapheme == "\n" {
             self.reset_col();
             self.step_row(1);
-            out.write_all(b"\x1B[0m\n")?;
+            if self.invert {
+                out.write_all(b"\x1B[49m")?;
+            }
+            out.write_all(b"\n")?;
             return Ok(false);
         }
 
@@ -111,6 +114,9 @@ impl Rainbow {
         }
 
         out.write_all(b"\x1B[39m")?;
+        if self.invert {
+            out.write_all(b"\x1B[49m")?;
+        }
         out.flush()
     }
 
@@ -121,6 +127,9 @@ impl Rainbow {
         }
 
         out.write_all(b"\x1B[39m")?;
+        if self.invert {
+            out.write_all(b"\x1B[49m")?;
+        }
         out.flush()
     }
 
