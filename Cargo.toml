@@ -44,7 +44,7 @@ attohttpc = { version = "0.17", optional = true, default-features = false, featu
 tar = { version = "0.4", optional = true }
 
 # Allocator
-mimalloc = { version = "0.1.25", optional = true, default-features = false }
+mimalloc = { version = "0.1.26", optional = true, default-features = false }
 
 [dependencies.lcowsay]
 version = "0.4.0"
