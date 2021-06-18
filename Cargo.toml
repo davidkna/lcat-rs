@@ -30,4 +30,4 @@ lcat = { version = "0.7.2", optional = true }
 clap = { version = "3.0.0-beta.2", optional = true }
 
 # Allocator
-mimalloc = { version = "0.1.25", optional = true, default-features = false }
+mimalloc = { version = "0.1.26", optional = true, default-features = false }
