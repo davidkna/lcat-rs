@@ -159,9 +159,9 @@ dependencies = [
 
 [[package]]
 name = "hermit-abi"
-version = "0.1.18"
+version = "0.1.19"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "322f4de77956e22ed0e5032c359a0f1273f1f7f0d79bfa3b8ffbc730d7fbcc5c"
+checksum = "62b467343b94ba476dcb2500d242dadbb39557df889310ac77c5d99100aaac33"
 dependencies = [
  "libc",
 ]
@@ -237,7 +237,7 @@ dependencies = [
  "hyphenation",
  "lcat",
  "mimalloc",
- "textwrap 0.14.0",
+ "textwrap 0.14.1",
  "unicode-width",
 ]
 
@@ -534,9 +534,9 @@ dependencies = [
 
 [[package]]
 name = "textwrap"
-version = "0.14.0"
+version = "0.14.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f59f5365546b8424b0cc48868ae4fbbbc29a538dcc496b53543525201034f0c2"
+checksum = "528dff83d264f065e76540b783118a1a0e52fd6d63ba056daa2c5edc69c63b1a"
 dependencies = [
  "hyphenation",
  "smawk",
