@@ -237,7 +237,7 @@ dependencies = [
  "hyphenation",
  "lcat",
  "mimalloc",
- "textwrap 0.14.1",
+ "textwrap 0.14.2",
  "unicode-width",
 ]
 
@@ -534,9 +534,9 @@ dependencies = [
 
 [[package]]
 name = "textwrap"
-version = "0.14.1"
+version = "0.14.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "528dff83d264f065e76540b783118a1a0e52fd6d63ba056daa2c5edc69c63b1a"
+checksum = "0066c8d12af8b5acd21e00547c3797fde4e8677254a7ee429176ccebbe93dd80"
 dependencies = [
  "hyphenation",
  "smawk",
