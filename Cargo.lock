@@ -217,9 +217,9 @@ checksum = "e2abad23fbc42b3700f2f279844dc832adb2b2eb069b2df918f455c4e18cc646"
 
 [[package]]
 name = "lcat"
-version = "0.7.2"
+version = "0.7.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "064024cea56b41eed757dea104c81b5ff2de46090358cf393a8854be3e06bddd"
+checksum = "4bdcb2776701a2d7e4a99e1b5d33479902e7268b87e0af71cd438fe2818b5dc6"
 dependencies = [
  "bstr",
  "clap",
