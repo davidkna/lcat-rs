@@ -493,9 +493,9 @@ dependencies = [
 
 [[package]]
 name = "lcowsay"
-version = "0.5.0"
+version = "0.5.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5e46d95687f82c49e5b6416ce3046779ff62d5cdfa25a1e1e5e7d18ea7835f53"
+checksum = "553f88f0961faf27994d025ab04c7440cdd9e53d80e9d5fdf1385788dcf92f47"
 dependencies = [
  "clap",
  "hyphenation",
@@ -521,7 +521,7 @@ dependencies = [
 
 [[package]]
 name = "lolcow-fortune"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "attohttpc",
  "clap",
