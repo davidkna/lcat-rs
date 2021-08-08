@@ -3,8 +3,9 @@ use directories::ProjectDirs;
 use flate2::read::GzDecoder;
 use lcat::{Rainbow, RainbowCmd};
 use lcowsay::{Cow, CowShape};
-use lolcow_fortune::*;
+use lolcow_fortune::{Datfile, Strfile, StrfileError};
 use std::{
+    convert::TryInto,
     env, fs,
     fs::File,
     io,
@@ -14,10 +15,6 @@ use std::{
     str,
 };
 use tar::Archive;
-
-#[cfg(feature = "mimalloc")]
-#[global_allocator]
-static GLOBAL: mimalloc::MiMalloc = mimalloc::MiMalloc;
 
 #[derive(Clap)]
 struct Opt {
@@ -85,9 +82,11 @@ fn download() -> io::Result<()> {
             let mut str_file = File::create(&target)?;
             str_file.write_all(&buffer)?;
 
-            let dat_file = build_dat_file(&buffer, b'%', 0);
+            let dat_file = Datfile::build(&buffer, b'%', 0);
             let mut dat = File::create(target.with_extension("dat"))?;
-            dat.write_all(&dat_file)?;
+
+            let bytes: Vec<u8> = dat_file.try_into().unwrap();
+            dat.write_all(&bytes)?;
         }
     }
 
@@ -97,15 +96,13 @@ fn download() -> io::Result<()> {
 fn get_fortune_dirs(from_opts: Option<String>) -> Vec<PathBuf> {
     let mut dirs = Vec::new();
     if let Some(files) = from_opts {
-        files
-            .split(':')
+        env::split_paths(&files)
             .map(PathBuf::from)
             .for_each(|i| dirs.push(i));
     }
     dirs.push(get_project_dir().data_dir().to_path_buf());
     if let Ok(files) = env::var("FORTUNE_PATH") {
-        files
-            .split(':')
+        env::split_paths(&files)
             .map(PathBuf::from)
             .for_each(|i| dirs.push(i));
     }
@@ -122,11 +119,11 @@ fn get_fortune_files(dirs: &[PathBuf]) -> Option<Vec<(PathBuf, PathBuf)>> {
         let dat_files: Vec<(PathBuf, PathBuf)> = i
             .read_dir()
             .map(|iter| {
-                iter.filter_map(|j| j.ok())
+                iter.filter_map(std::result::Result::ok)
                     .filter_map(|j| {
                         let path = j.path();
                         if j.file_type().map(|ft| ft.is_file()).unwrap_or(false)
-                            && path.extension().map(|ext| ext == "dat").unwrap_or(false)
+                            && path.extension().map_or(false, |ext| ext == "dat")
                         {
                             if path.with_extension("u8").exists() {
                                 return Some((path.clone(), path.with_extension("u8")));
@@ -138,7 +135,7 @@ fn get_fortune_files(dirs: &[PathBuf]) -> Option<Vec<(PathBuf, PathBuf)>> {
                     })
                     .collect()
             })
-            .unwrap_or_else(|_| Vec::new());
+            .unwrap_or_default();
         if dat_files.is_empty() {
             None
         } else {
@@ -152,8 +149,8 @@ fn get_random_quote(cmd_path: Option<String>) -> Result<String, StrfileError> {
     let fortune_files = get_fortune_files(&data_dirs).expect("Unable to find any fortune dbs.");
 
     let idx = fastrand::usize(..fortune_files.len());
-    let (dat_file, str_file) = &fortune_files[idx];
-    let mut strfile = Strfile::new(str_file, dat_file)?;
+    let (meta_file, fortunes_file) = &fortune_files[idx];
+    let mut strfile = Strfile::new(meta_file, fortunes_file)?;
     strfile.random_quote()
 }
 

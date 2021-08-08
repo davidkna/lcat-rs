@@ -1,10 +1,11 @@
-use memchr::Memchr;
+use deku::prelude::*;
+use itertools::Itertools;
+use memchr::memmem::find_iter;
 use std::{
-    cmp,
     convert::TryInto,
-    fs::File,
-    io,
-    io::{prelude::*, Seek, SeekFrom},
+    fs::{self, File},
+    io::{self, prelude::*, Seek, SeekFrom},
+    num::NonZeroU32,
     path::Path,
     result::Result,
 };
@@ -13,149 +14,142 @@ use std::{
 pub enum StrfileError {
     #[error("failed to open file {0}")]
     Open(io::Error),
-    #[error("invalid header size")]
-    HeaderSize,
+    #[error("failed to parse datfile {0}")]
+    DatParse(DekuError),
     #[error("failed to get quote {0}")]
     GetQuote(io::Error),
     #[error("I/O Error {0}")]
     Io(#[from] io::Error),
+    #[error("QuoteIndex")]
+    QuoteIndex,
 }
 
-pub struct Strfile {
-    file: File,
-    metadata: Vec<u32>,
+#[derive(Debug, PartialEq, DekuRead, DekuWrite, Default)]
+#[deku(endian = "big")]
+pub struct Datfile {
+    pub version: u32,
+    #[deku(update = "self.data.len()")]
+    pub count: u32,
+    pub max_length: u32,
+    pub min_length: u32,
+    pub flags: u32,
+    #[deku(pad_bytes_after = "3")]
+    pub delim: u8,
+    #[deku(count = "count")]
+    pub data: Vec<u32>,
 }
 
-impl Strfile {
-    pub fn new(strfile: &Path, datfile: &Path) -> Result<Self, StrfileError> {
-        let mut datfile = File::open(datfile).map_err(StrfileError::Open)?;
-        let mut metadata = Vec::new();
-        datfile
-            .read_to_end(&mut metadata)
-            .map_err(StrfileError::Open)?;
-
-        let file = File::open(strfile).map_err(StrfileError::Open)?;
-
-        if metadata.len() < 32 {
-            return Err(StrfileError::HeaderSize);
-        }
-
-        let metadata = metadata
-            .chunks_exact(4)
-            .map(|i| u32::from_be_bytes(i.try_into().unwrap()))
-            .collect();
-
-        Ok(Self { file, metadata })
+impl Datfile {
+    pub const fn is_random(&self) -> bool {
+        (self.flags & 0x1) != 0
     }
 
-    pub fn version(&self) -> u32 {
-        self.metadata[0]
+    pub const fn is_ordered(&self) -> bool {
+        (self.flags & 0x2) != 0
     }
 
-    pub fn count(&self) -> u32 {
-        cmp::min(
-            self.metadata[1],
-            (self.metadata.len() - 6 - 1).try_into().unwrap(),
-        )
+    pub const fn is_encrypted(&self) -> bool {
+        (self.flags & 0x4) != 0
     }
 
-    pub fn max_length(&self) -> u32 {
-        self.metadata[2]
+    pub fn get(&self, index: usize) -> Option<(u32, NonZeroU32)> {
+        let mut a = *self.data.get(index)?;
+        if a != 0 {
+            a += 2;
+        };
+        let b = if self.is_ordered() || self.is_random() {
+            self.data
+                .iter()
+                .filter_map(|i| i.checked_sub(1))
+                .filter(|i| *i > a)
+                .min()?
+        } else {
+            self.data.get(index + 1)?.checked_sub(1)?
+        };
+
+        Some((a, NonZeroU32::new(b)?))
     }
 
-    pub fn min_length(&self) -> u32 {
-        self.metadata[3]
-    }
+    pub fn build(strfile: &[u8], delim: u8, flags: u32) -> Self {
+        let mut min_length = u32::MAX;
+        let mut max_length = 0;
 
-    pub fn is_encrypted(&self) -> bool {
-        self.metadata[4] == 0x4
-    }
-
-    pub fn delim(&self) -> char {
-        std::str::from_utf8(&self.metadata[5].to_be_bytes())
-            .unwrap()
-            .chars()
-            .next()
-            .unwrap()
-    }
-
-    pub fn random_quote(&mut self) -> Result<String, StrfileError> {
-        let index = fastrand::usize(..self.count() as usize);
-        self.get_quote(index)
-    }
-
-    pub fn get_quote(&mut self, index: usize) -> Result<String, StrfileError> {
-        let index = index + 6;
-
-        let start = self.metadata[index] as usize;
-        let end = self.metadata[index + 1] as usize;
-        let delim = self.delim();
-
-        self.file
-            .seek(SeekFrom::Start(start as u64))
-            .map_err(StrfileError::GetQuote)?;
-        let mut buf = vec![0; end - start];
-        self.file
-            .read_exact(&mut buf)
-            .map_err(StrfileError::GetQuote)?;
-        let quote = String::from_utf8_lossy(&buf);
-
-        Ok(quote.trim_matches(|c: char| delim == c || c == '\n').into())
-    }
-}
-
-pub fn build_dat_file(strfile: &[u8], delim: u8, flags: u32) -> Vec<u8> {
-    let mut pointers: Vec<u32> = vec![0];
-    let mut x: Vec<u32> = Memchr::new(delim, strfile).map(|i| i as u32).collect();
-    pointers.append(&mut x);
-    pointers.push(strfile.len() as u32);
-
-    let mut max_length: u32 = 0;
-    let mut min_length: u32 = std::u32::MAX;
-
-    let mut x: Vec<u32> = pointers
-        .iter()
-        .zip(pointers.iter().skip(1))
-        .filter_map(|(a, b)| {
-            let a = *a;
-            let b = *b;
-            if b > a
-                && !String::from_utf8_lossy(&strfile[a as usize..b as usize])
-                    .chars()
-                    .all(|c: char| delim as char == c || c.is_whitespace())
-            {
-                let diff = (b - a) as u32;
+        let data: Vec<u32> = std::iter::once(0_u32)
+            .chain(find_iter(strfile, &[b'\n', delim, b'\n']).filter_map(|i| i.try_into().ok()))
+            .tuple_windows()
+            .filter_map(|(a, b)| {
+                let skip = if a == 0 { 0 } else { 2 };
+                let diff = b.checked_sub(a + skip)?;
                 if diff > max_length {
                     max_length = diff;
                 }
                 if diff < min_length {
                     min_length = diff;
                 }
-                return Some(b);
-            };
-            None
-        })
-        .collect();
-    let mut pointers = vec![0];
-    pointers.append(&mut x);
+                Some(b)
+            })
+            .collect();
 
-    let version = u32::to_be_bytes(2);
-    let count = u32::to_be_bytes(pointers.len() as u32);
-    let max_length = u32::to_be_bytes(max_length);
-    let min_length = u32::to_be_bytes(min_length);
-    let flags = u32::to_be_bytes(flags);
-    let del = [delim, 0, 0, 0];
+        if max_length == 0 {
+            max_length = 0;
+        }
 
-    let mut out = Vec::new();
-    out.extend_from_slice(&version);
-    out.extend_from_slice(&count);
-    out.extend_from_slice(&max_length);
-    out.extend_from_slice(&min_length);
-    out.extend_from_slice(&flags);
-    out.extend_from_slice(&del);
-    pointers
-        .iter()
-        .for_each(|i| out.extend_from_slice(&u32::to_be_bytes(*i)));
+        Self {
+            version: 2,
+            count: data.len().try_into().unwrap_or(u32::MAX),
+            min_length,
+            max_length,
+            flags,
+            delim,
+            data,
+        }
+    }
+}
 
-    out
+pub struct Strfile {
+    file: File,
+    pub metadata: Datfile,
+}
+
+impl Strfile {
+    pub fn new(strfile: &Path, datfile: &Path) -> Result<Self, StrfileError> {
+        let datfile = fs::read(datfile).map_err(StrfileError::Open)?;
+        let metadata = Datfile::from_bytes((&datfile, 0))
+            .map_err(StrfileError::DatParse)?
+            .1;
+
+        let file = File::open(strfile).map_err(StrfileError::Open)?;
+
+        Ok(Self { file, metadata })
+    }
+
+    pub fn random_quote(&mut self) -> Result<String, StrfileError> {
+        self.get_quote(fastrand::usize(..self.metadata.count as usize - 1))
+    }
+
+    pub fn get_quote(&mut self, index: usize) -> Result<String, StrfileError> {
+        let (start, end) = self.metadata.get(index).ok_or(StrfileError::QuoteIndex)?;
+
+        self.file
+            .seek(SeekFrom::Start(u64::from(start)))
+            .map_err(StrfileError::GetQuote)?;
+        let mut buf = vec![0; (end.get() - start) as usize];
+        self.file
+            .read_exact(&mut buf)
+            .map_err(StrfileError::GetQuote)?;
+        let mut quote = String::from_utf8_lossy(&buf).to_string();
+
+        if self.metadata.is_encrypted() {
+            let view = unsafe { quote.as_mut_vec() };
+            for i in view.iter_mut() {
+                match i {
+                    b'a'..=b'm' | b'A'..=b'M' => *i += 13,
+                    b'n'..=b'z' | b'N'..=b'Z' => *i -= 13,
+                    _ => (),
+                };
+            }
+        }
+
+        Ok(quote)
+    }
 }
