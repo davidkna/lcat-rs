@@ -5,7 +5,7 @@ use std::{
     convert::TryInto,
     fs::{self, File},
     io::{self, prelude::*, Seek, SeekFrom},
-    num::NonZeroU32,
+    num::NonZeroU64,
     path::Path,
     result::Result,
 };
@@ -36,7 +36,7 @@ pub struct Datfile {
     #[deku(pad_bytes_after = "3")]
     pub delim: u8,
     #[deku(count = "count")]
-    pub data: Vec<u32>,
+    pub data: Vec<u64>,
 }
 
 impl Datfile {
@@ -52,34 +52,36 @@ impl Datfile {
         (self.flags & 0x4) != 0
     }
 
-    pub fn get(&self, index: usize) -> Option<(u32, NonZeroU32)> {
-        let mut a = *self.data.get(index)?;
-        if a != 0 {
-            a += 2;
-        };
+    pub fn get(&self, index: usize) -> Option<(u64, NonZeroU64)> {
+        let a = *self.data.get(index)?;
         let b = if self.is_ordered() || self.is_random() {
             self.data
                 .iter()
-                .filter_map(|i| i.checked_sub(1))
+                .filter_map(|i| i.checked_sub(2))
                 .filter(|i| *i > a)
                 .min()?
         } else {
-            self.data.get(index + 1)?.checked_sub(1)?
+            self.data.get(index + 1)?.checked_sub(2)?
         };
 
-        Some((a, NonZeroU32::new(b)?))
+        Some((a, NonZeroU64::new(b)?))
     }
 
     pub fn build(strfile: &[u8], delim: u8, flags: u32) -> Self {
         let mut min_length = u32::MAX;
         let mut max_length = 0;
 
-        let data: Vec<u32> = std::iter::once(0_u32)
-            .chain(find_iter(strfile, &[b'\n', delim, b'\n']).filter_map(|i| i.try_into().ok()))
+        let data: Vec<u64> = std::iter::once(0_u64)
+            .chain(std::iter::once(0_u64))
+            .chain(
+                find_iter(strfile, &[b'\n', delim, b'\n'])
+                    .filter_map(|i| i.try_into().ok())
+                    .map(|i: u64| i + 3),
+            )
             .tuple_windows()
             .filter_map(|(a, b)| {
-                let skip = if a == 0 { 0 } else { 2 };
-                let diff = b.checked_sub(a + skip)?;
+                let diff = b.checked_sub(a + 2)? as u32;
+
                 if diff > max_length {
                     max_length = diff;
                 }
@@ -131,7 +133,7 @@ impl Strfile {
         let (start, end) = self.metadata.get(index).ok_or(StrfileError::QuoteIndex)?;
 
         self.file
-            .seek(SeekFrom::Start(u64::from(start)))
+            .seek(SeekFrom::Start(start))
             .map_err(StrfileError::GetQuote)?;
         let mut buf = vec![0; (end.get() - start) as usize];
         self.file

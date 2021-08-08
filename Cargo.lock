@@ -521,7 +521,7 @@ dependencies = [
 
 [[package]]
 name = "lolcow-fortune"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "attohttpc",
  "clap",

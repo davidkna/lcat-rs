@@ -150,7 +150,7 @@ fn get_random_quote(cmd_path: Option<String>) -> Result<String, StrfileError> {
 
     let idx = fastrand::usize(..fortune_files.len());
     let (meta_file, fortunes_file) = &fortune_files[idx];
-    let mut strfile = Strfile::new(meta_file, fortunes_file)?;
+    let mut strfile = Strfile::new(fortunes_file, meta_file)?;
     strfile.random_quote()
 }
 
