@@ -225,7 +225,7 @@ dependencies = [
 
 [[package]]
 name = "lcowsay"
-version = "0.5.0"
+version = "0.5.1"
 dependencies = [
  "clap",
  "hyphenation",

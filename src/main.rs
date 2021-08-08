@@ -13,7 +13,7 @@ struct Opt {
     max_length: usize,
     #[clap(long = "no-lolcat")]
     nololcat: bool,
-    #[clap(name = "TEXT", default_value = "")]
+    #[clap(name = "TEXT", default_value = "Vec::new()")]
     text: Vec<String>,
     #[clap(flatten)]
     rainbow: RainbowCmd,
