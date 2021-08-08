@@ -5,10 +5,6 @@ use lcat::{Rainbow, RainbowCmd};
 use lcowsay::{Cow, CowShape};
 use std::io::{self, Read, Write};
 
-#[cfg(feature = "mimalloc")]
-#[global_allocator]
-static GLOBAL: mimalloc::MiMalloc = mimalloc::MiMalloc;
-
 #[derive(Clap)]
 struct Opt {
     #[clap(short = 'f', long = "cow-shape", arg_enum, default_value = "cow")]
