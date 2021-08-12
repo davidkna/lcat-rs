@@ -92,7 +92,7 @@ impl Datfile {
             })
             .collect();
 
-        if max_length == 0 {
+        if max_length == u32::MAX {
             max_length = 0;
         }
 
