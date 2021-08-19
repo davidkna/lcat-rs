@@ -161,23 +161,22 @@ dependencies = [
 
 [[package]]
 name = "hyphenation"
-version = "0.8.3"
+version = "0.8.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "6857e4da0900a4ada2bdc11847ae6a9ea85e24ed4209f73bff0e0ed56e62b633"
+checksum = "bcf4dd4c44ae85155502a52c48739c8a48185d1449fff1963cffee63c28a50f0"
 dependencies = [
  "bincode",
  "fst",
  "hyphenation_commons",
- "memmap",
  "pocket-resources",
  "serde",
 ]
 
 [[package]]
 name = "hyphenation_commons"
-version = "0.8.3"
+version = "0.8.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "df820359bb5d7487efca6d058f726a9444acff641283aef82f4f07c892a9554d"
+checksum = "5febe7a2ade5c7d98eb8b75f946c046b335324b06a14ea0998271504134c05bf"
 dependencies = [
  "fst",
  "serde",
@@ -244,16 +243,6 @@ name = "memchr"
 version = "2.4.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "b16bd47d9e329435e309c58469fe0791c2d0d1ba96ec0954152a5ae2b04387dc"
-
-[[package]]
-name = "memmap"
-version = "0.7.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "6585fd95e7bb50d6cc31e20d4cf9afb4e2ba16c5846fc76793f11218da9c475b"
-dependencies = [
- "libc",
- "winapi",
-]
 
 [[package]]
 name = "os_str_bytes"
