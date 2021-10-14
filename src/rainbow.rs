@@ -3,20 +3,47 @@ use std::io::{prelude::*, Write};
 use unicode_segmentation::UnicodeSegmentation;
 use unicode_width::UnicodeWidthChar;
 
+use crate::ok::{Hsv, Lab, LinRgb, Rgb};
+
+pub trait Grad {
+    fn color_at(&self, pos: f64) -> (u8, u8, u8);
+}
+
+impl Grad for colorgrad::Gradient {
+    fn color_at(&self, pos: f64) -> (u8, u8, u8) {
+        let (r, g, b, _) = self.at(pos).rgba_u8();
+        (r, g, b)
+    }
+}
+
+pub struct HsvGrad {}
+
+impl Grad for HsvGrad {
+    #[allow(clippy::cast_possible_truncation)]
+    fn color_at(&self, pos: f64) -> (u8, u8, u8) {
+        let Rgb { r, g, b } = Rgb::from(&LinRgb::from(&Lab::from(&Hsv {
+            h: pos as f32,
+            s: 1.0,
+            v: 1.0,
+        })));
+        (r, g, b)
+    }
+}
+
 pub struct Rainbow {
     current_row: usize,
     current_col: usize,
     shift_col: f64,
     shift_row: f64,
     position: f64,
-    gradient: colorgrad::Gradient,
+    gradient: Box<dyn Grad>,
     invert: bool,
 }
 
 impl Rainbow {
     #[must_use]
-    pub const fn new(
-        gradient: colorgrad::Gradient,
+    pub fn new(
+        gradient: Box<dyn Grad>,
         start: f64,
         shift_col: f64,
         shift_row: f64,
@@ -63,9 +90,7 @@ impl Rainbow {
 
     pub fn get_color(&mut self) -> (u8, u8, u8) {
         let position = self.get_position();
-        let (r, g, b, _) = self.gradient.at(position).rgba_u8();
-
-        (r, g, b)
+        self.gradient.color_at(position)
     }
 
     #[inline]
@@ -166,7 +191,7 @@ mod tests {
     use super::*;
 
     fn create_rb() -> Rainbow {
-        Rainbow::new(colorgrad::rainbow(), 0.0, 0.1, 0.2, false)
+        Rainbow::new(Box::new(colorgrad::rainbow()), 0.0, 0.1, 0.2, false)
     }
 
     #[test]
@@ -175,11 +200,11 @@ mod tests {
 
         let mut rb_a = create_rb();
         let mut out_a = Vec::new();
-        rb_a.colorize(&test.as_bytes(), &mut out_a).unwrap();
+        rb_a.colorize(test.as_bytes(), &mut out_a).unwrap();
 
         let mut rb_b = create_rb();
         let mut out_b = Vec::new();
-        rb_b.colorize_str(&test, &mut out_b).unwrap();
+        rb_b.colorize_str(test, &mut out_b).unwrap();
 
         assert_eq!(out_a, out_b);
     }
@@ -188,13 +213,13 @@ mod tests {
     fn test_char_width() {
         let test = "f";
         let mut rb_a = create_rb();
-        rb_a.colorize_str(&test, &mut Vec::new()).unwrap();
+        rb_a.colorize_str(test, &mut Vec::new()).unwrap();
 
         assert_eq!(rb_a.current_col, 1);
 
-        let test = "😃";
+        let test = "\u{1f603}";
         let mut rb_b = create_rb();
-        rb_b.colorize_str(&test, &mut Vec::new()).unwrap();
+        rb_b.colorize_str(test, &mut Vec::new()).unwrap();
         assert_eq!(rb_b.current_col, 2);
     }
 
@@ -203,7 +228,7 @@ mod tests {
         let test_string = "foobar\n";
 
         let mut rb_a = create_rb();
-        rb_a.colorize(&test_string.as_bytes(), &mut Vec::new())
+        rb_a.colorize(test_string.as_bytes(), &mut Vec::new())
             .unwrap();
         let mut rb_b = create_rb();
         rb_b.step_row(1);
