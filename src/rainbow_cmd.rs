@@ -1,10 +1,11 @@
-use crate::Rainbow;
+use crate::{Grad, HsvGrad, Rainbow};
 use clap::{ArgEnum, Clap};
 
 #[derive(Debug, ArgEnum)]
 pub enum RainbowStyle {
     Rainbow,
     Sinebow,
+    OkHsv,
 }
 
 #[derive(Debug, Clap)]
@@ -58,9 +59,10 @@ impl From<RainbowCmd> for Rainbow {
 
         let start = cmd.hue.map_or_else(fastrand::f64, |hue| hue / 360.);
 
-        let grad = match cmd.style {
-            RainbowStyle::Rainbow => colorgrad::rainbow(),
-            RainbowStyle::Sinebow => colorgrad::sinebow(),
+        let grad: Box<dyn Grad> = match cmd.style {
+            RainbowStyle::Rainbow => Box::new(colorgrad::rainbow()),
+            RainbowStyle::Sinebow => Box::new(colorgrad::sinebow()),
+            RainbowStyle::OkHsv => Box::new(HsvGrad {}),
         };
 
         Self::new(grad, start, shift_col, shift_row, cmd.invert)

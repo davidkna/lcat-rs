@@ -1,6 +1,6 @@
 # lcat
 
-lolcat in rust! With emoji support and color transformations in the Cubehelix color space.
+lolcat in rust! With emoji support and color transformations in the Cubehelix and OkHSV color space.
 
 ## Usage
 
@@ -25,7 +25,7 @@ OPTIONS:
     -S, --seed <seed>              Sets seed [default: random]
     -C, --shift-col <shift-col>    How many degrees to shift text color hue for every column [default: 1.6]
     -R, --shift-row <shift-row>    How many degrees to shift text color hue for every row [default: 3.2]
-    -s, --style <style>            Rainbow mode [default: rainbow] [possible values: rainbow, sinebow]
+    -s, --style <style>            Rainbow mode [default: rainbow] [possible values: rainbow, sinebow, ok-hsv]
 ```
 ## Screenshot
 ![a demo screenshot of lcat in action](.github/screenshot.png)
