@@ -1,14 +1,14 @@
 use crate::{Grad, HsvGrad, Rainbow};
-use clap::{ArgEnum, Clap};
+use clap::{ArgEnum, Parser};
 
-#[derive(Debug, ArgEnum)]
+#[derive(Debug, Clone, ArgEnum)]
 pub enum RainbowStyle {
     Rainbow,
     Sinebow,
     OkHsv,
 }
 
-#[derive(Debug, Clap)]
+#[derive(Debug, Parser)]
 pub struct RainbowCmd {
     ///  How many degrees to shift text color hue for every column
     #[clap(short = 'C', long, default_value = "1.6")]

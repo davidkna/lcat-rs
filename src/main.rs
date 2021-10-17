@@ -1,6 +1,6 @@
 #![warn(clippy::pedantic, clippy::nursery)]
 
-use clap::Clap;
+use clap::Parser;
 use lcat::{Rainbow, RainbowCmd};
 use std::{
     fs::File,
@@ -12,7 +12,7 @@ use std::{
 #[global_allocator]
 static GLOBAL: mimalloc::MiMalloc = mimalloc::MiMalloc;
 
-#[derive(Clap)]
+#[derive(Parser)]
 #[clap(name = "lcat", about = "Terminal rainbows.")]
 pub struct Cmdline {
     #[clap(name = "File", default_value = "-", parse(from_os_str))]
