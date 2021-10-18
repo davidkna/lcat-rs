@@ -1,5 +1,4 @@
 # Based on https://github.com/actions-rs/meta/blob/master/recipes/quickstart.md
-
 ---
 name: Main workflow
 on:
@@ -9,6 +8,13 @@ on:
   pull_request:
     paths-ignore:
       - "**.md"
+env:
+  CARGO_INCREMENTAL: 0
+  CARGO_NET_RETRY: 10
+  RUST_BACKTRACE: short
+  RUSTFLAGS: "-D warnings"
+  RUSTUP_MAX_RETRIES: 10
+
 jobs:
   check:
     name: Check
@@ -17,13 +23,7 @@ jobs:
       - name: Checkout sources
         uses: actions/checkout@v2
 
-      - uses: actions/cache@v2
-        with:
-          path: |
-            ~/.cargo/registry
-            ~/.cargo/git
-            target
-          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}-stable
+      - uses: Swatinem/rust-cache@v1
 
       - name: Install stable toolchain
         uses: actions-rs/toolchain@v1
@@ -44,13 +44,7 @@ jobs:
       - name: Checkout sources
         uses: actions/checkout@v2
 
-      - uses: actions/cache@v2
-        with:
-          path: |
-            ~/.cargo/registry
-            ~/.cargo/git
-            target
-          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}-stable
+      - uses: Swatinem/rust-cache@v1
 
       - name: Install stable toolchain
         uses: actions-rs/toolchain@v1
@@ -64,6 +58,23 @@ jobs:
         with:
           command: test
 
+  coverage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: Swatinem/rust-cache@v1
+      - name: Install Rust
+        run: rustup toolchain install nightly --component llvm-tools-preview
+      - name: Install cargo-llvm-cov
+        run: curl -LsSf https://github.com/taiki-e/cargo-llvm-cov/releases/latest/download/cargo-llvm-cov-x86_64-unknown-linux-gnu.tar.gz | tar xzf - -C ~/.cargo/bin
+      - name: Generate code coverage
+        run: cargo llvm-cov --all-features --workspace --lcov --output-path lcov.info
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v2
+        with:
+          files: lcov.info
+          fail_ci_if_error: true
+
   lints:
     name: Lints
     runs-on: ubuntu-latest
@@ -71,13 +82,7 @@ jobs:
       - name: Checkout sources
         uses: actions/checkout@v2
 
-      - uses: actions/cache@v2
-        with:
-          path: |
-            ~/.cargo/registry
-            ~/.cargo/git
-            target
-          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}-nightly
+      - uses: Swatinem/rust-cache@v1
 
       - name: Install nightly toolchain
         uses: actions-rs/toolchain@v1
