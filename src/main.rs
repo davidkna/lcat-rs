@@ -1,4 +1,4 @@
-use clap::Clap;
+use clap::Parser;
 use directories::ProjectDirs;
 use flate2::read::GzDecoder;
 use lcat::{Rainbow, RainbowCmd};
@@ -16,7 +16,7 @@ use std::{
 };
 use tar::Archive;
 
-#[derive(Clap)]
+#[derive(Parser)]
 struct Opt {
     #[clap(short = 'f', long = "files")]
     strfiles: Option<String>,
@@ -24,7 +24,7 @@ struct Opt {
     cmd: Command,
 }
 
-#[derive(Clap)]
+#[derive(Parser)]
 enum Command {
     /// Cowsay a fortune
     Cowsay {
