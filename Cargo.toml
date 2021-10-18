@@ -26,5 +26,5 @@ hyphenation = "0.8.4"
 textwrap = { version = "0.14.2", features = ["hyphenation"] }
 unicode-width = "0.1.9"
 
-lcat = { version = "0.7.3", optional = true }
+lcat = { version = "0.7.4", optional = true }
 clap = { version = "3.0.0-beta.5", optional = true }
