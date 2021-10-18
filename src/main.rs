@@ -1,11 +1,11 @@
 #![warn(clippy::pedantic, clippy::nursery)]
 
-use clap::Clap;
+use clap::Parser;
 use lcat::{Rainbow, RainbowCmd};
 use lcowsay::{Cow, CowShape};
 use std::io::{self, Read, Write};
 
-#[derive(Clap)]
+#[derive(Parser)]
 struct Opt {
     #[clap(short = 'f', long = "cow-shape", arg_enum, default_value = "cow")]
     shape: CowShape,
