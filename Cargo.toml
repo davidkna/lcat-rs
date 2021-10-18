@@ -1,6 +1,6 @@
 [package]
 name = "lcowsay"
-version = "0.5.1"
+version = "0.5.2"
 authors = ["David Knaack <davidkna@users.noreply.github.com>"]
 edition = "2018"
 description = "Cowsay, but combined with lolcat."
