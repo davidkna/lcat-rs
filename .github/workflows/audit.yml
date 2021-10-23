@@ -1,15 +1,7 @@
 name: Security audit
 on:
-  pull_request:
-    paths:
-      - '**/Cargo.toml'
-      - '**/Cargo.lock'
-  push:
-    paths:
-      - '**/Cargo.toml'
-      - '**/Cargo.lock'
-  schedule:
-    - cron: '0 0 * * *'
+  - pull_request
+  - push
 jobs:
   security_audit:
     if: github.event_name != 'schedule' || github.repository == 'davidkna/lcat-rs'
