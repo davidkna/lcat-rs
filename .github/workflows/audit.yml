@@ -1,0 +1,18 @@
+name: Security audit
+on:
+  - pull_request
+  - push
+jobs:
+  security_audit:
+    if: github.event_name != 'schedule' || github.repository == 'davidkna/lcat-rs'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2.3.5
+      - uses: actions-rs/toolchain@v1.0.7
+        with:
+          toolchain: stable
+          override: true
+          profile: minimal
+      - uses: actions-rs/audit-check@v1.2.0
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
