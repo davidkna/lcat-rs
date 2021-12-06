@@ -34,7 +34,7 @@ fastrand = "1.5.0"
 memchr = "2.4.1"
 deku = "0.12.5"
 thiserror = "1.0.30"
-itertools = "0.10.1"
+itertools = "0.10.3"
 
 # Binary
 clap = { version = "3.0.0-beta.5", optional = true }
