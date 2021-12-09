@@ -3,7 +3,7 @@ use std::fmt::Write;
 use unicode_width::UnicodeWidthStr;
 
 pub fn bubble(text: &str, width: usize) -> String {
-    let text = text.trim_end().replace("\t", "    ");
+    let text = text.trim_end().replace('\t', "    ");
     let hyphenator = Standard::from_embedded(Language::EnglishUS).unwrap();
     let options = textwrap::Options::new(width).word_splitter(hyphenator);
     let text = textwrap::wrap(&text, options);
