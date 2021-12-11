@@ -37,7 +37,7 @@ thiserror = "1.0.30"
 itertools = "0.10.3"
 
 # Binary
-clap = { version = "3.0.0-rc.3", features = ["derive", "unicode"], optional = true }
+clap = { version = "3.0.0-rc.4", features = ["derive", "unicode"], optional = true }
 directories = { version = "4.0.1", optional = true }
 
 # Download
