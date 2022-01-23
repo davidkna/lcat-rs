@@ -50,5 +50,5 @@ version = "0.5.2"
 optional = true
 
 [dependencies.lcat]
-version = "0.7.4"
+version = "0.7.5"
 optional = true
