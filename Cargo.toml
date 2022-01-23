@@ -1,6 +1,6 @@
 [package]
 name = "lcat"
-version = "0.7.4"
+version = "0.7.5"
 authors = ["David Knaack <davidkna@users.noreply.github.com>"]
 edition = "2021"
 description = "Another lolcat in rust! Full unicode support, escapes for ANSI escape sequences, hue shift in Cubehelix."
