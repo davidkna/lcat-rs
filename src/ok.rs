@@ -143,7 +143,7 @@ impl From<&Hsv> for Lab {
         let b_ = (TAU * h).sin();
 
         let cusp = find_cusp(a_, b_);
-        let ST_max: ST = (&cusp).into();
+        let ST_max = ST::from(&cusp);
         let S_max = ST_max.s;
         let T_max = ST_max.T;
         let S_0 = 0.5;
