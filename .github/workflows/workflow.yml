@@ -68,7 +68,7 @@ jobs:
           uses: actions-rs/toolchain@v1
           with:
             profile: minimal
-            toolchain: nightly
+            toolchain: stable
             components: llvm-tools-preview
             override: true
         - name: Install cargo-llvm-cov
