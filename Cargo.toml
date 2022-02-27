@@ -32,7 +32,7 @@ build-binary = [
 # Lib
 fastrand = "1.7.0"
 memchr = "2.4.1"
-deku = "0.12.5"
+deku = "0.13.0"
 thiserror = "1.0.30"
 itertools = "0.10.3"
 
