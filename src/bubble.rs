@@ -1,11 +1,13 @@
 use hyphenation::{Language, Load, Standard};
 use std::fmt::Write;
+use textwrap::WordSplitter;
 use unicode_width::UnicodeWidthStr;
 
 pub fn bubble(text: &str, width: usize) -> String {
     let text = text.trim_end().replace('\t', "    ");
-    let hyphenator = Standard::from_embedded(Language::EnglishUS).unwrap();
-    let options = textwrap::Options::new(width).word_splitter(hyphenator);
+    let dictionary = Standard::from_embedded(Language::EnglishUS).unwrap();
+    let options =
+        textwrap::Options::new(width).word_splitter(WordSplitter::Hyphenation(dictionary));
     let text = textwrap::wrap(&text, options);
 
     let line_count = text.len();
