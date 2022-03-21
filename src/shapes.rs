@@ -49,10 +49,10 @@ const MOOSE: &str = r#"
 impl fmt::Display for CowShape {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         let display = match self {
-            CowShape::Cow => COW,
-            CowShape::Clippy => CLIPPY,
-            CowShape::Ferris => FERRIS,
-            CowShape::Moose => MOOSE,
+            Self::Cow => COW,
+            Self::Clippy => CLIPPY,
+            Self::Ferris => FERRIS,
+            Self::Moose => MOOSE,
         };
         f.write_str(display)
     }
