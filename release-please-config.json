@@ -1,0 +1,9 @@
+{
+  "plugins": [ "cargo-workspace"],
+  "release-type": "rust",
+  "packages": {
+    "lcat": {},
+    "lcowsay": {},
+    "lolcow-fortune": {}
+  }
+}
