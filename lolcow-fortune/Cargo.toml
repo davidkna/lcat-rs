@@ -47,8 +47,10 @@ tar = { version = "0.4.38", optional = true }
 
 [dependencies.lcowsay]
 version = "0.5.2"
+path = "../lcowsay"
 optional = true
 
 [dependencies.lcat]
-version = "0.7.5"
+version = "0.7.6"
+path = "../lcat"
 optional = true
