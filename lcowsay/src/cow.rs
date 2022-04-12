@@ -25,3 +25,15 @@ impl fmt::Display for Cow {
         write!(f, "{}{}", speech_bubble, self.shape)
     }
 }
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    #[test]
+    fn test_cow_new() {
+        let cow = Cow::new(CowShape::Cow, "Hello, world!".to_string(), 10);
+        assert_eq!(cow.text, "Hello, world!");
+        assert_eq!(cow.max_length, 10);
+    }
+}
