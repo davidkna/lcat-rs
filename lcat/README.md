@@ -28,4 +28,4 @@ OPTIONS:
     -s, --style <style>            Rainbow mode [default: rainbow] [possible values: rainbow, sinebow, ok-hsv]
 ```
 ## Screenshot
-![a demo screenshot of lcat in action](.github/screenshot.png)
+![a demo screenshot of lcat in action](../.github/screenshot.png)
