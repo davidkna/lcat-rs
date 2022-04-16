@@ -3,10 +3,10 @@ name = "lolcow-fortune"
 version = "0.1.5"
 authors = ["David Knaack <davidkna@users.noreply.github.com>"]
 edition = "2021"
-description = "`fortunes` combined with `lolcat` and `cowsay`!"
+license = "MIT OR Apache-2.0"
 readme = "README.md"
 repository = "https://github.com/davidkna/lolcow-fortune-rs"
-license = "MIT OR Apache-2.0"
+description = "`fortunes` combined with `lolcat` and `cowsay`!"
 
 [lib]
 path = "src/lib.rs"
@@ -19,30 +19,30 @@ required-features = ["build-binary"]
 [features]
 default = ["build-binary"]
 build-binary = [
-    "attohttpc",
-    "clap",
-    "directories",
-    "flate2",
-    "lcat",
-    "lcowsay",
-    "tar",
+  "attohttpc",
+  "clap",
+  "directories",
+  "flate2",
+  "lcat",
+  "lcowsay",
+  "tar",
 ]
 
 [dependencies]
 # Lib
-fastrand = "1.7.0"
-memchr = "2.4.1"
 deku = "0.13.0"
-thiserror = "1.0.30"
+fastrand = "1.7.0"
 itertools = "0.10.3"
+memchr = "2.4.1"
+thiserror = "1.0.30"
 
 # Binary
 clap = { version = "3.1.9", features = ["derive", "unicode"], optional = true }
 directories = { version = "4.0.1", optional = true }
 
 # Download
-flate2 = { version = "1.0.23", optional = true, default-features = false, features = ["rust_backend"] }
 attohttpc = { version = "0.18.0", optional = true, default-features = false, features = ["tls"] }
+flate2 = { version = "1.0.23", optional = true, default-features = false, features = ["rust_backend"] }
 tar = { version = "0.4.38", optional = true }
 
 [dependencies.lcowsay]

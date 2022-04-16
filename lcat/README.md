@@ -27,5 +27,7 @@ OPTIONS:
     -R, --shift-row <shift-row>    How many degrees to shift text color hue for every row [default: 3.2]
     -s, --style <style>            Rainbow mode [default: rainbow] [possible values: rainbow, sinebow, ok-hsv]
 ```
+
 ## Screenshot
+
 ![a demo screenshot of lcat in action](../.github/screenshot.png)

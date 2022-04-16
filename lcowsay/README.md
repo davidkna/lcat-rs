@@ -1,4 +1,5 @@
 # lcowsay-rs
+
 ```
  ___________
 < Hello 🌍! >
@@ -12,8 +13,8 @@
 
 Cowsay, but combined with lolcat.
 
-
 ## Flags
+
 ```
 USAGE:
     lcowsay [FLAGS] [OPTIONS] [TEXT]...

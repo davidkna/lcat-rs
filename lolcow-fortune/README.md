@@ -1,4 +1,5 @@
 # lolcow-fortune
+
 `fortunes` combined with `lolcat` and `cowsay`!
 
 ```

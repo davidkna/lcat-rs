@@ -2,12 +2,12 @@
 name = "lcowsay"
 version = "0.5.4"
 authors = ["David Knaack <davidkna@users.noreply.github.com>"]
+documentation = "https://docs.rs/lcowsay/"
 edition = "2021"
-description = "Cowsay, but combined with lolcat."
+license = "MIT OR Apache-2.0"
 readme = "README.md"
 repository = "https://github.com/davidkna/lcowsay-rs"
-documentation = "https://docs.rs/lcowsay/"
-license = "MIT OR Apache-2.0"
+description = "Cowsay, but combined with lolcat."
 
 [lib]
 path = "src/lib.rs"
@@ -22,10 +22,10 @@ default = ["build-binary"]
 build-binary = ["lcat", "clap"]
 
 [dependencies]
+clap = { version = "3.1.9", features = ["derive", "unicode"], optional = true }
 hyphenation = "0.8.4"
 textwrap = { version = "0.15.0", features = ["hyphenation"] }
 unicode-width = "0.1.9"
-clap = { version = "3.1.9", features = ["derive", "unicode"], optional = true }
 
 [dependencies.lcat]
 version = "0.7.8"
