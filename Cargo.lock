@@ -483,7 +483,7 @@ checksum = "e2abad23fbc42b3700f2f279844dc832adb2b2eb069b2df918f455c4e18cc646"
 
 [[package]]
 name = "lcat"
-version = "0.7.8"
+version = "0.7.9"
 dependencies = [
  "bstr",
  "clap",
@@ -495,7 +495,7 @@ dependencies = [
 
 [[package]]
 name = "lcowsay"
-version = "0.5.4"
+version = "0.5.5"
 dependencies = [
  "clap",
  "hyphenation",
@@ -521,7 +521,7 @@ dependencies = [
 
 [[package]]
 name = "lolcow-fortune"
-version = "0.1.5"
+version = "0.1.6"
 dependencies = [
  "attohttpc",
  "clap",

@@ -1,5 +1,19 @@
 # Changelog
 
+### [0.5.5](https://github.com/davidkna/lcat-rs/compare/lcowsay-v0.5.4...lcowsay-v0.5.5) (2022-04-16)
+
+
+### Bug Fixes
+
+* format ([1de7d0d](https://github.com/davidkna/lcat-rs/commit/1de7d0dc1120c9bd58d5b8ee6b3eee763d6ecd4f))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * lcat bumped from 0.7.8 to 0.7.9
+
 ### [0.5.4](https://github.com/davidkna/lcat-rs/compare/lcowsay-v0.5.3...lcowsay-v0.5.4) (2022-04-16)
 
 
