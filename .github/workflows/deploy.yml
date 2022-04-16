@@ -26,23 +26,15 @@ jobs:
           profile: minimal
           override: true
 
-      - name: Publish lcat to crates.io
-        if: ${{ steps.release.outputs['lcat--release_created'] }}
+      - name: Install cargo-workspaces
+        if: ${{ steps.release.outputs.releases_created }}
+        uses: actions-rs/install@v0.1.2
+        with:
+          crate: cargo-workspaces
+
+      - name: Publish to crates.io
+        if: ${{ steps.release.outputs.releases_created }}
         uses: actions-rs/cargo@v1.0.1
         with:
-          command: publish
-          args: --token ${{ secrets.CRATES_IO_TOKEN }} -p lcat
-      
-      - name: Publish lcowsay to crates.io
-        if: ${{ steps.release.outputs['lcowsay--release_created'] }}
-        uses: actions-rs/cargo@v1.0.1
-        with:
-          command: publish
-          args: --token ${{ secrets.CRATES_IO_TOKEN }} -p lcowsay
-      
-      - name: Publish lolcow-fortune to crates.io
-        if: ${{ steps.release.outputs['lolcow-fortune--release_created'] }}
-        uses: actions-rs/cargo@v1.0.1
-        with:
-          command: publish
-          args: --token ${{ secrets.CRATES_IO_TOKEN }} -p fortune
+          command: cargo-workspaces publish
+          args: --from-git --token=${{ secrets.CRATES_IO_TOKEN }}
