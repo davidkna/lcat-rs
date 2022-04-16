@@ -7,7 +7,7 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
-      - uses: google-github-actions/release-please-action@v3.1.4
+      - uses: google-github-actions/release-please-action@v3.2.0
         id: release
         with:
           command: manifest
