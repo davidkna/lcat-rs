@@ -1,5 +1,6 @@
-use bstr::{io::BufReadExt, ByteSlice};
 use std::io::{prelude::*, Write};
+
+use bstr::{io::BufReadExt, ByteSlice};
 use unicode_segmentation::UnicodeSegmentation;
 use unicode_width::UnicodeWidthChar;
 

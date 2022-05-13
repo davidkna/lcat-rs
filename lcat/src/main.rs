@@ -1,12 +1,13 @@
 #![warn(clippy::pedantic, clippy::nursery)]
 
-use clap::Parser;
-use lcat::{Rainbow, RainbowCmd};
 use std::{
     fs::File,
     io::{self, BufReader},
     path::PathBuf,
 };
+
+use clap::Parser;
+use lcat::{Rainbow, RainbowCmd};
 
 #[derive(Parser)]
 #[clap(name = "lcat", about = "Terminal rainbows.")]

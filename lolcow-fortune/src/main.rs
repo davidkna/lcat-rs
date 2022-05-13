@@ -1,9 +1,3 @@
-use clap::Parser;
-use directories::ProjectDirs;
-use flate2::read::GzDecoder;
-use lcat::{Rainbow, RainbowCmd};
-use lcowsay::{Cow, CowShape};
-use lolcow_fortune::{Datfile, Strfile, StrfileError};
 use std::{
     convert::TryInto,
     env, fs,
@@ -14,6 +8,13 @@ use std::{
     result::Result,
     str,
 };
+
+use clap::Parser;
+use directories::ProjectDirs;
+use flate2::read::GzDecoder;
+use lcat::{Rainbow, RainbowCmd};
+use lcowsay::{Cow, CowShape};
+use lolcow_fortune::{Datfile, Strfile, StrfileError};
 use tar::Archive;
 
 #[derive(Parser)]

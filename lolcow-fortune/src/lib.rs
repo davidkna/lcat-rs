@@ -1,6 +1,3 @@
-use deku::prelude::*;
-use itertools::Itertools;
-use memchr::memmem::find_iter;
 use std::{
     convert::TryInto,
     fs::{self, File},
@@ -9,6 +6,10 @@ use std::{
     path::Path,
     result::Result,
 };
+
+use deku::prelude::*;
+use itertools::Itertools;
+use memchr::memmem::find_iter;
 
 #[derive(thiserror::Error, Debug)]
 pub enum StrfileError {

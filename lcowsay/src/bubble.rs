@@ -1,5 +1,6 @@
-use hyphenation::{Language, Load, Standard};
 use std::fmt::Write;
+
+use hyphenation::{Language, Load, Standard};
 use textwrap::WordSplitter;
 use unicode_width::UnicodeWidthStr;
 

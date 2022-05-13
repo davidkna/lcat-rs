@@ -1,9 +1,10 @@
 #![warn(clippy::pedantic, clippy::nursery)]
 
+use std::io::{self, Read, Write};
+
 use clap::Parser;
 use lcat::{Rainbow, RainbowCmd};
 use lcowsay::{Cow, CowShape};
-use std::io::{self, Read, Write};
 
 #[derive(Parser)]
 struct Opt {

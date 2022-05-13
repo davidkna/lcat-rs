@@ -1,5 +1,6 @@
-use crate::{bubble::bubble, shapes::CowShape};
 use std::fmt;
+
+use crate::{bubble::bubble, shapes::CowShape};
 
 pub struct Cow {
     shape: CowShape,

@@ -1,5 +1,6 @@
-use crate::{Grad, HsvGrad, Rainbow};
 use clap::{ArgEnum, Parser};
+
+use crate::{Grad, HsvGrad, Rainbow};
 
 #[derive(Debug, Clone, ArgEnum)]
 pub enum RainbowStyle {
