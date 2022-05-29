@@ -25,7 +25,7 @@ pub enum StrfileError {
     QuoteIndex,
 }
 
-#[derive(Debug, PartialEq, DekuRead, DekuWrite, Default)]
+#[derive(Debug, Eq, PartialEq, DekuRead, DekuWrite, Default)]
 #[deku(endian = "big")]
 pub struct Datfile {
     pub version: u32,
