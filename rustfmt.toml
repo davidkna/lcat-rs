@@ -1,4 +1,3 @@
-edition = "2018"
 condense_wildcard_suffixes = true
 format_macro_bodies = true
 format_macro_matchers = true
