@@ -106,13 +106,13 @@ impl Rainbow {
             out.write_all(b"\x1B")?;
             return Ok(true);
         }
-        if grapheme == "\n" {
+        if grapheme == "\n" || grapheme == "\r\n" {
             self.reset_col();
             self.step_row(1);
             if self.invert {
                 out.write_all(b"\x1B[49m")?;
             }
-            out.write_all(b"\n")?;
+            out.write_all(grapheme.as_bytes())?;
             return Ok(false);
         }
 
@@ -226,14 +226,16 @@ mod tests {
 
     #[test]
     fn test_step_row() {
-        let test_string = "foobar\n";
+        let mut rb_expected = create_rb();
+        rb_expected.step_row(1);
 
-        let mut rb_a = create_rb();
-        rb_a.colorize(test_string.as_bytes(), &mut Vec::new())
-            .unwrap();
-        let mut rb_b = create_rb();
-        rb_b.step_row(1);
-        assert_eq!(rb_a.get_color(), rb_b.get_color(),);
+        for test_string in ["foobar\n", "foobar\r\n"] {
+            let mut rb_actual = create_rb();
+            rb_actual
+                .colorize(test_string.as_bytes(), &mut Vec::new())
+                .unwrap();
+            assert_eq!(rb_actual.get_color(), rb_expected.get_color(),);
+        }
     }
 
     #[test]
