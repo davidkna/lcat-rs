@@ -12,7 +12,7 @@ use lcat::{Rainbow, RainbowCmd};
 #[derive(Parser)]
 #[clap(name = "lcat", about = "Terminal rainbows.")]
 pub struct Cmdline {
-    #[clap(name = "File", default_value = "-", parse(from_os_str))]
+    #[clap(name = "File", default_value = "-")]
     files: Vec<PathBuf>,
 
     #[clap(flatten)]
