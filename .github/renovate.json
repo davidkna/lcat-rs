@@ -4,11 +4,11 @@
     "github>davidkna/renovate-config"
   ],
   "regexManagers": [{
-    "fileMatch": [".dprint.json"],
+    "fileMatch": ["(^|\\/)\\.?dprint.json"],
     "matchStrings": ["\"https://github.com/(?<depName>.+)/releases/download/(?<currentValue>.+?)/plugin.wasm\""],
     "datasourceTemplate": "github-releases"
   }, {
-    "fileMatch": [".github/workflows/*.yml"],
+    "fileMatch": ["^(workflow-templates|\\.github\\/workflows)\\/[^/]+\\.ya?ml$"],
     "matchStrings": ["cargo install.*--version (?<currentValue>\\S+?).*\\s(?<depName>\\S+?)"],
     "datasourceTemplate": "crate"
   }]
