@@ -53,9 +53,9 @@ jobs:
             components: llvm-tools-preview
             override: true
         - name: Install cargo-llvm-cov
-          run: cargo install --version 0.4.7 cargo-llvm-cov
+          run: cargo install --version 1.4.7 cargo-llvm-cov
         - name: Install nextest
-          run: cargo install --version 0.9.22 cargo-nextest
+          run: cargo install --version 1.9.22 cargo-nextest
         - name: Generate code coverage
           run: cargo llvm-cov nextest --all-features --workspace --lcov --output-path lcov.info
         - name: Upload coverage to Codecov
