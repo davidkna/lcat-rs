@@ -7,5 +7,9 @@
     "fileMatch": [".dprint.json"],
     "matchStrings": ["\"https://github.com/(?<depName>.+)/releases/download/(?<currentValue>.+?)/plugin.wasm\""],
     "datasourceTemplate": "github-releases"
+  }, {
+    "fileMatch": [".github/workflows/*.yml"],
+    "matchStrings": ["cargo install.*--version (?<currentValue>\\S+?).*\\s(?<depName>\\S+?)"],
+    "datasourceTemplate": "crate"
   }]
 }
