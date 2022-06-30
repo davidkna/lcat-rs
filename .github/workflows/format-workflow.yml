@@ -1,0 +1,16 @@
+name: Format Workflow
+on:
+  push:
+    paths: ["**.md", "**.toml", "**.js", "**.json", "**.ts"]
+  pull_request:
+    paths: ["**.md", "**.toml", "**.js", "**.json", "**.ts"]
+
+jobs:
+  dprint:
+    name: Dprint [Formatter]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup | Checkout
+        uses: actions/checkout@v3
+      - name: Docs | Format
+        uses: dprint/check@v2.0
