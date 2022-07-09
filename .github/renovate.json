@@ -11,6 +11,6 @@
     "fileMatch": ["^(workflow-templates|\\.github\\/workflows)\\/[^/]+\\.ya?ml$"],
     "matchStrings": ["cargo install.*--version (?<currentValue>\\S+).*\\s(?<depName>\\S+)"],
     "datasourceTemplate": "crate",
-    "versioningTemplate": "cargo"
+    "depTypeTemplate": "dependencies"
   }]
 }
