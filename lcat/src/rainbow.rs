@@ -12,7 +12,7 @@ pub trait Grad {
 
 impl Grad for colorgrad::Gradient {
     fn color_at(&self, pos: f64) -> (u8, u8, u8) {
-        let (r, g, b, _) = self.at(pos).rgba_u8();
+        let [r, g, b, _] = self.at(pos).to_rgba8();
         (r, g, b)
     }
 }
