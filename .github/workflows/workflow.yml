@@ -17,45 +17,31 @@ env:
   RUSTUP_MAX_RETRIES: 10
 
 jobs:
-  check:
-    name: Check
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout sources
-        uses: actions/checkout@v3.0.2
-
-      - uses: Swatinem/rust-cache@v2.0.0
-
-      - name: Install stable toolchain
-        uses: actions-rs/toolchain@v1.0.7
-        with:
-          profile: minimal
-          toolchain: stable
-          override: true
-
-      - name: Run cargo check
-        uses: actions-rs/cargo@v1.0.3
-        with:
-          command: check
-
   test:
       name: Test Suite
-      needs: check
       runs-on: ubuntu-latest
       steps:
-        - uses: actions/checkout@v3.0.2
+        - name: Checkout sources
+          uses: actions/checkout@v3.0.2
+
         - uses: Swatinem/rust-cache@v2.0.0
+
         - name: Install stable toolchain
-          uses: actions-rs/toolchain@v1.0.7
+          uses: dtolnay/rust-toolchain@stable
           with:
-            profile: minimal
-            toolchain: stable
             components: llvm-tools-preview
-            override: true
+
+        - name: Run cargo check
+          run: cargo check
+
         - name: Install cargo-llvm-cov
           run: cargo install --version 0.4.7 cargo-llvm-cov
+          env:
+            RUSTFLAGS: '-Copt-level=1'
         - name: Install nextest
           run: cargo install --version 0.9.22 cargo-nextest
+          env:
+            RUSTFLAGS: '-Copt-level=1'
         - name: Generate code coverage
           run: cargo llvm-cov nextest --all-features --workspace --lcov --output-path lcov.info
         - name: Upload coverage to Codecov
@@ -74,11 +60,8 @@ jobs:
       - uses: Swatinem/rust-cache@v2.0.0
 
       - name: Install nightly toolchain
-        uses: actions-rs/toolchain@v1.0.7
+        uses: dtolnay/rust-toolchain@nightly
         with:
-          profile: minimal
-          toolchain: nightly
-          override: true
           components: rustfmt, clippy
 
       - name: Run cargo fmt

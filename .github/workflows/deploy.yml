@@ -20,18 +20,13 @@ jobs:
 
       - name: Install stable toolchain
         if: ${{ steps.release.outputs.releases_created }}
-        uses: actions-rs/toolchain@v1.0.7
-        with:
-          toolchain: stable
-          profile: minimal
-          override: true
+        uses: dtolnay/rust-toolchain@stable
 
       - name: Install cargo-workspaces
         if: ${{ steps.release.outputs.releases_created }}
-        uses: actions-rs/install@v0.1.2
-        with:
-          crate: cargo-workspaces
-
+        run: cargo install cargo-workspaces
+        env:
+          RUSTFLAGS: '-Copt-level=1'
       - name: Publish to crates.io
         if: ${{ steps.release.outputs.releases_created }}
         run: cargo workspaces publish --from-git
