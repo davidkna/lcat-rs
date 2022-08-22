@@ -68,8 +68,8 @@ fn download() -> io::Result<()> {
         }
         let p = file.path()?.into_owned();
         if let Ok(path) = p.strip_prefix("fortune-mod-master/fortune-mod/datfiles") {
-            if path.extension() != None
-                || path.parent() != None && path.parent() != Some(Path::new(""))
+            if path.extension().is_some()
+                || path.parent().is_some() && path.parent() != Some(Path::new(""))
             {
                 continue;
             }
