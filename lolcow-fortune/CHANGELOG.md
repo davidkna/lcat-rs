@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.1.8](https://github.com/davidkna/lcat-rs/compare/lolcow-fortune-v0.1.7...lolcow-fortune-v0.1.8) (2022-09-14)
+
+
+### Bug Fixes
+
+* **deps:** update rust crate clap to 3.2.1 ([#89](https://github.com/davidkna/lcat-rs/issues/89)) ([868eb51](https://github.com/davidkna/lcat-rs/commit/868eb5156d92f2e3266640871709451ddbf2b9ec))
+* **deps:** update rust crate clap to 3.2.8 ([d4ba421](https://github.com/davidkna/lcat-rs/commit/d4ba421213c1467777fd61c368b6925b64ede789))
+* **deps:** update rust crate deku to 0.13.1 ([3f9ce73](https://github.com/davidkna/lcat-rs/commit/3f9ce73cd6ca36cfb0725a3367260e194d9befb9))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * lcowsay bumped from 0.5.6 to 0.5.7
+    * lcat bumped from 0.7.10 to 0.7.11
+
 ### [0.1.7](https://github.com/davidkna/lcat-rs/compare/lolcow-fortune-v0.1.6...lolcow-fortune-v0.1.7) (2022-05-30)
 
 

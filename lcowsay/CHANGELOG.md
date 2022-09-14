@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.5.7](https://github.com/davidkna/lcat-rs/compare/lcowsay-v0.5.6...lcowsay-v0.5.7) (2022-09-14)
+
+
+### Bug Fixes
+
+* **deps:** update rust crate clap to 3.2.1 ([#89](https://github.com/davidkna/lcat-rs/issues/89)) ([868eb51](https://github.com/davidkna/lcat-rs/commit/868eb5156d92f2e3266640871709451ddbf2b9ec))
+* **deps:** update rust crate clap to 3.2.8 ([d4ba421](https://github.com/davidkna/lcat-rs/commit/d4ba421213c1467777fd61c368b6925b64ede789))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * lcat bumped from 0.7.10 to 0.7.11
+
 ### [0.5.6](https://github.com/davidkna/lcat-rs/compare/lcowsay-v0.5.5...lcowsay-v0.5.6) (2022-05-30)
 
 
