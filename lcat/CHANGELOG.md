@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.7.11](https://github.com/davidkna/lcat-rs/compare/lcat-v0.7.10...lcat-v0.7.11) (2022-09-14)
+
+
+### Bug Fixes
+
+* **deps:** update rust crate clap to 3.2.1 ([#89](https://github.com/davidkna/lcat-rs/issues/89)) ([868eb51](https://github.com/davidkna/lcat-rs/commit/868eb5156d92f2e3266640871709451ddbf2b9ec))
+* **deps:** update rust crate clap to 3.2.8 ([d4ba421](https://github.com/davidkna/lcat-rs/commit/d4ba421213c1467777fd61c368b6925b64ede789))
+* **deps:** update rust crate colorgrad to 0.6.0 ([22c3070](https://github.com/davidkna/lcat-rs/commit/22c30700de54b5f9c107b279c71d22d7db25a87b))
+
 ### [0.7.10](https://github.com/davidkna/lcat-rs/compare/lcat-v0.7.9...lcat-v0.7.10) (2022-05-30)
 
 
