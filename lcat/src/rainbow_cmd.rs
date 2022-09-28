@@ -1,8 +1,8 @@
-use clap::{ArgEnum, Parser};
+use clap::{Parser, ValueEnum};
 
 use crate::{Grad, HsvGrad, Rainbow};
 
-#[derive(Debug, Clone, ArgEnum)]
+#[derive(Debug, Clone, ValueEnum)]
 pub enum RainbowStyle {
     Rainbow,
     Sinebow,
@@ -28,7 +28,7 @@ pub struct RainbowCmd {
     hue: Option<f64>,
 
     /// Rainbow mode
-    #[clap(short, long, arg_enum, default_value = "rainbow")]
+    #[clap(short, long, value_enum, default_value = "rainbow")]
     style: RainbowStyle,
 
     /// Sets seed [default: random]

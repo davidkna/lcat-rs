@@ -1,7 +1,7 @@
 use std::fmt;
 
 #[derive(Debug)]
-#[cfg_attr(feature = "clap", derive(clap::ArgEnum, Clone))]
+#[cfg_attr(feature = "clap", derive(clap::ValueEnum, Clone))]
 pub enum CowShape {
     Clippy,
     Cow,

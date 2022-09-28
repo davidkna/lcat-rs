@@ -8,7 +8,7 @@ use lcowsay::{Cow, CowShape};
 
 #[derive(Parser)]
 struct Opt {
-    #[clap(short = 'f', long = "cow-shape", arg_enum, default_value = "cow")]
+    #[clap(short = 'f', long = "cow-shape", value_enum, default_value = "cow")]
     shape: CowShape,
     #[clap(short = 'W', long = "max-length", default_value = "40")]
     max_length: usize,
