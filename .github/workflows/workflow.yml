@@ -39,7 +39,7 @@ jobs:
           env:
             RUSTFLAGS: '-Copt-level=1'
         - name: Install nextest
-          run: cargo install --version 0.9.37 cargo-nextest
+          run: cargo install --version 0.9.38 cargo-nextest
           env:
             RUSTFLAGS: '-Copt-level=1'
         - name: Generate code coverage
