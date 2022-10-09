@@ -125,9 +125,9 @@ impl Rainbow {
         } else {
             let (r, g, b) = self.get_color();
             if self.invert {
-                write!(out, "\x1B[38;2;0;0;0;48;2;{};{};{}m{}", r, g, b, grapheme)?;
+                write!(out, "\x1B[38;2;0;0;0;48;2;{r};{g};{b}m{grapheme}")?;
             } else {
-                write!(out, "\x1B[38;2;{};{};{}m{}", r, g, b, grapheme)?;
+                write!(out, "\x1B[38;2;{r};{g};{b}m{grapheme}")?;
             }
             self.step_col(
                 grapheme

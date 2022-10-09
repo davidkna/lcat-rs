@@ -23,13 +23,12 @@ fn main() -> Result<(), io::Error> {
     let opt = Cmdline::parse();
 
     let mut rainbow: Rainbow = opt.rainbow.into();
+    let mut stdout = io::stdout().lock();
 
     for path in opt.files {
-        let stdout = io::stdout();
-        let mut stdout = stdout.lock();
+        
         if path == PathBuf::from("-") {
-            let stdin = io::stdin();
-            let mut stdin = stdin.lock();
+            let mut stdin = io::stdin().lock();
             rainbow.colorize_read(&mut stdin, &mut stdout)?;
         } else {
             let f = File::open(path).unwrap();

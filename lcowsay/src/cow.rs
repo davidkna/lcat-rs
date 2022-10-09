@@ -23,7 +23,7 @@ impl fmt::Display for Cow {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         let speech_bubble = bubble(&self.text, self.max_length);
 
-        write!(f, "{}{}", speech_bubble, self.shape)
+        write!(f, "{speech_bubble}{}", self.shape)
     }
 }
 

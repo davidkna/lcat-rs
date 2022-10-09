@@ -21,13 +21,13 @@ pub fn bubble(text: &str, width: usize) -> String {
     if line_count == 1 {
         writeln!(out, "< {} >", &text[0]).unwrap();
     } else {
-        writeln!(out, "/ {:1$} \\", &text[0], max_length).unwrap();
+        writeln!(out, "/ {:max_length$} \\", &text[0]).unwrap();
         for (i, line) in text.iter().take(line_count - 1).skip(1).enumerate() {
             let i = i + 1;
             let spaces_count = max_length - line_lengths[i];
             writeln!(out, "| {}{} |", &line, " ".repeat(spaces_count)).unwrap();
         }
-        writeln!(out, "\\ {:1$} /", &text[line_count - 1], max_length).unwrap();
+        writeln!(out, "\\ {:max_length$} /", &text[line_count - 1]).unwrap();
     }
     write!(out, " {:-<1$}", "", max_length + 2).unwrap();
 

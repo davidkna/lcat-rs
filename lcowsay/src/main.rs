@@ -33,7 +33,7 @@ fn main() -> io::Result<()> {
     let mut stdout = stdout.lock();
 
     let cow = Cow::new(opt.shape, text, opt.max_length);
-    let cow = format!("{}\n", cow);
+    let cow = format!("{cow}\n");
     if opt.nololcat {
         stdout.write_all(cow.as_bytes())?;
     } else {
