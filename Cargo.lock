@@ -19,9 +19,9 @@ dependencies = [
 
 [[package]]
 name = "attohttpc"
-version = "0.22.0"
+version = "0.23.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1fcf00bc6d5abb29b5f97e3c61a90b6d3caa12f3faf897d4a3e3607c050a35a7"
+checksum = "4f30ee4702531aca738243bfe8700a4572d7892307ab58cd5b5dc41819d2d533"
 dependencies = [
  "http",
  "log",
