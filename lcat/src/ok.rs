@@ -22,7 +22,7 @@
     non_snake_case,
     clippy::many_single_char_names,
     clippy::cast_possible_truncation,
-    clippy::suboptimal_flops,
+    clippy::suboptimal_flops
 )]
 
 use std::f32::consts::{PI, TAU};

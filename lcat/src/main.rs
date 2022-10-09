@@ -26,7 +26,6 @@ fn main() -> Result<(), io::Error> {
     let mut stdout = io::stdout().lock();
 
     for path in opt.files {
-        
         if path == PathBuf::from("-") {
             let mut stdin = io::stdin().lock();
             rainbow.colorize_read(&mut stdin, &mut stdout)?;
