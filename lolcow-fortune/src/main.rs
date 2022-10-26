@@ -167,7 +167,7 @@ fn main() -> Result<(), lolcow_fortune::StrfileError> {
         } => {
             let quote = get_random_quote(opt.strfiles)?;
             let cow = Cow::new(shape, quote, max_length);
-            let cow = format!("{}\n", cow);
+            let cow = format!("{cow}\n");
             let stdout = io::stdout();
             let mut stdout = stdout.lock();
 
@@ -186,7 +186,7 @@ fn main() -> Result<(), lolcow_fortune::StrfileError> {
         }
         Command::Tell => {
             let quote = get_random_quote(opt.strfiles)?;
-            print!("{}", quote);
+            print!("{quote}");
         }
     };
     Ok(())
