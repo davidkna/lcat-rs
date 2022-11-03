@@ -10,7 +10,7 @@
     "datasourceTemplate": "github-releases"
   }, {
     "fileMatch": ["^(workflow-templates|\\.github\\/workflows)\\/[^/]+\\.ya?ml$"],
-    "matchStrings": ["cargo install.*--version (?<currentValue>\\S+).*\\s(?<depName>\\S+)"],
+    "matchStrings": ["tool:.*(?<depName>[^,@]+)@(?<currentValue>[^,]+)"],
     "datasourceTemplate": "crate",
     "depTypeTemplate": "dependencies"
   }]
