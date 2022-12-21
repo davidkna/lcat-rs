@@ -1,5 +1,9 @@
 # Changelog
 
+* The following workspace dependencies were updated
+  * dependencies
+    * lcat bumped from 0.7.11 to 0.7.12
+
 ## [0.5.7](https://github.com/davidkna/lcat-rs/compare/lcowsay-v0.5.6...lcowsay-v0.5.7) (2022-09-14)
 
 
