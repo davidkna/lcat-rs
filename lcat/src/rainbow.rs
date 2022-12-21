@@ -118,10 +118,11 @@ impl Rainbow {
 
         if escaping {
             out.write_all(grapheme.as_bytes())?;
-            escaping = grapheme.len() != 1 || {
-                let c = grapheme.as_bytes()[0];
-                !(b'a'..=b'z').contains(&c) && !(b'A'..=b'Z').contains(&c)
-            };
+            escaping = grapheme.len() != 1
+                || !grapheme
+                    .as_bytes()
+                    .first()
+                    .map_or(false, u8::is_ascii_alphabetic);
         } else {
             let (r, g, b) = self.get_color();
             if self.invert {
