@@ -204,9 +204,9 @@ dependencies = [
 
 [[package]]
 name = "deku"
-version = "0.15.0"
+version = "0.15.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "28a6ebcd26e59dcd590e8869c751eccccfd89047bf20048966d1de823e442a7b"
+checksum = "c3d631ba36587888e2f176cda075d73971c504283efd7d0112997a3fd02372c0"
 dependencies = [
  "bitvec",
  "deku_derive",
