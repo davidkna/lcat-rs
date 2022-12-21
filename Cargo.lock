@@ -472,7 +472,7 @@ dependencies = [
 
 [[package]]
 name = "lcat"
-version = "0.7.11"
+version = "0.7.12"
 dependencies = [
  "bstr",
  "clap",
@@ -484,7 +484,7 @@ dependencies = [
 
 [[package]]
 name = "lcowsay"
-version = "0.5.7"
+version = "0.5.8"
 dependencies = [
  "clap",
  "hyphenation",
@@ -516,7 +516,7 @@ dependencies = [
 
 [[package]]
 name = "lolcow-fortune"
-version = "0.1.8"
+version = "0.1.9"
 dependencies = [
  "attohttpc",
  "clap",

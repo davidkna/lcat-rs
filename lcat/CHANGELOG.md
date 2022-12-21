@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.12](https://github.com/davidkna/lcat-rs/compare/lcat-v0.7.11...lcat-v0.7.12) (2022-12-21)
+
+
+### Bug Fixes
+
+* clippy ([58b77d1](https://github.com/davidkna/lcat-rs/commit/58b77d14d67bdc17bf960b7e083ffca3393a9d26))
+
 ## [0.7.11](https://github.com/davidkna/lcat-rs/compare/lcat-v0.7.10...lcat-v0.7.11) (2022-09-14)
 
 
