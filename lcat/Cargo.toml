@@ -14,7 +14,7 @@ default = ["clap"]
 
 [dependencies]
 bstr = "1.4.0"
-clap = { version = "4.1.10", features = ["derive", "wrap_help"], optional = true }
+clap = { version = "4.1.11", features = ["derive", "wrap_help"], optional = true }
 colorgrad = { version = "0.6.2", default-features = false }
 fastrand = "1.9.0"
 unicode-segmentation = "1.10.1"
