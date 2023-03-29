@@ -37,7 +37,7 @@ memchr = "2.5.0"
 thiserror = "1.0.40"
 
 # Binary
-clap = { version = "4.2.0", features = ["derive", "wrap_help"], optional = true }
+clap = { version = "4.2.1", features = ["derive", "wrap_help"], optional = true }
 directories = { version = "5.0.0", optional = true }
 
 # Download
