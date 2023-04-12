@@ -8,4 +8,4 @@ jobs:
     steps:
       - uses: actions/checkout@v3.5.1
       - uses: dtolnay/rust-toolchain@stable
-      - uses: EmbarkStudios/cargo-deny-action@v1.5.1
+      - uses: EmbarkStudios/cargo-deny-action@v1.5.2
