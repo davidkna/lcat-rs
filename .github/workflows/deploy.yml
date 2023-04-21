@@ -1,34 +1,27 @@
 name: Deploy
+
+permissions:
+  pull-requests: write
+  contents: write
+
 on:
   push:
     branches:
       - main
+
 jobs:
-  publish:
+  release-plz:
+    name: Release-plz
     runs-on: ubuntu-latest
     steps:
-      - uses: google-github-actions/release-please-action@v3.7.8
-        id: release
+      - name: Checkout repository
+        uses: actions/checkout@v3
         with:
-          command: manifest
-          token: ${{ secrets.GITHUB_TOKEN }}
-          default-branch: main
-
-      - name: Checkout
-        if: ${{ steps.release.outputs.releases_created }}
-        uses: actions/checkout@v3.5.2
-
-      - name: Install stable toolchain
-        if: ${{ steps.release.outputs.releases_created }}
+          fetch-depth: 0
+      - name: Install Rust toolchain
         uses: dtolnay/rust-toolchain@stable
-
-      - name: Install cargo-workspaces
-        if: ${{ steps.release.outputs.releases_created }}
-        run: cargo install cargo-workspaces
+      - name: Run release-plz
+        uses: MarcoIeni/release-plz-action@v0.5
         env:
-          RUSTFLAGS: '-Copt-level=1'
-      - name: Publish to crates.io
-        if: ${{ steps.release.outputs.releases_created }}
-        run: cargo workspaces publish --from-git
-        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
