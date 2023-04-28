@@ -42,7 +42,7 @@ directories = { version = "5.0.0", optional = true }
 
 # Download
 attohttpc = { version = "0.25.0", optional = true, default-features = false, features = ["tls-rustls"] }
-flate2 = { version = "1.0.25", optional = true, default-features = false, features = ["rust_backend"] }
+flate2 = { version = "1.0.26", optional = true, default-features = false, features = ["rust_backend"] }
 tar = { version = "0.4.38", optional = true }
 
 [dependencies.lcowsay]
