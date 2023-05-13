@@ -22,7 +22,7 @@ jobs:
         - name: Checkout sources
           uses: actions/checkout@v3.5.2
 
-        - uses: Swatinem/rust-cache@v2.2.1
+        - uses: Swatinem/rust-cache@v2.3.0
 
         - name: Install stable toolchain
           uses: dtolnay/rust-toolchain@stable
@@ -51,7 +51,7 @@ jobs:
       - name: Checkout sources
         uses: actions/checkout@v3.5.2
 
-      - uses: Swatinem/rust-cache@v2.2.1
+      - uses: Swatinem/rust-cache@v2.3.0
 
       - name: Install nightly toolchain
         uses: dtolnay/rust-toolchain@nightly
