@@ -7,6 +7,28 @@
 
 * clippy ([58b77d1](https://github.com/davidkna/lcat-rs/commit/58b77d14d67bdc17bf960b7e083ffca3393a9d26))
 
+## [0.7.13](https://github.com/davidkna/lcat-rs/compare/lcat-v0.7.12...lcat-v0.7.13) - 2023-08-23
+
+### Fixed
+- switch to ureq
+
+### Other
+- *(deps)* update rust crate clap to 4.3.23
+- *(deps)* update rust crate clap to 4.3.22
+- *(deps)* update rust crate clap to 4.3.21
+- *(deps)* update rust crate clap to 4.3.19
+- *(deps)* update rust crate clap to 4.3.17
+- *(deps)* update rust crate clap to 4.3.16
+- *(deps)* update rust crate clap to 4.3.15
+- *(deps)* update rust crate clap to 4.3.14
+- *(deps)* update rust crate clap to 4.3.12
+- *(deps)* update rust crate clap to 4.3.11
+- *(deps)* update rust crate bstr to 1.6.0
+- *(deps)* update rust crate clap to 4.3.10
+- *(deps)* update rust crate clap to 4.3.9
+- *(deps)* update rust crate clap to 4.3.8
+- *(deps)* update rust crate clap to 4.3.6
+
 ## [0.7.11](https://github.com/davidkna/lcat-rs/compare/lcat-v0.7.10...lcat-v0.7.11) (2022-09-14)
 
 
