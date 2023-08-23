@@ -15,6 +15,37 @@
     * lcowsay bumped from 0.5.7 to 0.5.8
     * lcat bumped from 0.7.11 to 0.7.12
 
+## [0.1.10](https://github.com/davidkna/lcat-rs/compare/lolcow-fortune-v0.1.9...lolcow-fortune-v0.1.10) - 2023-08-23
+
+### Fixed
+- switch to ureq
+
+### Other
+- *(deps)* update rust crate clap to 4.3.23
+- *(deps)* update rust crate clap to 4.3.22
+- *(deps)* update rust crate thiserror to 1.0.47
+- *(deps)* update rust crate thiserror to 1.0.46
+- *(deps)* update rust crate thiserror to 1.0.45
+- *(deps)* update rust crate flate2 to 1.0.27
+- *(deps)* update rust crate clap to 4.3.21
+- *(deps)* update rust crate tar to 0.4.40
+- *(deps)* update rust crate attohttpc to 0.26.0
+- *(deps)* update rust crate clap to 4.3.19
+- *(deps)* update rust crate thiserror to 1.0.44
+- *(deps)* update rust crate clap to 4.3.17
+- *(deps)* update rust crate clap to 4.3.16
+- *(deps)* update rust crate clap to 4.3.15
+- *(deps)* update rust crate clap to 4.3.14
+- *(deps)* update rust crate clap to 4.3.12
+- *(deps)* update rust crate tar to 0.4.39
+- *(deps)* update rust crate thiserror to 1.0.43
+- *(deps)* update rust crate clap to 4.3.11
+- *(deps)* update rust crate thiserror to 1.0.41
+- *(deps)* update rust crate clap to 4.3.10
+- *(deps)* update rust crate clap to 4.3.9
+- *(deps)* update rust crate clap to 4.3.8
+- *(deps)* update rust crate clap to 4.3.6
+
 ## [0.1.8](https://github.com/davidkna/lcat-rs/compare/lolcow-fortune-v0.1.7...lolcow-fortune-v0.1.8) (2022-09-14)
 
 
