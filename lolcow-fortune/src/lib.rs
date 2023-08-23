@@ -23,6 +23,11 @@ pub enum StrfileError {
     Io(#[from] io::Error),
     #[error("QuoteIndex")]
     QuoteIndex,
+    #[error("Overflow")]
+    Overflow,
+    #[cfg(feature = "build-binary")]
+    #[error("Download")]
+    Download(#[from] Box<ureq::Error>),
 }
 
 #[derive(Debug, Eq, PartialEq, DekuRead, DekuWrite, Default)]
@@ -81,7 +86,10 @@ impl Datfile {
             )
             .tuple_windows()
             .filter_map(|(a, b)| {
-                let diff = b.checked_sub(a + 2)? as u32;
+                let diff = {
+                    let t = b.checked_sub(a + 2)?;
+                    u32::try_from(t).ok()?
+                };
 
                 if diff > max_length {
                     max_length = diff;
@@ -136,7 +144,8 @@ impl Strfile {
         self.file
             .seek(SeekFrom::Start(start))
             .map_err(StrfileError::GetQuote)?;
-        let mut buf = vec![0; (end.get() - start) as usize];
+        let buf_size = usize::try_from(end.get() - start).map_err(|_| StrfileError::Overflow)?;
+        let mut buf = vec![0; buf_size];
         self.file
             .read_exact(&mut buf)
             .map_err(StrfileError::GetQuote)?;
@@ -144,7 +153,7 @@ impl Strfile {
 
         if self.metadata.is_encrypted() {
             let view = unsafe { quote.as_mut_vec() };
-            for i in view.iter_mut() {
+            for i in &mut *view {
                 match i {
                     b'a'..=b'm' | b'A'..=b'M' => *i += 13,
                     b'n'..=b'z' | b'N'..=b'Z' => *i -= 13,

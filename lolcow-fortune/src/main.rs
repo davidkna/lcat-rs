@@ -48,14 +48,13 @@ fn get_project_dir() -> ProjectDirs {
     ProjectDirs::from("moe", "knaack", "fortune").unwrap()
 }
 
-fn download() -> io::Result<()> {
-    let request =
-        attohttpc::get("https://github.com/shlomif/fortune-mod/archive/master.tar.gz").send()?;
-    if !request.is_success() {
-        return Err(io::Error::new(io::ErrorKind::Other, "Error status code"));
-    }
-    let (_, _, request) = request.split();
-    let gz_data = GzDecoder::new(request);
+fn download() -> Result<(), lolcow_fortune::StrfileError> {
+    let request = ureq::get("https://github.com/shlomif/fortune-mod/archive/master.tar.gz")
+        .call()
+        .map_err(Box::new)?;
+
+    let reader = request.into_reader();
+    let gz_data = GzDecoder::new(reader);
     let mut archive = Archive::new(gz_data);
 
     let project_dir = get_project_dir();

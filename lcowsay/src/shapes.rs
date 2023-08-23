@@ -9,14 +9,14 @@ pub enum CowShape {
     Ferris,
 }
 
-const COW: &str = r#"
+const COW: &str = r"
         \   ^__^
          \  (oo)\_______
             (__)\       )\/\
                 ||----w |
-                ||     ||"#;
+                ||     ||";
 
-const CLIPPY: &str = r#"
+const CLIPPY: &str = r"
          \
           \
              __
@@ -27,24 +27,24 @@ const CLIPPY: &str = r#"
             || |/
             || ||
             |\_/|
-            \___/"#;
+            \___/";
 
-const FERRIS: &str = r#"
+const FERRIS: &str = r"
         \
          \
             _~^~^~_
         \) /  o o  \ (/
           '_   -   _'
-          / '-----' \"#;
+          / '-----' \";
 
-const MOOSE: &str = r#"
+const MOOSE: &str = r"
   \
    \   \_\_    _/_/
     \      \__/
            (oo)\_______
            (__)\       )\/\
                ||----w |
-               ||     ||"#;
+               ||     ||";
 
 impl fmt::Display for CowShape {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
