@@ -33,7 +33,7 @@ build-binary = [
 deku = "0.16.0"
 fastrand = "2.0.0"
 itertools = "0.11.0"
-memchr = "2.5.0"
+memchr = "2.6.0"
 thiserror = "1.0.47"
 
 # Binary
