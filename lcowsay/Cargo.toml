@@ -25,7 +25,7 @@ build-binary = ["lcat", "clap"]
 clap = { version = "4.4.4", features = ["derive", "wrap_help"], optional = true }
 hyphenation = "0.8.4"
 textwrap = { version = "0.16.0", features = ["hyphenation"] }
-unicode-width = "0.1.10"
+unicode-width = "0.1.11"
 
 [dependencies.lcat]
 version = "0.7.13"
