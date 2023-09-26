@@ -4,7 +4,7 @@
     "github>davidkna/renovate-config"
   ],
   "rangeStrategy": "bump",
-  "regexManagers": [
+  "customManagers": [
     {
       "customType": "regex",
       "fileMatch": [
