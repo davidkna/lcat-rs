@@ -13,7 +13,7 @@ description = "Another lolcat in rust! Full unicode support, escapes for ANSI es
 default = ["clap"]
 
 [dependencies]
-bstr = "1.7.0"
+bstr = "1.8.0"
 clap = { version = "4.4.7", features = ["derive", "wrap_help"], optional = true }
 colorgrad = { version = "0.6.2", default-features = false }
 fastrand = "2.0.1"
