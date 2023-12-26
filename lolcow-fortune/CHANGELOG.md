@@ -1,5 +1,37 @@
 # Changelog
 
+## [0.1.11](https://github.com/davidkna/lcat-rs/compare/lolcow-fortune-v0.1.10...lolcow-fortune-v0.1.11) - 2023-12-26
+
+### Other
+- *(deps)* update rust crate thiserror to 1.0.52
+- *(deps)* update rust crate thiserror to 1.0.51
+- *(deps)* update rust crate clap to 4.4.11
+- *(deps)* update rust crate clap to 4.4.10
+- *(deps)* update rust crate clap to 4.4.9
+- *(deps)* update rust crate ureq to 2.9.1
+- *(deps)* update rust crate ureq to 2.9.0
+- *(deps)* update rust crate itertools to 0.12.0
+- *(deps)* update rust crate clap to 4.4.8
+- *(deps)* update rust crate clap to 4.4.7
+- *(deps)* update rust crate thiserror to 1.0.50
+- *(deps)* update rust crate flate2 to 1.0.28
+- *(deps)* update rust crate memchr to 2.6.4
+- *(deps)* update rust crate ureq to 2.8.0
+- *(deps)* update rust crate clap to 4.4.6
+- *(deps)* update rust crate thiserror to 1.0.49
+- *(deps)* update rust crate clap to 4.4.5
+- *(deps)* update rust crate fastrand to 2.0.1
+- *(deps)* update rust crate clap to 4.4.4
+- *(deps)* update rust crate clap to 4.4.3
+- *(deps)* update rust crate thiserror to 1.0.48
+- *(deps)* update rust crate memchr to 2.6.3
+- *(deps)* update rust crate clap to 4.4.2
+- *(deps)* update rust crate memchr to 2.6.2
+- *(deps)* update rust crate memchr to 2.6.1
+- *(deps)* update rust crate memchr to 2.6.0
+- *(deps)* update rust crate clap to 4.4.1
+- *(deps)* update rust crate clap to 4.4.0
+
 ## [0.1.9](https://github.com/davidkna/lcat-rs/compare/lolcow-fortune-v0.1.8...lolcow-fortune-v0.1.9) (2022-12-21)
 
 
