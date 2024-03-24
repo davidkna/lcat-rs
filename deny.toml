@@ -1,18 +1,10 @@
 [advisories]
-db-urls = ["https://github.com/rustsec/advisory-db"]
-vulnerability = "deny"
-unmaintained = "warn"
-yanked = "warn"
-notice = "warn"
+version = 2
 ignore = []
 
 [licenses]
-unlicensed = "deny"
+version = 2
 allow = ["MIT", "Apache-2.0", "MPL-2.0", "Unicode-DFS-2016", "ISC", "OpenSSL", "BSD-3-Clause"]
-copyleft = "warn"
-allow-osi-fsf-free = "neither"
-default = "deny"
-confidence-threshold = 0.8
 
 [[licenses.clarify]]
 name = "ring"
