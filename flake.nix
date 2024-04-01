@@ -24,15 +24,18 @@
         craneLib = crane.lib.${system};
         src = craneLib.cleanCargoSource (craneLib.path ./.);
 
-        commonArgs = craneLib.crateNameFromCargoToml { cargoToml = ./lcat/Cargo.toml; } //{
+        commonArgs = craneLib.crateNameFromCargoToml { cargoToml = ./lcat/Cargo.toml; } // {
           inherit src;
           strictDeps = true;
 
-          buildInputs = lib.optionals pkgs.stdenv.isDarwin (with pkgs; [
-            iconv
-            darwin.apple_sdk.frameworks.Security
-          ]);
-        } ;
+          buildInputs = lib.optionals pkgs.stdenv.isDarwin (
+            with pkgs;
+            [
+              iconv
+              darwin.apple_sdk.frameworks.Security
+            ]
+          );
+        };
 
         cargoArtifacts = craneLib.buildDepsOnly commonArgs;
 
