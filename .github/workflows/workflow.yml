@@ -7,71 +7,20 @@ on:
   pull_request:
     paths-ignore:
       - "**.md"
-env:
-  CARGO_INCREMENTAL: 0
-  CARGO_NET_RETRY: 10
-  RUST_BACKTRACE: short
-  RUSTFLAGS: "-D warnings"
-  RUSTUP_MAX_RETRIES: 10
 
 jobs:
-  test:
-      name: Test Suite
-      runs-on: ubuntu-latest
+    build:
+      name: Build Nix targets
+      runs-on: ubuntu-22.04
+      permissions:
+        id-token: "write"
+        contents: "read"
       steps:
-        - name: Checkout sources
-          uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
-
-        - uses: Swatinem/rust-cache@v2.7.3
-
-        - name: Install stable toolchain
-          uses: dtolnay/rust-toolchain@stable
-          with:
-            components: llvm-tools-preview
-
-        - name: Run cargo check
-          run: cargo check
-
-        - name: Install additional tools
-          uses: taiki-e/install-action@v2
-          with:
-            tool: cargo-llvm-cov@0.5.0,cargo-nextest@0.9.42
-        - name: Generate code coverage
-          run: cargo llvm-cov nextest --all-features --workspace --lcov --output-path lcov.info
-        - name: Upload coverage to Codecov
-          uses: codecov/codecov-action@v4
-          with:
-            token: ${{ secrets.CODECOV_TOKEN }}
-            files: lcov.info
-
-  lints:
-    name: Lints
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout sources
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
-
-      - uses: Swatinem/rust-cache@v2.7.3
-
-      - name: Install nightly toolchain
-        uses: dtolnay/rust-toolchain@nightly
-        with:
-          components: rustfmt, clippy
-
-      - name: Run cargo fmt
-        run: cargo fmt --all
-
-      - name: Report fmt changes
-        uses: reviewdog/action-suggester@v1
-        with:
-          tool_name: cargo fmt
-          level: error
-          fail_on_error: 'true'
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Run clippy
-        uses: giraffate/clippy-action@v1
-        with:
-          clippy_flags: -- -Dwarnings
-          fail_on_error: 'true'
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+        - uses: actions/checkout@v4
+        - uses: DeterminateSystems/nix-installer-action@main
+        - uses: DeterminateSystems/magic-nix-cache-action@main
+        - uses: DeterminateSystems/flake-checker-action@main
+        - name: Run `nix flake check`
+          run: nix flake check .
+        - name: Run `nix build`
+          run: nix build .
