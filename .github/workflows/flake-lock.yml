@@ -26,6 +26,6 @@ jobs:
           pr-labels: |
             dependencies
             automated
-      - run: "gh pr merge --auto --merge ${{ steps.update.outputs.pull-request-number }}"
+      - run: "gh pr merge --auto --squash ${{ steps.update.outputs.pull-request-number }}"
         env:
           GH_TOKEN: ${{ steps.get-token.outputs.token }}
