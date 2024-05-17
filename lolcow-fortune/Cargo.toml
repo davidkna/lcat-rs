@@ -34,7 +34,7 @@ deku = "0.16.0"
 fastrand = "2.1.0"
 itertools = "0.13.0"
 memchr = "2.7.2"
-thiserror = "1.0.60"
+thiserror = "1.0.61"
 
 # Binary
 clap = { version = "4.5.4", features = ["derive", "wrap_help"], optional = true }
