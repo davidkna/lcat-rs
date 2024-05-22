@@ -7,17 +7,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1716080827,
-        "narHash": "sha256-2R9LBCR8TlMuK4Md9ELwPVuwRQWI3pAh7Nj9e318Hk4=",
-        "owner": "ipetkov",
-        "repo": "crane",
-        "rev": "a7146b04405d93b24a1bac76d93270787872c8be",
-        "type": "github"
+        "lastModified": 1714842444,
+        "narHash": "sha256-z4HeSYtEdYxKurrbxCMb8v/I1LYDHR/aFrZtGtgUgHw=",
+        "rev": "c5ee4371eea1728ef04bb09c79577c84d5e67a48",
+        "revCount": 557,
+        "type": "tarball",
+        "url": "https://api.flakehub.com/f/pinned/ipetkov/crane/0.16.6/018f4495-627e-7385-b537-81f1c1d4003b/source.tar.gz"
       },
       "original": {
-        "owner": "ipetkov",
-        "repo": "crane",
-        "type": "github"
+        "type": "tarball",
+        "url": "https://flakehub.com/f/ipetkov/crane/0.16.6.tar.gz"
       }
     },
     "flake-utils": {
