@@ -1,5 +1,4 @@
 use std::{
-    convert::TryInto,
     env, fs,
     fs::File,
     io,
@@ -10,6 +9,7 @@ use std::{
 };
 
 use clap::Parser;
+use deku::DekuWriter;
 use directories::ProjectDirs;
 use flate2::read::GzDecoder;
 use lcat::{Rainbow, RainbowCmd};
@@ -82,11 +82,12 @@ fn download() -> Result<(), lolcow_fortune::StrfileError> {
             let mut str_file = File::create(&target)?;
             str_file.write_all(&buffer)?;
 
-            let dat_file = Datfile::build(&buffer, b'%', 0);
-            let mut dat = File::create(target.with_extension("dat"))?;
+            let dat_file_data = Datfile::build(&buffer, b'%', 0);
+            let dat_file_writer = File::create(target.with_extension("dat"))?;
 
-            let bytes: Vec<u8> = dat_file.try_into().unwrap();
-            dat.write_all(&bytes)?;
+            dat_file_data
+                .to_writer(&mut deku::writer::Writer::new(dat_file_writer), ())
+                .map_err(StrfileError::Write)?;
         }
     }
 

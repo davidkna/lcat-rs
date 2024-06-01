@@ -1,6 +1,6 @@
 use std::{
     convert::TryInto,
-    fs::{self, File},
+    fs::File,
     io::{self, prelude::*, Seek, SeekFrom},
     num::NonZeroU64,
     path::Path,
@@ -15,6 +15,8 @@ use memchr::memmem::find_iter;
 pub enum StrfileError {
     #[error("failed to open file {0}")]
     Open(io::Error),
+    #[error("failed to write datfile {0}")]
+    Write(DekuError),
     #[error("failed to parse datfile {0}")]
     DatParse(DekuError),
     #[error("failed to get quote {0}")]
@@ -124,8 +126,8 @@ pub struct Strfile {
 
 impl Strfile {
     pub fn new(strfile: &Path, datfile: &Path) -> Result<Self, StrfileError> {
-        let datfile = fs::read(datfile).map_err(StrfileError::Open)?;
-        let metadata = Datfile::from_bytes((&datfile, 0))
+        let mut datfile = File::open(datfile).map_err(StrfileError::Open)?;
+        let metadata = Datfile::from_reader((&mut datfile, 0))
             .map_err(StrfileError::DatParse)?
             .1;
 
