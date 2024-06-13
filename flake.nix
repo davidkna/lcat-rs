@@ -2,7 +2,7 @@
   inputs = {
     flake-utils.url = "github:numtide/flake-utils";
     crane = {
-      url = "https://flakehub.com/f/ipetkov/crane/0.16.6.tar.gz";
+      url = "https://flakehub.com/f/ipetkov/crane/0.17.*.tar.gz";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
@@ -21,8 +21,8 @@
         pkgs = (import nixpkgs) { inherit system; };
         inherit (pkgs) lib;
 
-        craneLib = crane.lib.${system};
-        src = craneLib.cleanCargoSource (craneLib.path ./.);
+        craneLib = crane.mkLib pkgs;
+        src = craneLib.cleanCargoSource ./.;
 
         commonArgs = craneLib.crateNameFromCargoToml { cargoToml = ./lcat/Cargo.toml; } // {
           inherit src;
