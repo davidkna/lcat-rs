@@ -13,11 +13,11 @@ pub enum RainbowStyle {
 pub struct RainbowCmd {
     ///  How many degrees to shift text color hue for every column
     #[clap(short = 'C', long, default_value = "1.6")]
-    shift_col: f64,
+    shift_col: f32,
 
     /// How many degrees to shift text color hue for every row
     #[clap(short = 'R', long, default_value = "3.2")]
-    shift_row: f64,
+    shift_row: f32,
 
     /// Don't randomize sign of col and row shift values
     #[clap(short = 'n', long)]
@@ -25,7 +25,7 @@ pub struct RainbowCmd {
 
     /// Sets initial hue of text color in degress [default: random]
     #[clap(short = 'H', long)]
-    hue: Option<f64>,
+    hue: Option<f32>,
 
     /// Rainbow mode
     #[clap(short, long, value_enum, default_value = "rainbow")]
@@ -58,11 +58,11 @@ impl From<RainbowCmd> for Rainbow {
             -cmd.shift_row
         } / 360.;
 
-        let start = cmd.hue.map_or_else(fastrand::f64, |hue| hue / 360.);
+        let start = cmd.hue.map_or_else(fastrand::f32, |hue| hue / 360.);
 
         let grad: Box<dyn Grad> = match cmd.style {
-            RainbowStyle::Rainbow => Box::new(colorgrad::rainbow()),
-            RainbowStyle::Sinebow => Box::new(colorgrad::sinebow()),
+            RainbowStyle::Rainbow => Box::new(colorgrad::preset::rainbow()),
+            RainbowStyle::Sinebow => Box::new(colorgrad::preset::sinebow()),
             RainbowStyle::OkHsv => Box::new(HsvGrad {}),
         };
 

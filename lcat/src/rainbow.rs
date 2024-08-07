@@ -7,11 +7,11 @@ use unicode_width::UnicodeWidthChar;
 use crate::ok::{Hsv, Lab, LinRgb, Rgb};
 
 pub trait Grad {
-    fn color_at(&self, pos: f64) -> (u8, u8, u8);
+    fn color_at(&self, pos: f32) -> (u8, u8, u8);
 }
 
-impl Grad for colorgrad::Gradient {
-    fn color_at(&self, pos: f64) -> (u8, u8, u8) {
+impl<T: colorgrad::Gradient> Grad for T {
+    fn color_at(&self, pos: f32) -> (u8, u8, u8) {
         let [r, g, b, _] = self.at(pos).to_rgba8();
         (r, g, b)
     }
@@ -21,9 +21,9 @@ pub struct HsvGrad {}
 
 impl Grad for HsvGrad {
     #[allow(clippy::cast_possible_truncation)]
-    fn color_at(&self, pos: f64) -> (u8, u8, u8) {
+    fn color_at(&self, pos: f32) -> (u8, u8, u8) {
         let Rgb { r, g, b } = Rgb::from(&LinRgb::from(&Lab::from(&Hsv {
-            h: pos as f32,
+            h: pos,
             s: 1.0,
             v: 1.0,
         })));
@@ -34,9 +34,9 @@ impl Grad for HsvGrad {
 pub struct Rainbow {
     current_row: usize,
     current_col: usize,
-    shift_col: f64,
-    shift_row: f64,
-    position: f64,
+    shift_col: f32,
+    shift_row: f32,
+    position: f32,
     gradient: Box<dyn Grad>,
     invert: bool,
 }
@@ -45,9 +45,9 @@ impl Rainbow {
     #[must_use]
     pub fn new(
         gradient: Box<dyn Grad>,
-        start: f64,
-        shift_col: f64,
-        shift_row: f64,
+        start: f32,
+        shift_col: f32,
+        shift_row: f32,
         invert: bool,
     ) -> Self {
         Self {
@@ -63,25 +63,25 @@ impl Rainbow {
 
     pub fn step_row(&mut self, n_row: usize) {
         self.current_row += n_row;
-        self.position += n_row as f64 * self.shift_row;
+        self.position += n_row as f32 * self.shift_row;
     }
 
     pub fn step_col(&mut self, n_col: usize) {
         self.current_col += n_col;
-        self.position += n_col as f64 * self.shift_col;
+        self.position += n_col as f32 * self.shift_col;
     }
 
     pub fn reset_row(&mut self) {
-        self.position -= self.current_row as f64 * self.shift_row;
+        self.position -= self.current_row as f32 * self.shift_row;
         self.current_row = 0;
     }
 
     pub fn reset_col(&mut self) {
-        self.position -= self.current_col as f64 * self.shift_col;
+        self.position -= self.current_col as f32 * self.shift_col;
         self.current_col = 0;
     }
 
-    fn get_position(&mut self) -> f64 {
+    fn get_position(&mut self) -> f32 {
         if self.position < 0.0 || self.position > 1.0 {
             self.position -= self.position.floor();
         }
@@ -193,7 +193,7 @@ mod tests {
     use super::*;
 
     fn create_rb() -> Rainbow {
-        Rainbow::new(Box::new(colorgrad::rainbow()), 0.0, 0.1, 0.2, false)
+        Rainbow::new(Box::new(colorgrad::preset::rainbow()), 0.0, 0.1, 0.2, false)
     }
 
     #[test]
