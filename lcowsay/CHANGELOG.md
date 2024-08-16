@@ -1,8 +1,50 @@
 # Changelog
 
 * The following workspace dependencies were updated
-  * dependencies
-    * lcat bumped from 0.7.11 to 0.7.12
+* dependencies
+* lcat bumped from 0.7.11 to 0.7.12
+
+## [0.5.10](https://github.com/davidkna/lcat-rs/compare/lcowsay-v0.5.9...lcowsay-v0.5.10) - 2024-08-16
+
+### Other
+- *(deps)* update rust crate clap to 4.5.16
+- *(deps)* update rust crate clap to 4.5.15
+- *(deps)* update rust crate clap to 4.5.14
+- *(deps)* update rust crate clap to 4.5.13
+- *(deps)* update rust crate clap to 4.5.11
+- *(deps)* update rust crate clap to 4.5.10
+- *(deps)* update rust crate clap to 4.5.9
+- *(deps)* update rust crate clap to 4.5.8
+- *(deps)* update rust crate clap to 4.5.7
+- *(deps)* update rust crate clap to 4.5.6
+- *(deps)* update rust crate unicode-width to 0.1.13
+- *(deps)* update rust crate unicode-width to 0.1.12
+- *(deps)* update rust crate clap to 4.5.4
+- *(deps)* update rust crate clap to 4.5.3
+- *(deps)* update rust crate clap to 4.5.2
+- *(deps)* update rust crate textwrap to 0.16.1
+- *(deps)* update rust crate clap to 4.5.1
+- *(deps)* update rust crate clap to 4.5.0
+- *(deps)* update rust crate clap to 4.4.18
+- *(deps)* update rust crate clap to 4.4.17
+- *(deps)* update rust crate clap to 4.4.16
+- *(deps)* update rust crate clap to 4.4.15
+- *(deps)* update rust crate clap to 4.4.14
+- *(deps)* update rust crate clap to 4.4.13
+- *(deps)* update rust crate clap to 4.4.12
+- *(deps)* update rust crate clap to 4.4.11
+- *(deps)* update rust crate clap to 4.4.10
+- *(deps)* update rust crate clap to 4.4.9
+- *(deps)* update rust crate clap to 4.4.8
+- *(deps)* update rust crate clap to 4.4.7
+- *(deps)* update rust crate clap to 4.4.6
+- *(deps)* update rust crate clap to 4.4.5
+- *(deps)* update rust crate unicode-width to 0.1.11
+- *(deps)* update rust crate clap to 4.4.4
+- *(deps)* update rust crate clap to 4.4.3
+- *(deps)* update rust crate clap to 4.4.2
+- *(deps)* update rust crate clap to 4.4.1
+- *(deps)* update rust crate clap to 4.4.0
 
 ## [0.5.9](https://github.com/davidkna/lcat-rs/compare/lcowsay-v0.5.8...lcowsay-v0.5.9) - 2023-08-23
 
