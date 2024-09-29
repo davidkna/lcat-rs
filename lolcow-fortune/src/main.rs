@@ -49,11 +49,12 @@ fn get_project_dir() -> ProjectDirs {
 }
 
 fn download() -> Result<(), lolcow_fortune::StrfileError> {
-    let request = ureq::get("https://github.com/shlomif/fortune-mod/archive/master.tar.gz")
+    let response = ureq::get("https://github.com/shlomif/fortune-mod/archive/master.tar.gz")
         .call()
         .map_err(Box::new)?;
 
-    let reader = request.into_reader();
+    let (_, body) = response.into_parts();
+    let reader = body.into_reader();
     let gz_data = GzDecoder::new(reader);
     let mut archive = Archive::new(gz_data);
 
