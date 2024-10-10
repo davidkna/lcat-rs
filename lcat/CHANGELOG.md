@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.7.15](https://github.com/davidkna/lcat-rs/compare/lcat-v0.7.14...lcat-v0.7.15) - 2024-10-01
+
+### Added
+
+- *(lcat)* colorize `--help` ([#152](https://github.com/davidkna/lcat-rs/pull/152))
+
+### Other
+
+- *(deps)* update rust crate clap to 4.5.19
+- *(deps)* update rust crate clap to 4.5.18
+- *(deps)* update rust crate unicode-width to 0.2.0
+- *(deps)* update rust crate unicode-segmentation to 1.12.0
+- *(deps)* update rust crate clap to 4.5.17
+- *(deps)* update rust crate fastrand to 2.1.1
+
 ## [0.7.14](https://github.com/davidkna/lcat-rs/compare/lcat-v0.7.13...lcat-v0.7.14) - 2024-08-16
 
 ### Other
