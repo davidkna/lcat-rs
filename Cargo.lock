@@ -386,18 +386,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "2304e00983f87ffb38b55b444b5e3b60a884b5d30c0fca7d82fe33449bbe55ea"
 
 [[package]]
-name = "hoot"
-version = "0.2.6"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9faf289df1f00f6daaa1bcce481f6ef7f28f153a8ef985409914d357c9cd57a2"
-dependencies = [
- "http",
- "httparse",
- "log",
- "url",
-]
-
-[[package]]
 name = "http"
 version = "1.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1099,22 +1087,33 @@ checksum = "8ecb6da28b8a351d773b68d5825ac39017e680750f980f3a1a85cd8dd28a47c1"
 
 [[package]]
 name = "ureq"
-version = "3.0.0-rc2"
+version = "3.0.0-rc3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "3a139c7262528ca928e9a4368281577453ae93953159d7d7b922165bd083049f"
+checksum = "37c3a545fa4b66681e920b35c903c0e5c4ca706b25d68a209bdcd3f970d2436a"
 dependencies = [
  "base64",
  "cc",
- "hoot",
- "http",
  "log",
  "once_cell",
  "percent-encoding",
  "rustls",
  "rustls-pemfile",
  "rustls-pki-types",
+ "ureq-proto",
  "utf-8",
  "webpki-roots",
+]
+
+[[package]]
+name = "ureq-proto"
+version = "0.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "dcec9cbfbf05a7feef00db0295c6183f468635c7adb12a31e941f3660b071bff"
+dependencies = [
+ "http",
+ "httparse",
+ "log",
+ "url",
 ]
 
 [[package]]
