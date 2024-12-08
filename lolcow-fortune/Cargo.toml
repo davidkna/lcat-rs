@@ -31,7 +31,7 @@ build-binary = [
 [dependencies]
 # Lib
 deku = "0.18.1"
-fastrand = "2.2.0"
+fastrand = "2.3.0"
 itertools = "0.13.0"
 memchr = "2.7.4"
 thiserror = "2.0.5"
