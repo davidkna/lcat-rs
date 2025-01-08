@@ -1087,9 +1087,9 @@ checksum = "8ecb6da28b8a351d773b68d5825ac39017e680750f980f3a1a85cd8dd28a47c1"
 
 [[package]]
 name = "ureq"
-version = "3.0.0-rc4"
+version = "3.0.0-rc5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "169b7c8e688449a8385406afd0f7f3881b0124f2143fb8be710364d61810df34"
+checksum = "77f9bd1d03fe3bf87c90b115a0e09e22535cbcff3f8d0a6487524f006325f173"
 dependencies = [
  "base64",
  "cc",
@@ -1106,9 +1106,9 @@ dependencies = [
 
 [[package]]
 name = "ureq-proto"
-version = "0.2.2"
+version = "0.2.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f76790855073cbbdf9a23a7a622741480cebaec1d9b9b06b6ed2c55611fed37c"
+checksum = "a27729fd2c15426f48992a911ce31bd1f29c1cd0898c2c86b410d24f51c99eb3"
 dependencies = [
  "base64",
  "http",
