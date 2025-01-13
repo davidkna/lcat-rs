@@ -38,7 +38,7 @@ thiserror = "2.0.11"
 
 # Binary
 clap = { version = "4.5.26", features = ["derive", "wrap_help"], optional = true }
-directories = { version = "5.0.1", optional = true }
+directories = { version = "6.0.0", optional = true }
 
 # Download
 flate2 = { version = "1.0.35", optional = true, default-features = false, features = ["rust_backend"] }
