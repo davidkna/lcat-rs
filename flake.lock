@@ -1,22 +1,17 @@
 {
   "nodes": {
     "crane": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
       "locked": {
-        "lastModified": 1724367763,
-        "narHash": "sha256-LkXQbqWYSEeKeVDWHt702HluW/89bBpYsA6d7FD0gk8=",
-        "rev": "3f502002862cdf91debcc49068fc563f00bc894e",
-        "revCount": 609,
+        "lastModified": 1739053031,
+        "narHash": "sha256-LrMDRuwAlRFD2T4MgBSRd1s2VtOE+Vl1oMCNu3RpPE0=",
+        "rev": "112e6591b2d6313b1bd05a80a754a8ee42432a7e",
+        "revCount": 698,
         "type": "tarball",
-        "url": "https://api.flakehub.com/f/pinned/ipetkov/crane/0.18.1/01917c56-0650-7379-a3a2-f9233af8c825/source.tar.gz"
+        "url": "https://api.flakehub.com/f/pinned/ipetkov/crane/0.20.1/0194e7a4-f8c1-7d4e-a64c-2fd888fbb4a8/source.tar.gz?rev=112e6591b2d6313b1bd05a80a754a8ee42432a7e&revCount=698"
       },
       "original": {
         "type": "tarball",
-        "url": "https://flakehub.com/f/ipetkov/crane/0.18.%2A.tar.gz"
+        "url": "https://flakehub.com/f/ipetkov/crane/0.20.%2A.tar.gz"
       }
     },
     "flake-utils": {
