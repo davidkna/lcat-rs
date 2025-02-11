@@ -122,7 +122,7 @@ impl Rainbow {
                 || !grapheme
                     .as_bytes()
                     .first()
-                    .map_or(false, u8::is_ascii_alphabetic);
+                    .is_some_and(u8::is_ascii_alphabetic);
         } else {
             let (r, g, b) = self.get_color();
             if self.invert {

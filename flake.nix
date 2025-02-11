@@ -1,10 +1,7 @@
 {
   inputs = {
     flake-utils.url = "github:numtide/flake-utils";
-    crane = {
-      url = "https://flakehub.com/f/ipetkov/crane/0.20.*.tar.gz";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    crane.url = "https://flakehub.com/f/ipetkov/crane/0.20.*.tar.gz";
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
   };
 

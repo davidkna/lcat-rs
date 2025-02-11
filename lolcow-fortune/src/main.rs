@@ -98,15 +98,11 @@ fn download() -> Result<(), lolcow_fortune::StrfileError> {
 fn get_fortune_dirs(from_opts: Option<String>) -> Vec<PathBuf> {
     let mut dirs = Vec::new();
     if let Some(files) = from_opts {
-        env::split_paths(&files)
-            .map(PathBuf::from)
-            .for_each(|i| dirs.push(i));
+        env::split_paths(&files).for_each(|i| dirs.push(i));
     }
     dirs.push(get_project_dir().data_dir().to_path_buf());
     if let Ok(files) = env::var("FORTUNE_PATH") {
-        env::split_paths(&files)
-            .map(PathBuf::from)
-            .for_each(|i| dirs.push(i));
+        env::split_paths(&files).for_each(|i| dirs.push(i));
     }
     if !cfg!(windows) {
         dirs.push("/usr/share/games/fortune/".into());
@@ -125,7 +121,7 @@ fn get_fortune_files(dirs: &[PathBuf]) -> Option<Vec<(PathBuf, PathBuf)>> {
                     .filter_map(|j| {
                         let path = j.path();
                         if j.file_type().map(|ft| ft.is_file()).unwrap_or(false)
-                            && path.extension().map_or(false, |ext| ext == "dat")
+                            && path.extension().is_some_and(|ext| ext == "dat")
                         {
                             if path.with_extension("u8").exists() {
                                 return Some((path.clone(), path.with_extension("u8")));
