@@ -1,5 +1,67 @@
 # Changelog
 
+## [0.1.12](https://github.com/davidkna/lcat-rs/compare/lolcow-fortune-v0.1.11...lolcow-fortune-v0.1.12) - 2025-02-24
+
+### Other
+
+- *(deps)* update rust crate clap to 4.5.31 (#164)
+- *(deps)* update rust crate flate2 to 1.1.0 (#165)
+- drop ring
+- *(deps)* update rust crate tar to 0.4.44 (#163)
+- *(deps)* update rust crate ureq to 3.0.6 (#162)
+- *(deps)* update rust crate clap to 4.5.30 (#161)
+- *(deps)* update rust crate clap to 4.5.29 (#159)
+- clippy fixes
+- *(deps)* update rust crate ureq to 3.0.5
+- *(deps)* update rust crate clap to 4.5.28
+- *(deps)* update rust crate ureq to 3.0.4
+- *(deps)* update rust crate ureq to 3.0.3
+- *(deps)* update rust crate ureq to 3.0.2
+- *(deps)* update rust crate ureq to 3.0.1
+- *(deps)* update rust crate clap to 4.5.27
+- *(deps)* update rust crate directories to v6 (#157)
+- *(deps)* update rust crate thiserror to 2.0.11
+- *(deps)* update rust crate clap to 4.5.26
+- *(deps)* update rust crate thiserror to 2.0.10
+- *(deps)* update rust crate ureq to 3.0.0-rc5
+- *(deps)* update rust crate clap to 4.5.24
+- *(deps)* update rust crate ureq to 3.0.0-rc4
+- *(deps)* update rust crate itertools to 0.14.0
+- *(deps)* update rust crate thiserror to 2.0.9
+- *(deps)* update rust crate thiserror to 2.0.8
+- *(deps)* update rust crate thiserror to 2.0.7
+- *(deps)* update rust crate thiserror to 2.0.6
+- *(deps)* update rust crate fastrand to 2.3.0
+- *(deps)* update rust crate thiserror to 2.0.5
+- *(deps)* update rust crate clap to 4.5.23
+- *(deps)* update rust crate clap to 4.5.22
+- *(deps)* update rust crate thiserror to 2.0.4
+- *(deps)* update rust crate ureq to 3.0.0-rc3
+- *(deps)* update rust crate flate2 to 1.0.35
+- *(deps)* update rust crate clap to 4.5.21
+- *(deps)* update rust crate thiserror to v2 (#155)
+- *(deps)* update rust crate thiserror to 1.0.69
+- *(deps)* update rust crate fastrand to 2.2.0
+- *(deps)* update rust crate thiserror to 1.0.68
+- *(deps)* update rust crate thiserror to 1.0.67
+- *(deps)* update rust crate tar to 0.4.43
+- *(deps)* update rust crate thiserror to 1.0.66
+- *(deps)* update rust crate thiserror to 1.0.65
+- *(deps)* update rust crate ureq to 3.0.0-rc2
+- *(deps)* update rust crate clap to 4.5.20
+- *(deps)* update rust crate clap to 4.5.19
+- *(deps)* bump ureq to 3.0.0-rc1
+- *(deps)* update rust crate flate2 to 1.0.34
+- *(deps)* update rust crate tar to 0.4.42
+- *(deps)* update rust crate thiserror to 1.0.64
+- *(deps)* update rust crate clap to 4.5.18
+- *(deps)* update rust crate deku to 0.18.1
+- *(deps)* update rust crate deku to 0.18.0
+- *(deps)* update rust crate clap to 4.5.17
+- *(deps)* update rust crate flate2 to 1.0.33
+- *(deps)* update rust crate fastrand to 2.1.1
+- *(deps)* update rust crate flate2 to 1.0.32
+
 ## [0.1.11](https://github.com/davidkna/lcat-rs/compare/lolcow-fortune-v0.1.10...lolcow-fortune-v0.1.11) - 2024-08-16
 
 ### Other

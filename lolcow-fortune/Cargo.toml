@@ -1,6 +1,6 @@
 [package]
 name = "lolcow-fortune"
-version = "0.1.11"
+version = "0.1.12"
 authors = ["David Knaack <davidkna@users.noreply.github.com>"]
 edition = "2021"
 license = "MIT OR Apache-2.0"
@@ -48,11 +48,11 @@ ureq = { version = "3.0.6", optional = true, default-features = false, features 
 rustls = { version = "0.23.22", optional = true }
 
 [dependencies.lcowsay]
-version = "0.5.10"
+version = "0.5.11"
 path = "../lcowsay"
 optional = true
 
 [dependencies.lcat]
-version = "0.7.14"
+version = "0.7.15"
 path = "../lcat"
 optional = true
