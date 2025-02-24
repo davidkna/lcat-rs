@@ -6,6 +6,7 @@ use std::{
     path::{Path, PathBuf},
     result::Result,
     str,
+    sync::Arc,
 };
 
 use clap::Parser;
@@ -16,6 +17,7 @@ use lcat::{Rainbow, RainbowCmd};
 use lcowsay::{Cow, CowShape};
 use lolcow_fortune::{Datfile, Strfile, StrfileError};
 use tar::Archive;
+use ureq::tls::{TlsConfig, TlsProvider};
 
 #[derive(Parser)]
 struct Opt {
@@ -49,7 +51,20 @@ fn get_project_dir() -> ProjectDirs {
 }
 
 fn download() -> Result<(), lolcow_fortune::StrfileError> {
-    let response = ureq::get("https://github.com/shlomif/fortune-mod/archive/master.tar.gz")
+    let crypto = Arc::new(rustls::crypto::aws_lc_rs::default_provider());
+    let agent = ureq::Agent::config_builder()
+        .tls_config(
+            TlsConfig::builder()
+                .provider(TlsProvider::Rustls)
+                // requires rustls or rustls-no-provider feature
+                .unversioned_rustls_crypto_provider(crypto)
+                .build(),
+        )
+        .build()
+        .new_agent();
+
+    let response = agent
+        .get("https://github.com/shlomif/fortune-mod/archive/master.tar.gz")
         .call()
         .map_err(Box::new)?;
 
