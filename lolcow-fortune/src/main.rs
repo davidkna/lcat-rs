@@ -1,23 +1,10 @@
-use std::{
-    env, fs,
-    fs::File,
-    io,
-    io::{Read, Write},
-    path::{Path, PathBuf},
-    result::Result,
-    str,
-    sync::Arc,
-};
+use std::{env, io, io::Write, path::PathBuf, result::Result, str};
 
 use clap::Parser;
-use deku::DekuWriter;
 use directories::ProjectDirs;
-use flate2::read::GzDecoder;
 use lcat::{Rainbow, RainbowCmd};
 use lcowsay::{Cow, CowShape};
-use lolcow_fortune::{Datfile, Strfile, StrfileError};
-use tar::Archive;
-use ureq::tls::{TlsConfig, TlsProvider};
+use lolcow_fortune::{Strfile, StrfileError};
 
 #[derive(Parser)]
 struct Opt {
@@ -50,8 +37,22 @@ fn get_project_dir() -> ProjectDirs {
     ProjectDirs::from("moe", "knaack", "fortune").unwrap()
 }
 
+#[cfg(feature = "download")]
 fn download() -> Result<(), lolcow_fortune::StrfileError> {
-    let crypto = Arc::new(rustls::crypto::aws_lc_rs::default_provider());
+    use std::{
+        fs::{self, File},
+        io::Read,
+        path::Path,
+        sync::Arc,
+    };
+
+    use deku::DekuWriter;
+    use flate2::read::GzDecoder;
+    use lolcow_fortune::Datfile;
+    use tar::Archive;
+    use ureq::tls::{TlsConfig, TlsProvider};
+
+    let crypto = Arc::new(rustls_graviola::default_provider());
     let agent = ureq::Agent::config_builder()
         .tls_config(
             TlsConfig::builder()
@@ -193,8 +194,17 @@ fn main() -> Result<(), lolcow_fortune::StrfileError> {
             stdout.flush()?;
         }
         Command::Download => {
-            download()?;
-            println!("Done!");
+            #[cfg(feature = "download")]
+            {
+                download()?;
+                println!("Done!");
+            }
+            #[cfg(not(feature = "download"))]
+            {
+                eprintln!("This build of lcowsay was not compiled with the download feature.");
+                eprintln!("Please recompile with the `download` feature to use this command.");
+                std::process::exit(1);
+            }
         }
         Command::Tell => {
             let quote = get_random_quote(opt.strfiles)?;

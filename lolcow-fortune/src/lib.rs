@@ -27,7 +27,7 @@ pub enum StrfileError {
     QuoteIndex,
     #[error("Overflow")]
     Overflow,
-    #[cfg(feature = "build-binary")]
+    #[cfg(feature = "download")]
     #[error("Download")]
     Download(#[from] Box<ureq::Error>),
 }

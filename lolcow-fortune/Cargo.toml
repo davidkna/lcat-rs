@@ -17,16 +17,20 @@ path = "src/main.rs"
 required-features = ["build-binary"]
 
 [features]
-default = ["build-binary"]
+default = ["build-binary", "download"]
 build-binary = [
-  "clap",
-  "directories",
-  "flate2",
-  "lcat",
-  "lcowsay",
-  "tar",
-  "ureq",
-  "rustls",
+  "dep:clap",
+  "dep:directories",
+  "dep:lcat",
+  "dep:lcowsay",
+]
+
+download = [
+  "dep:flate2",
+  "dep:tar",
+  "dep:ureq",
+  "dep:rustls",
+  "dep:rustls-graviola"
 ]
 
 [dependencies]
@@ -43,9 +47,10 @@ directories = { version = "6.0.0", optional = true }
 
 # Download
 flate2 = { version = "1.1.0", optional = true, default-features = false, features = ["rust_backend"] }
-rustls = { version = "0.23.25", optional = true }
+rustls = { version = "0.23.25", optional = true, default-features = false }
 tar = { version = "0.4.44", optional = true }
 ureq = { version = "3.0.10", optional = true, default-features = false, features = ["rustls-no-provider"] }
+rustls-graviola = { version = "0.2.0", optional = true }
 
 [dependencies.lcowsay]
 version = "0.5.10"
