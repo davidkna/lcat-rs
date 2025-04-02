@@ -1,5 +1,42 @@
 # Changelog
 
+## [0.7.15](https://github.com/davidkna/lcat-rs/compare/lcat-v0.7.14...lcat-v0.7.15) - 2025-04-02
+
+### Added
+
+- *(lcat)* colorize `--help` ([#152](https://github.com/davidkna/lcat-rs/pull/152))
+
+### Other
+
+- *(deps)* update rust crate clap to 4.5.35
+- *(deps)* update rust crate clap to 4.5.34
+- *(deps)* update rust crate clap to 4.5.33
+- *(deps)* update rust crate clap to 4.5.32
+- *(deps)* update rust crate clap to 4.5.31 ([#164](https://github.com/davidkna/lcat-rs/pull/164))
+- *(deps)* update rust crate clap to 4.5.30 ([#161](https://github.com/davidkna/lcat-rs/pull/161))
+- *(deps)* update rust crate clap to 4.5.29 ([#159](https://github.com/davidkna/lcat-rs/pull/159))
+- clippy fixes
+- *(deps)* update rust crate clap to 4.5.28
+- *(deps)* update rust crate clap to 4.5.27
+- *(deps)* update rust crate clap to 4.5.26
+- *(deps)* update rust crate clap to 4.5.24
+- *(deps)* update rust crate bstr to 1.11.3
+- *(deps)* update rust crate bstr to 1.11.2
+- *(deps)* update rust crate bstr to 1.11.1
+- *(deps)* update rust crate fastrand to 2.3.0
+- *(deps)* update rust crate clap to 4.5.23
+- *(deps)* update rust crate clap to 4.5.22
+- *(deps)* update rust crate bstr to 1.11.0
+- *(deps)* update rust crate clap to 4.5.21
+- *(deps)* update rust crate fastrand to 2.2.0
+- *(deps)* update rust crate clap to 4.5.20
+- *(deps)* update rust crate clap to 4.5.19
+- *(deps)* update rust crate clap to 4.5.18
+- *(deps)* update rust crate unicode-width to 0.2.0
+- *(deps)* update rust crate unicode-segmentation to 1.12.0
+- *(deps)* update rust crate clap to 4.5.17
+- *(deps)* update rust crate fastrand to 2.1.1
+
 ## [0.7.14](https://github.com/davidkna/lcat-rs/compare/lcat-v0.7.13...lcat-v0.7.14) - 2024-08-16
 
 ### Other
