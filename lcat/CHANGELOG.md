@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.16](https://github.com/davidkna/lcat-rs/compare/lcat-v0.7.15...lcat-v0.7.16) - 2025-04-10
+
+### Other
+
+- *(deps)* update rust crate colorgrad to 0.7.1
+- *(deps)* update rust crate bstr to 1.12.0
+
 ## [0.7.15](https://github.com/davidkna/lcat-rs/compare/lcat-v0.7.14...lcat-v0.7.15) - 2025-04-02
 
 ### Added

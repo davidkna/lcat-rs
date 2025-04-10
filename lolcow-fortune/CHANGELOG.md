@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.1.13](https://github.com/davidkna/lcat-rs/compare/lolcow-fortune-v0.1.12...lolcow-fortune-v0.1.13) - 2025-04-10
+
+### Other
+
+- *(deps)* update rust crate rustls to 0.23.26
+
 ## [0.1.12](https://github.com/davidkna/lcat-rs/compare/lolcow-fortune-v0.1.11...lolcow-fortune-v0.1.12) - 2025-04-02
 
 ### Other
