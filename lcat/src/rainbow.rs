@@ -7,10 +7,19 @@ use unicode_width::UnicodeWidthChar;
 
 use crate::ok::{Hsv, Lab, LinRgb, Rgb};
 
-#[derive(PartialEq, Eq, Debug)]
+#[derive(PartialEq, Eq, Debug, Clone, Copy)]
 pub enum Color {
     Rgb(u8, u8, u8),
     Ansi(u8),
+}
+
+impl Color {
+    fn coerce_to_ansi(self) -> Self {
+        match self {
+            Self::Rgb(r, g, b) => Self::Ansi(ansi256_from_rgb((r, g, b))),
+            ansi @ Self::Ansi(_) => ansi,
+        }
+    }
 }
 
 pub trait Grad {
@@ -38,16 +47,37 @@ impl Grad for HsvGrad {
     }
 }
 
-pub struct Ansi256Grad {}
+pub struct Ansi256RainbowGrad {}
 
-impl Grad for Ansi256Grad {
+impl Grad for Ansi256RainbowGrad {
     fn color_at(&self, pos: f32) -> Color {
+        #[allow(clippy::zero_prefixed_literal)]
+        const RAINBOW: [u8; 30] = [
+            135, 171, 207, 207, 207, 206, 205, 204, 203, 209, 215, 221, 227, 227, 227, 191, 155,
+            119, 083, 084, 085, 086, 087, 087, 087, 081, 075, 069, 063, 099,
+        ];
+        #[allow(clippy::cast_sign_loss, clippy::cast_possible_truncation)]
+        Color::Ansi(RAINBOW[(pos * RAINBOW.len() as f32) as usize])
+    }
+}
+
+pub struct Ansi256SinebowGrad {}
+
+impl Grad for Ansi256SinebowGrad {
+    fn color_at(&self, pos: f32) -> Color {
+        #[allow(clippy::zero_prefixed_literal)]
         const RAINBOW: [u8; 30] = [
             196, 202, 208, 214, 220, 226, 190, 154, 118, 082, 046, 047, 048, 049, 050, 051, 045,
             039, 033, 027, 021, 057, 093, 129, 165, 201, 200, 199, 198, 197,
         ];
+        #[allow(clippy::cast_sign_loss, clippy::cast_possible_truncation)]
         Color::Ansi(RAINBOW[(pos * RAINBOW.len() as f32) as usize])
     }
+}
+
+pub struct Gradient {
+    pub true_color: Box<dyn Grad>,
+    pub ansi_fallback: Option<Box<dyn Grad>>,
 }
 
 pub struct Rainbow {
@@ -56,14 +86,14 @@ pub struct Rainbow {
     shift_col: f32,
     shift_row: f32,
     position: f32,
-    gradient: Box<dyn Grad>,
+    gradient: Gradient,
     invert: bool,
 }
 
 impl Rainbow {
     #[must_use]
     pub fn new(
-        gradient: Box<dyn Grad>,
+        gradient: Gradient,
         start: f32,
         shift_col: f32,
         shift_row: f32,
@@ -108,9 +138,17 @@ impl Rainbow {
         self.position
     }
 
-    pub fn get_color(&mut self) -> Color {
+    pub fn get_color(&mut self, is_truecolor: bool) -> Color {
         let position = self.get_position();
-        self.gradient.color_at(position)
+        if is_truecolor {
+            self.gradient.true_color.color_at(position)
+        } else {
+            match &self.gradient.ansi_fallback {
+                Some(grad) => grad.color_at(position),
+                None => self.gradient.true_color.color_at(position),
+            }
+            .coerce_to_ansi()
+        }
     }
 
     #[inline]
@@ -144,16 +182,7 @@ impl Rainbow {
                     .first()
                     .is_some_and(u8::is_ascii_alphabetic);
         } else {
-            let mut color = self.get_color();
-            if !is_truecolor {
-                if let Color::Rgb(r, g, b) = color {
-                    // if our gradient is 24-bit but our terminal only supports ANSI-256 colors,
-                    // replace each color with the closest valid alternative to avoid mangled output
-                    color = Color::Ansi(ansi256_from_rgb((r, g, b)));
-                }
-            }
-
-            match color {
+            match self.get_color(is_truecolor) {
                 Color::Rgb(r, g, b) => {
                     if self.invert {
                         write!(out, "\x1B[38;2;0;0;0;48;2;{r};{g};{b}m{grapheme}")?;
@@ -168,7 +197,7 @@ impl Rainbow {
                         write!(out, "\x1B[38;5;{c}m{grapheme}")?;
                     }
                 }
-            };
+            }
 
             self.step_col(
                 grapheme
@@ -244,7 +273,16 @@ mod tests {
     use super::*;
 
     fn create_rb() -> Rainbow {
-        Rainbow::new(Box::new(colorgrad::preset::rainbow()), 0.0, 0.1, 0.2, false)
+        Rainbow::new(
+            Gradient {
+                true_color: Box::new(colorgrad::preset::rainbow()),
+                ansi_fallback: None,
+            },
+            0.0,
+            0.1,
+            0.2,
+            false,
+        )
     }
 
     #[test]
@@ -286,7 +324,7 @@ mod tests {
             rb_actual
                 .colorize(test_string.as_bytes(), &mut Vec::new(), true)
                 .unwrap();
-            assert_eq!(rb_actual.get_color(), rb_expected.get_color(),);
+            assert_eq!(rb_actual.get_color(true), rb_expected.get_color(true));
         }
     }
 
@@ -296,7 +334,7 @@ mod tests {
         let mut rb_b = create_rb();
         rb_a.step_row(20);
         rb_a.reset_row();
-        assert_eq!(rb_a.get_color(), rb_b.get_color(),);
+        assert_eq!(rb_a.get_color(true), rb_b.get_color(true));
     }
 
     #[test]
@@ -305,6 +343,6 @@ mod tests {
         let mut rb_b = create_rb();
         rb_a.step_col(20);
         rb_a.reset_col();
-        assert_eq!(rb_a.get_color(), rb_b.get_color(),);
+        assert_eq!(rb_a.get_color(true), rb_b.get_color(true));
     }
 }
