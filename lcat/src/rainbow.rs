@@ -1,19 +1,35 @@
 use std::io::{prelude::*, Write};
 
+use ansi_colours::ansi256_from_rgb;
 use bstr::{io::BufReadExt, ByteSlice};
 use unicode_segmentation::UnicodeSegmentation;
 use unicode_width::UnicodeWidthChar;
 
 use crate::ok::{Hsv, Lab, LinRgb, Rgb};
 
+#[derive(PartialEq, Eq, Debug, Clone, Copy)]
+pub enum Color {
+    Rgb(u8, u8, u8),
+    Ansi(u8),
+}
+
+impl Color {
+    fn coerce_to_ansi(self) -> Self {
+        match self {
+            Self::Rgb(r, g, b) => Self::Ansi(ansi256_from_rgb((r, g, b))),
+            ansi @ Self::Ansi(_) => ansi,
+        }
+    }
+}
+
 pub trait Grad {
-    fn color_at(&self, pos: f32) -> (u8, u8, u8);
+    fn color_at(&self, pos: f32) -> Color;
 }
 
 impl<T: colorgrad::Gradient> Grad for T {
-    fn color_at(&self, pos: f32) -> (u8, u8, u8) {
+    fn color_at(&self, pos: f32) -> Color {
         let [r, g, b, _] = self.at(pos).to_rgba8();
-        (r, g, b)
+        Color::Rgb(r, g, b)
     }
 }
 
@@ -21,14 +37,47 @@ pub struct HsvGrad {}
 
 impl Grad for HsvGrad {
     #[allow(clippy::cast_possible_truncation)]
-    fn color_at(&self, pos: f32) -> (u8, u8, u8) {
+    fn color_at(&self, pos: f32) -> Color {
         let Rgb { r, g, b } = Rgb::from(&LinRgb::from(&Lab::from(&Hsv {
             h: pos,
             s: 1.0,
             v: 1.0,
         })));
-        (r, g, b)
+        Color::Rgb(r, g, b)
     }
+}
+
+pub struct Ansi256RainbowGrad {}
+
+impl Grad for Ansi256RainbowGrad {
+    fn color_at(&self, pos: f32) -> Color {
+        #[allow(clippy::zero_prefixed_literal)]
+        const RAINBOW: [u8; 30] = [
+            135, 171, 207, 207, 207, 206, 205, 204, 203, 209, 215, 221, 227, 227, 227, 191, 155,
+            119, 083, 084, 085, 086, 087, 087, 087, 081, 075, 069, 063, 099,
+        ];
+        #[allow(clippy::cast_sign_loss, clippy::cast_possible_truncation)]
+        Color::Ansi(RAINBOW[(pos * RAINBOW.len() as f32) as usize])
+    }
+}
+
+pub struct Ansi256SinebowGrad {}
+
+impl Grad for Ansi256SinebowGrad {
+    fn color_at(&self, pos: f32) -> Color {
+        #[allow(clippy::zero_prefixed_literal)]
+        const RAINBOW: [u8; 30] = [
+            196, 202, 208, 214, 220, 226, 190, 154, 118, 082, 046, 047, 048, 049, 050, 051, 045,
+            039, 033, 027, 021, 057, 093, 129, 165, 201, 200, 199, 198, 197,
+        ];
+        #[allow(clippy::cast_sign_loss, clippy::cast_possible_truncation)]
+        Color::Ansi(RAINBOW[(pos * RAINBOW.len() as f32) as usize])
+    }
+}
+
+pub struct Gradient {
+    pub true_color: Box<dyn Grad>,
+    pub ansi_fallback: Option<Box<dyn Grad>>,
 }
 
 pub struct Rainbow {
@@ -37,14 +86,14 @@ pub struct Rainbow {
     shift_col: f32,
     shift_row: f32,
     position: f32,
-    gradient: Box<dyn Grad>,
+    gradient: Gradient,
     invert: bool,
 }
 
 impl Rainbow {
     #[must_use]
     pub fn new(
-        gradient: Box<dyn Grad>,
+        gradient: Gradient,
         start: f32,
         shift_col: f32,
         shift_row: f32,
@@ -89,15 +138,24 @@ impl Rainbow {
         self.position
     }
 
-    pub fn get_color(&mut self) -> (u8, u8, u8) {
+    pub fn get_color(&mut self, is_truecolor: bool) -> Color {
         let position = self.get_position();
-        self.gradient.color_at(position)
+        if is_truecolor {
+            self.gradient.true_color.color_at(position)
+        } else {
+            match &self.gradient.ansi_fallback {
+                Some(grad) => grad.color_at(position),
+                None => self.gradient.true_color.color_at(position),
+            }
+            .coerce_to_ansi()
+        }
     }
 
     #[inline]
     fn handle_grapheme(
         &mut self,
         out: &mut impl Write,
+        is_truecolor: bool,
         grapheme: &str,
         escaping: bool,
     ) -> std::io::Result<bool> {
@@ -124,12 +182,23 @@ impl Rainbow {
                     .first()
                     .is_some_and(u8::is_ascii_alphabetic);
         } else {
-            let (r, g, b) = self.get_color();
-            if self.invert {
-                write!(out, "\x1B[38;2;0;0;0;48;2;{r};{g};{b}m{grapheme}")?;
-            } else {
-                write!(out, "\x1B[38;2;{r};{g};{b}m{grapheme}")?;
+            match self.get_color(is_truecolor) {
+                Color::Rgb(r, g, b) => {
+                    if self.invert {
+                        write!(out, "\x1B[38;2;0;0;0;48;2;{r};{g};{b}m{grapheme}")?;
+                    } else {
+                        write!(out, "\x1B[38;2;{r};{g};{b}m{grapheme}")?;
+                    }
+                }
+                Color::Ansi(c) => {
+                    if self.invert {
+                        write!(out, "\x1B[48;5;{c}m{grapheme}")?;
+                    } else {
+                        write!(out, "\x1B[38;5;{c}m{grapheme}")?;
+                    }
+                }
             }
+
             self.step_col(
                 grapheme
                     .chars()
@@ -144,10 +213,15 @@ impl Rainbow {
     /// # Errors
     ///
     /// Will return `Err` if `out` causes I/O erros
-    pub fn colorize(&mut self, text: &[u8], out: &mut impl Write) -> std::io::Result<()> {
+    pub fn colorize(
+        &mut self,
+        text: &[u8],
+        out: &mut impl Write,
+        is_truecolor: bool,
+    ) -> std::io::Result<()> {
         let mut escaping = false;
         for grapheme in text.graphemes() {
-            escaping = self.handle_grapheme(out, grapheme, escaping)?;
+            escaping = self.handle_grapheme(out, is_truecolor, grapheme, escaping)?;
         }
 
         out.write_all(b"\x1B[39m")?;
@@ -160,10 +234,15 @@ impl Rainbow {
     /// # Errors
     ///
     /// Will return `Err` if `out` causes I/O erros
-    pub fn colorize_str(&mut self, text: &str, out: &mut impl Write) -> std::io::Result<()> {
+    pub fn colorize_str(
+        &mut self,
+        text: &str,
+        out: &mut impl Write,
+        is_truecolor: bool,
+    ) -> std::io::Result<()> {
         let mut escaping = false;
         for grapheme in UnicodeSegmentation::graphemes(text, true) {
-            escaping = self.handle_grapheme(out, grapheme, escaping)?;
+            escaping = self.handle_grapheme(out, is_truecolor, grapheme, escaping)?;
         }
 
         out.write_all(b"\x1B[39m")?;
@@ -180,9 +259,10 @@ impl Rainbow {
         &mut self,
         input: &mut impl BufRead,
         out: &mut impl Write,
+        is_truecolor: bool,
     ) -> std::io::Result<()> {
         input.for_byte_line_with_terminator(|line| {
-            self.colorize(line, out)?;
+            self.colorize(line, out, is_truecolor)?;
             Ok(true)
         })
     }
@@ -193,7 +273,16 @@ mod tests {
     use super::*;
 
     fn create_rb() -> Rainbow {
-        Rainbow::new(Box::new(colorgrad::preset::rainbow()), 0.0, 0.1, 0.2, false)
+        Rainbow::new(
+            Gradient {
+                true_color: Box::new(colorgrad::preset::rainbow()),
+                ansi_fallback: None,
+            },
+            0.0,
+            0.1,
+            0.2,
+            false,
+        )
     }
 
     #[test]
@@ -202,11 +291,11 @@ mod tests {
 
         let mut rb_a = create_rb();
         let mut out_a = Vec::new();
-        rb_a.colorize(test.as_bytes(), &mut out_a).unwrap();
+        rb_a.colorize(test.as_bytes(), &mut out_a, true).unwrap();
 
         let mut rb_b = create_rb();
         let mut out_b = Vec::new();
-        rb_b.colorize_str(test, &mut out_b).unwrap();
+        rb_b.colorize_str(test, &mut out_b, true).unwrap();
 
         assert_eq!(out_a, out_b);
     }
@@ -215,13 +304,13 @@ mod tests {
     fn test_char_width() {
         let test = "f";
         let mut rb_a = create_rb();
-        rb_a.colorize_str(test, &mut Vec::new()).unwrap();
+        rb_a.colorize_str(test, &mut Vec::new(), true).unwrap();
 
         assert_eq!(rb_a.current_col, 1);
 
         let test = "\u{1f603}";
         let mut rb_b = create_rb();
-        rb_b.colorize_str(test, &mut Vec::new()).unwrap();
+        rb_b.colorize_str(test, &mut Vec::new(), true).unwrap();
         assert_eq!(rb_b.current_col, 2);
     }
 
@@ -233,9 +322,9 @@ mod tests {
         for test_string in ["foobar\n", "foobar\r\n"] {
             let mut rb_actual = create_rb();
             rb_actual
-                .colorize(test_string.as_bytes(), &mut Vec::new())
+                .colorize(test_string.as_bytes(), &mut Vec::new(), true)
                 .unwrap();
-            assert_eq!(rb_actual.get_color(), rb_expected.get_color(),);
+            assert_eq!(rb_actual.get_color(true), rb_expected.get_color(true));
         }
     }
 
@@ -245,7 +334,7 @@ mod tests {
         let mut rb_b = create_rb();
         rb_a.step_row(20);
         rb_a.reset_row();
-        assert_eq!(rb_a.get_color(), rb_b.get_color(),);
+        assert_eq!(rb_a.get_color(true), rb_b.get_color(true));
     }
 
     #[test]
@@ -254,6 +343,6 @@ mod tests {
         let mut rb_b = create_rb();
         rb_a.step_col(20);
         rb_a.reset_col();
-        assert_eq!(rb_a.get_color(), rb_b.get_color(),);
+        assert_eq!(rb_a.get_color(true), rb_b.get_color(true));
     }
 }
