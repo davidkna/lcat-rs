@@ -1,12 +1,13 @@
 use clap::{Parser, ValueEnum};
 
-use crate::{Grad, HsvGrad, Rainbow};
+use crate::{Ansi256Grad, Grad, HsvGrad, Rainbow};
 
 #[derive(Debug, Clone, ValueEnum)]
 pub enum RainbowStyle {
     Rainbow,
     Sinebow,
     OkHsv,
+    Ansi,
 }
 
 #[derive(Debug, Parser)]
@@ -64,6 +65,7 @@ impl From<RainbowCmd> for Rainbow {
             RainbowStyle::Rainbow => Box::new(colorgrad::preset::rainbow()),
             RainbowStyle::Sinebow => Box::new(colorgrad::preset::sinebow()),
             RainbowStyle::OkHsv => Box::new(HsvGrad {}),
+            RainbowStyle::Ansi => Box::new(Ansi256Grad {}),
         };
 
         Self::new(grad, start, shift_col, shift_row, cmd.invert)

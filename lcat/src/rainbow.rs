@@ -7,14 +7,20 @@ use unicode_width::UnicodeWidthChar;
 
 use crate::ok::{Hsv, Lab, LinRgb, Rgb};
 
+#[derive(PartialEq, Eq, Debug)]
+pub enum Color {
+    Rgb(u8, u8, u8),
+    Ansi(u8),
+}
+
 pub trait Grad {
-    fn color_at(&self, pos: f32) -> (u8, u8, u8);
+    fn color_at(&self, pos: f32) -> Color;
 }
 
 impl<T: colorgrad::Gradient> Grad for T {
-    fn color_at(&self, pos: f32) -> (u8, u8, u8) {
+    fn color_at(&self, pos: f32) -> Color {
         let [r, g, b, _] = self.at(pos).to_rgba8();
-        (r, g, b)
+        Color::Rgb(r, g, b)
     }
 }
 
@@ -22,13 +28,25 @@ pub struct HsvGrad {}
 
 impl Grad for HsvGrad {
     #[allow(clippy::cast_possible_truncation)]
-    fn color_at(&self, pos: f32) -> (u8, u8, u8) {
+    fn color_at(&self, pos: f32) -> Color {
         let Rgb { r, g, b } = Rgb::from(&LinRgb::from(&Lab::from(&Hsv {
             h: pos,
             s: 1.0,
             v: 1.0,
         })));
-        (r, g, b)
+        Color::Rgb(r, g, b)
+    }
+}
+
+pub struct Ansi256Grad {}
+
+impl Grad for Ansi256Grad {
+    fn color_at(&self, pos: f32) -> Color {
+        const RAINBOW: [u8; 30] = [
+            196, 202, 208, 214, 220, 226, 190, 154, 118, 082, 046, 047, 048, 049, 050, 051, 045,
+            039, 033, 027, 021, 057, 093, 129, 165, 201, 200, 199, 198, 197,
+        ];
+        Color::Ansi(RAINBOW[(pos * RAINBOW.len() as f32) as usize])
     }
 }
 
@@ -90,7 +108,7 @@ impl Rainbow {
         self.position
     }
 
-    pub fn get_color(&mut self) -> (u8, u8, u8) {
+    pub fn get_color(&mut self) -> Color {
         let position = self.get_position();
         self.gradient.color_at(position)
     }
@@ -126,22 +144,32 @@ impl Rainbow {
                     .first()
                     .is_some_and(u8::is_ascii_alphabetic);
         } else {
-            let (r, g, b) = self.get_color();
-            if self.invert {
-                if is_truecolor {
-                    write!(out, "\x1B[38;2;0;0;0;48;2;{r};{g};{b}m{grapheme}")?;
-                } else {
-                    let color = ansi256_from_rgb((r, g, b));
-                    write!(out, "\x1B[48;5;{color}m{grapheme}")?;
-                }
-            } else {
-                if is_truecolor {
-                    write!(out, "\x1B[38;2;{r};{g};{b}m{grapheme}")?;
-                } else {
-                    let color = ansi256_from_rgb((r, g, b));
-                    write!(out, "\x1B[38;5;{color}m{grapheme}")?;
+            let mut color = self.get_color();
+            if !is_truecolor {
+                if let Color::Rgb(r, g, b) = color {
+                    // if our gradient is 24-bit but our terminal only supports ANSI-256 colors,
+                    // replace each color with the closest valid alternative to avoid mangled output
+                    color = Color::Ansi(ansi256_from_rgb((r, g, b)));
                 }
             }
+
+            match color {
+                Color::Rgb(r, g, b) => {
+                    if self.invert {
+                        write!(out, "\x1B[38;2;0;0;0;48;2;{r};{g};{b}m{grapheme}")?;
+                    } else {
+                        write!(out, "\x1B[38;2;{r};{g};{b}m{grapheme}")?;
+                    }
+                }
+                Color::Ansi(c) => {
+                    if self.invert {
+                        write!(out, "\x1B[48;5;{c}m{grapheme}")?;
+                    } else {
+                        write!(out, "\x1B[38;5;{c}m{grapheme}")?;
+                    }
+                }
+            };
+
             self.step_col(
                 grapheme
                     .chars()
