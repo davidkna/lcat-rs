@@ -183,11 +183,13 @@ fn main() -> Result<(), lolcow_fortune::StrfileError> {
             let cow = format!("{cow}\n");
             let stdout = io::stdout();
             let mut stdout = stdout.lock();
+            let is_truecolor =
+                env::var("COLORTERM").is_ok_and(|val| val == "truecolor" || val == "24bit");
 
             if lolcat {
                 let mut rainbow: Rainbow = rainbow.into();
 
-                rainbow.colorize_str(&cow, &mut stdout)?;
+                rainbow.colorize_str(&cow, &mut stdout, is_truecolor)?;
             } else {
                 stdout.write_all(cow.as_bytes())?;
             }

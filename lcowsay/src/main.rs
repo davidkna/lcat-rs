@@ -1,6 +1,9 @@
 #![warn(clippy::pedantic, clippy::nursery)]
 
-use std::io::{self, Read, Write};
+use std::{
+    env,
+    io::{self, Read, Write},
+};
 
 use clap::Parser;
 use lcat::{Rainbow, RainbowCmd};
@@ -31,6 +34,7 @@ fn main() -> io::Result<()> {
 
     let stdout = io::stdout();
     let mut stdout = stdout.lock();
+    let is_truecolor = env::var("COLORTERM").is_ok_and(|val| val == "truecolor" || val == "24bit");
 
     let cow = Cow::new(opt.shape, text, opt.max_length);
     let cow = format!("{cow}\n");
@@ -38,7 +42,7 @@ fn main() -> io::Result<()> {
         stdout.write_all(cow.as_bytes())?;
     } else {
         let mut rainbow: Rainbow = opt.rainbow.into();
-        rainbow.colorize_str(&cow, &mut stdout)?;
+        rainbow.colorize_str(&cow, &mut stdout, is_truecolor)?;
     }
     stdout.flush()
 }

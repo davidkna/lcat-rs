@@ -1,5 +1,6 @@
 use std::io::{prelude::*, Write};
 
+use ansi_colours::ansi256_from_rgb;
 use bstr::{io::BufReadExt, ByteSlice};
 use unicode_segmentation::UnicodeSegmentation;
 use unicode_width::UnicodeWidthChar;
@@ -98,6 +99,7 @@ impl Rainbow {
     fn handle_grapheme(
         &mut self,
         out: &mut impl Write,
+        is_truecolor: bool,
         grapheme: &str,
         escaping: bool,
     ) -> std::io::Result<bool> {
@@ -126,9 +128,19 @@ impl Rainbow {
         } else {
             let (r, g, b) = self.get_color();
             if self.invert {
-                write!(out, "\x1B[38;2;0;0;0;48;2;{r};{g};{b}m{grapheme}")?;
+                if is_truecolor {
+                    write!(out, "\x1B[38;2;0;0;0;48;2;{r};{g};{b}m{grapheme}")?;
+                } else {
+                    let color = ansi256_from_rgb((r, g, b));
+                    write!(out, "\x1B[48;5;{color}m{grapheme}")?;
+                }
             } else {
-                write!(out, "\x1B[38;2;{r};{g};{b}m{grapheme}")?;
+                if is_truecolor {
+                    write!(out, "\x1B[38;2;{r};{g};{b}m{grapheme}")?;
+                } else {
+                    let color = ansi256_from_rgb((r, g, b));
+                    write!(out, "\x1B[38;5;{color}m{grapheme}")?;
+                }
             }
             self.step_col(
                 grapheme
@@ -144,10 +156,15 @@ impl Rainbow {
     /// # Errors
     ///
     /// Will return `Err` if `out` causes I/O erros
-    pub fn colorize(&mut self, text: &[u8], out: &mut impl Write) -> std::io::Result<()> {
+    pub fn colorize(
+        &mut self,
+        text: &[u8],
+        out: &mut impl Write,
+        is_truecolor: bool,
+    ) -> std::io::Result<()> {
         let mut escaping = false;
         for grapheme in text.graphemes() {
-            escaping = self.handle_grapheme(out, grapheme, escaping)?;
+            escaping = self.handle_grapheme(out, is_truecolor, grapheme, escaping)?;
         }
 
         out.write_all(b"\x1B[39m")?;
@@ -160,10 +177,15 @@ impl Rainbow {
     /// # Errors
     ///
     /// Will return `Err` if `out` causes I/O erros
-    pub fn colorize_str(&mut self, text: &str, out: &mut impl Write) -> std::io::Result<()> {
+    pub fn colorize_str(
+        &mut self,
+        text: &str,
+        out: &mut impl Write,
+        is_truecolor: bool,
+    ) -> std::io::Result<()> {
         let mut escaping = false;
         for grapheme in UnicodeSegmentation::graphemes(text, true) {
-            escaping = self.handle_grapheme(out, grapheme, escaping)?;
+            escaping = self.handle_grapheme(out, is_truecolor, grapheme, escaping)?;
         }
 
         out.write_all(b"\x1B[39m")?;
@@ -180,9 +202,10 @@ impl Rainbow {
         &mut self,
         input: &mut impl BufRead,
         out: &mut impl Write,
+        is_truecolor: bool,
     ) -> std::io::Result<()> {
         input.for_byte_line_with_terminator(|line| {
-            self.colorize(line, out)?;
+            self.colorize(line, out, is_truecolor)?;
             Ok(true)
         })
     }
@@ -202,11 +225,11 @@ mod tests {
 
         let mut rb_a = create_rb();
         let mut out_a = Vec::new();
-        rb_a.colorize(test.as_bytes(), &mut out_a).unwrap();
+        rb_a.colorize(test.as_bytes(), &mut out_a, true).unwrap();
 
         let mut rb_b = create_rb();
         let mut out_b = Vec::new();
-        rb_b.colorize_str(test, &mut out_b).unwrap();
+        rb_b.colorize_str(test, &mut out_b, true).unwrap();
 
         assert_eq!(out_a, out_b);
     }
@@ -215,13 +238,13 @@ mod tests {
     fn test_char_width() {
         let test = "f";
         let mut rb_a = create_rb();
-        rb_a.colorize_str(test, &mut Vec::new()).unwrap();
+        rb_a.colorize_str(test, &mut Vec::new(), true).unwrap();
 
         assert_eq!(rb_a.current_col, 1);
 
         let test = "\u{1f603}";
         let mut rb_b = create_rb();
-        rb_b.colorize_str(test, &mut Vec::new()).unwrap();
+        rb_b.colorize_str(test, &mut Vec::new(), true).unwrap();
         assert_eq!(rb_b.current_col, 2);
     }
 
@@ -233,7 +256,7 @@ mod tests {
         for test_string in ["foobar\n", "foobar\r\n"] {
             let mut rb_actual = create_rb();
             rb_actual
-                .colorize(test_string.as_bytes(), &mut Vec::new())
+                .colorize(test_string.as_bytes(), &mut Vec::new(), true)
                 .unwrap();
             assert_eq!(rb_actual.get_color(), rb_expected.get_color(),);
         }
