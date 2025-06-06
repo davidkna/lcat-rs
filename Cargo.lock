@@ -172,9 +172,9 @@ checksum = "5b63caa9aa9397e2d9480a9b13673856c78d8ac123288526c37d7839f2a86990"
 
 [[package]]
 name = "colorgrad"
-version = "0.7.1"
+version = "0.7.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "770315cbc9e3909b1f574a1ab4923a1e1e2f39442ac432cbf7e30e405ee9db1a"
+checksum = "faedab4fd8670120c2be7f49225fbdb8b6db6d46f04ce4f864b1f1cdd55e6400"
 dependencies = [
  "csscolorparser",
 ]
@@ -190,9 +190,9 @@ dependencies = [
 
 [[package]]
 name = "csscolorparser"
-version = "0.7.1"
+version = "0.7.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "148247664b27bf6bf5041b46cf1e8c4872f70e75e3281348deb88abd75c915ab"
+checksum = "5fda6aace1fbef3aa217b27f4c8d7d071ef2a70a5ca51050b1f17d40299d3f16"
 
 [[package]]
 name = "darling"
