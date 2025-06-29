@@ -1,6 +1,7 @@
 #![warn(clippy::pedantic, clippy::nursery)]
 
 use std::{
+    env,
     fs::File,
     io::{self, BufReader},
     path::PathBuf,
@@ -28,11 +29,13 @@ fn main() -> Result<(), io::Error> {
 
     let mut rainbow: Rainbow = opt.rainbow.into();
     let mut stdout = io::stdout().lock();
+    let is_truecolor = env::var("COLORTERM").is_ok_and(|val| val == "truecolor" || val == "24bit");
 
     if opt.help {
         rainbow.colorize_str(
             &Cmdline::command().render_help().ansi().to_string(),
             &mut stdout,
+            is_truecolor,
         )?;
         return Ok(());
     }
@@ -40,11 +43,11 @@ fn main() -> Result<(), io::Error> {
     for path in opt.files {
         if path == PathBuf::from("-") {
             let mut stdin = io::stdin().lock();
-            rainbow.colorize_read(&mut stdin, &mut stdout)?;
+            rainbow.colorize_read(&mut stdin, &mut stdout, is_truecolor)?;
         } else {
             let f = File::open(path).unwrap();
             let mut b = BufReader::new(f);
-            rainbow.colorize_read(&mut b, &mut stdout)?;
+            rainbow.colorize_read(&mut b, &mut stdout, is_truecolor)?;
         }
     }
 
