@@ -24,14 +24,6 @@
         commonArgs = craneLib.crateNameFromCargoToml { cargoToml = ./lcat/Cargo.toml; } // {
           inherit src;
           strictDeps = true;
-
-          buildInputs = lib.optionals pkgs.stdenv.isDarwin (
-            with pkgs;
-            [
-              iconv
-              darwin.apple_sdk.frameworks.Security
-            ]
-          );
         };
 
         cargoArtifacts = craneLib.buildDepsOnly commonArgs;
@@ -39,7 +31,7 @@
         lcat = craneLib.buildPackage (commonArgs // { inherit cargoArtifacts; });
       in
       {
-        formatter = nixpkgs.legacyPackages.${system}.nixfmt-rfc-style;
+        formatter = nixpkgs.legacyPackages.${system}.nixfmt-tree;
 
         checks = {
           inherit lcat;
