@@ -5,27 +5,23 @@ lolcat in rust! With emoji support and color transformations in the Cubehelix an
 ## Usage
 
 ```text
-lcat
 Terminal rainbows.
 
-USAGE:
-    lcat [FLAGS] [OPTIONS] [File]...
+Usage: lcat [OPTIONS] [File]...
 
-ARGS:
-    <File>...    [default: -]
+Arguments:
+  [File]...  [default: -]
 
-FLAGS:
-    -h, --help                    Prints help information
-    -i, --invert                  Invert background and foreground
-    -n, --shift-sign-no-random    Don't randomize sign of col and row shift values
-    -V, --version                 Prints version information
-
-OPTIONS:
-    -H, --hue <hue>                Sets initial hue of text color in degress [default: random]
-    -S, --seed <seed>              Sets seed [default: random]
-    -C, --shift-col <shift-col>    How many degrees to shift text color hue for every column [default: 1.6]
-    -R, --shift-row <shift-row>    How many degrees to shift text color hue for every row [default: 3.2]
-    -s, --style <style>            Rainbow mode [default: rainbow] [possible values: rainbow, sinebow, ok-hsv]
+Options:
+  -C, --shift-col <SHIFT_COL>    How many degrees to shift text color hue for every column [default: 1.6]
+  -R, --shift-row <SHIFT_ROW>    How many degrees to shift text color hue for every row [default: 3.2]
+  -n, --shift-sign-no-random     Don't randomize sign of col and row shift values
+  -H, --hue <HUE>                Sets initial hue of text color in degress [default: random]
+  -s, --style <STYLE>            Rainbow mode [default: rainbow] [possible values: rainbow, sinebow, ok-hsv]
+  -c, --color-mode <COLOR_MODE>  [possible values: true-color, ansi256]
+  -S, --seed <SEED>              Sets seed [default: random]
+  -i, --invert                   Invert background and foreground
+  -h, --help                     Print help
 ```
 
 ## Screenshot

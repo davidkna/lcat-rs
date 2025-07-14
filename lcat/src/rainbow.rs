@@ -6,14 +6,48 @@ use unicode_width::UnicodeWidthChar;
 
 use crate::ok::{Hsv, Lab, LinRgb, Rgb};
 
+#[derive(PartialEq, Eq, Debug, Clone, Copy)]
+pub enum Color {
+    Rgb(u8, u8, u8),
+    Ansi(u8),
+}
+
+impl Color {
+    const fn coerce_to_ansi(self) -> Self {
+        match self {
+            Self::Rgb(r, g, b) => {
+                let rgb_color = anstyle::RgbColor(r, g, b);
+                let xterm_color = anstyle_lossy::rgb_to_xterm(rgb_color);
+
+                Self::Ansi(xterm_color.0)
+            }
+            ansi @ Self::Ansi(_) => ansi,
+        }
+    }
+}
+
+pub struct AnsiFallbackGrad<G>(G);
+
+impl<G: Grad> AnsiFallbackGrad<G> {
+    pub const fn new(grad: G) -> Self {
+        Self(grad)
+    }
+}
+
+impl<G: Grad> Grad for AnsiFallbackGrad<G> {
+    fn color_at(&self, pos: f32) -> Color {
+        self.0.color_at(pos).coerce_to_ansi()
+    }
+}
+
 pub trait Grad {
-    fn color_at(&self, pos: f32) -> (u8, u8, u8);
+    fn color_at(&self, pos: f32) -> Color;
 }
 
 impl<T: colorgrad::Gradient> Grad for T {
-    fn color_at(&self, pos: f32) -> (u8, u8, u8) {
+    fn color_at(&self, pos: f32) -> Color {
         let [r, g, b, _] = self.at(pos).to_rgba8();
-        (r, g, b)
+        Color::Rgb(r, g, b)
     }
 }
 
@@ -21,13 +55,41 @@ pub struct HsvGrad {}
 
 impl Grad for HsvGrad {
     #[allow(clippy::cast_possible_truncation)]
-    fn color_at(&self, pos: f32) -> (u8, u8, u8) {
+    fn color_at(&self, pos: f32) -> Color {
         let Rgb { r, g, b } = Rgb::from(&LinRgb::from(&Lab::from(&Hsv {
             h: pos,
             s: 1.0,
             v: 1.0,
         })));
-        (r, g, b)
+        Color::Rgb(r, g, b)
+    }
+}
+
+pub struct Ansi256RainbowGrad {}
+
+impl Grad for Ansi256RainbowGrad {
+    fn color_at(&self, pos: f32) -> Color {
+        #[allow(clippy::zero_prefixed_literal)]
+        const RAINBOW: [u8; 30] = [
+            135, 171, 207, 207, 207, 206, 205, 204, 203, 209, 215, 221, 227, 227, 227, 191, 155,
+            119, 083, 084, 085, 086, 087, 087, 087, 081, 075, 069, 063, 099,
+        ];
+        #[allow(clippy::cast_sign_loss, clippy::cast_possible_truncation)]
+        Color::Ansi(RAINBOW[(pos * RAINBOW.len() as f32) as usize])
+    }
+}
+
+pub struct Ansi256SinebowGrad {}
+
+impl Grad for Ansi256SinebowGrad {
+    fn color_at(&self, pos: f32) -> Color {
+        #[allow(clippy::zero_prefixed_literal)]
+        const RAINBOW: [u8; 30] = [
+            196, 202, 208, 214, 220, 226, 190, 154, 118, 082, 046, 047, 048, 049, 050, 051, 045,
+            039, 033, 027, 021, 057, 093, 129, 165, 201, 200, 199, 198, 197,
+        ];
+        #[allow(clippy::cast_sign_loss, clippy::cast_possible_truncation)]
+        Color::Ansi(RAINBOW[(pos * RAINBOW.len() as f32) as usize])
     }
 }
 
@@ -89,7 +151,7 @@ impl Rainbow {
         self.position
     }
 
-    pub fn get_color(&mut self) -> (u8, u8, u8) {
+    pub fn get_color(&mut self) -> Color {
         let position = self.get_position();
         self.gradient.color_at(position)
     }
@@ -124,12 +186,15 @@ impl Rainbow {
                     .first()
                     .is_some_and(u8::is_ascii_alphabetic);
         } else {
-            let (r, g, b) = self.get_color();
-            if self.invert {
-                write!(out, "\x1B[38;2;0;0;0;48;2;{r};{g};{b}m{grapheme}")?;
-            } else {
-                write!(out, "\x1B[38;2;{r};{g};{b}m{grapheme}")?;
+            match self.get_color() {
+                Color::Rgb(r, g, b) if self.invert => {
+                    write!(out, "\x1B[38;2;0;0;0;48;2;{r};{g};{b}m{grapheme}")?;
+                }
+                Color::Rgb(r, g, b) => write!(out, "\x1B[38;2;{r};{g};{b}m{grapheme}")?,
+                Color::Ansi(c) if self.invert => write!(out, "\x1B[48;5;{c}m{grapheme}")?,
+                Color::Ansi(c) => write!(out, "\x1B[38;5;{c}m{grapheme}")?,
             }
+
             self.step_col(
                 grapheme
                     .chars()
@@ -235,7 +300,7 @@ mod tests {
             rb_actual
                 .colorize(test_string.as_bytes(), &mut Vec::new())
                 .unwrap();
-            assert_eq!(rb_actual.get_color(), rb_expected.get_color(),);
+            assert_eq!(rb_actual.get_color(), rb_expected.get_color());
         }
     }
 
@@ -245,7 +310,7 @@ mod tests {
         let mut rb_b = create_rb();
         rb_a.step_row(20);
         rb_a.reset_row();
-        assert_eq!(rb_a.get_color(), rb_b.get_color(),);
+        assert_eq!(rb_a.get_color(), rb_b.get_color());
     }
 
     #[test]
@@ -254,6 +319,14 @@ mod tests {
         let mut rb_b = create_rb();
         rb_a.step_col(20);
         rb_a.reset_col();
-        assert_eq!(rb_a.get_color(), rb_b.get_color(),);
+        assert_eq!(rb_a.get_color(), rb_b.get_color());
+    }
+
+    #[test]
+    fn test_fallback_is_ansi_color() {
+        let grad = HsvGrad {};
+        assert!(matches!(grad.color_at(0.), Color::Rgb(..)));
+        let fallback_grad = AnsiFallbackGrad::new(grad);
+        assert!(matches!(fallback_grad.color_at(0.), Color::Ansi(..)));
     }
 }
