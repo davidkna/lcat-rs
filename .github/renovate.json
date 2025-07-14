@@ -7,8 +7,8 @@
   "customManagers": [
     {
       "customType": "regex",
-      "fileMatch": [
-        "(^|\\/)\\.?dprint.json"
+      "managerFilePatterns": [
+        "/(^|\\/)\\.?dprint.json/"
       ],
       "matchStrings": [
         "\"https://github.com/(?<depName>.+)/releases/download/(?<currentValue>.+)/plugin.wasm\""
@@ -17,8 +17,8 @@
     },
     {
       "customType": "regex",
-      "fileMatch": [
-        "^(workflow-templates|\\.github\\/workflows)\\/[^/]+\\.ya?ml$"
+      "managerFilePatterns": [
+        "/^(workflow-templates|\\.github\\/workflows)\\/[^/]+\\.ya?ml$/"
       ],
       "matchStrings": [
         "tool:.*(?<depName>[^,@]+)@(?<currentValue>[^,]+)"
