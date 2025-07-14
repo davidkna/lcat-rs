@@ -1,30 +1,12 @@
 use std::io::{prelude::*, Write};
 
+pub use anstyle::Color;
+use anstyle::{AnsiColor, Ansi256Color, RgbColor};
 use bstr::{io::BufReadExt, ByteSlice};
 use unicode_segmentation::UnicodeSegmentation;
 use unicode_width::UnicodeWidthChar;
 
 use crate::ok::{Hsv, Lab, LinRgb, Rgb};
-
-#[derive(PartialEq, Eq, Debug, Clone, Copy)]
-pub enum Color {
-    Rgb(u8, u8, u8),
-    Ansi(u8),
-}
-
-impl Color {
-    const fn coerce_to_ansi(self) -> Self {
-        match self {
-            Self::Rgb(r, g, b) => {
-                let rgb_color = anstyle::RgbColor(r, g, b);
-                let xterm_color = anstyle_lossy::rgb_to_xterm(rgb_color);
-
-                Self::Ansi(xterm_color.0)
-            }
-            ansi @ Self::Ansi(_) => ansi,
-        }
-    }
-}
 
 pub struct AnsiFallbackGrad<G>(G);
 
@@ -36,7 +18,9 @@ impl<G: Grad> AnsiFallbackGrad<G> {
 
 impl<G: Grad> Grad for AnsiFallbackGrad<G> {
     fn color_at(&self, pos: f32) -> Color {
-        self.0.color_at(pos).coerce_to_ansi()
+        let xterm_col = anstyle_lossy::color_to_xterm(self.0.color_at(pos));
+
+        Color::Ansi256(xterm_col)
     }
 }
 
@@ -47,7 +31,7 @@ pub trait Grad {
 impl<T: colorgrad::Gradient> Grad for T {
     fn color_at(&self, pos: f32) -> Color {
         let [r, g, b, _] = self.at(pos).to_rgba8();
-        Color::Rgb(r, g, b)
+        Color::Rgb(RgbColor(r, g, b))
     }
 }
 
@@ -61,7 +45,7 @@ impl Grad for HsvGrad {
             s: 1.0,
             v: 1.0,
         })));
-        Color::Rgb(r, g, b)
+        Color::Rgb(RgbColor(r, g, b))
     }
 }
 
@@ -75,7 +59,7 @@ impl Grad for Ansi256RainbowGrad {
             119, 083, 084, 085, 086, 087, 087, 087, 081, 075, 069, 063, 099,
         ];
         #[allow(clippy::cast_sign_loss, clippy::cast_possible_truncation)]
-        Color::Ansi(RAINBOW[(pos * RAINBOW.len() as f32) as usize])
+        Color::Ansi256(Ansi256Color(RAINBOW[(pos * RAINBOW.len() as f32) as usize]))
     }
 }
 
@@ -89,7 +73,7 @@ impl Grad for Ansi256SinebowGrad {
             039, 033, 027, 021, 057, 093, 129, 165, 201, 200, 199, 198, 197,
         ];
         #[allow(clippy::cast_sign_loss, clippy::cast_possible_truncation)]
-        Color::Ansi(RAINBOW[(pos * RAINBOW.len() as f32) as usize])
+        Color::Ansi256(Ansi256Color(RAINBOW[(pos * RAINBOW.len() as f32) as usize]))
     }
 }
 
@@ -186,13 +170,11 @@ impl Rainbow {
                     .first()
                     .is_some_and(u8::is_ascii_alphabetic);
         } else {
-            match self.get_color() {
-                Color::Rgb(r, g, b) if self.invert => {
-                    write!(out, "\x1B[38;2;0;0;0;48;2;{r};{g};{b}m{grapheme}")?;
-                }
-                Color::Rgb(r, g, b) => write!(out, "\x1B[38;2;{r};{g};{b}m{grapheme}")?,
-                Color::Ansi(c) if self.invert => write!(out, "\x1B[48;5;{c}m{grapheme}")?,
-                Color::Ansi(c) => write!(out, "\x1B[38;5;{c}m{grapheme}")?,
+            let color = self.get_color();
+            if self.invert {
+                write!(out, "{}{grapheme}", AnsiColor::Black.on(color))?;
+            } else {
+                write!(out, "{}{grapheme}", color.render_fg())?;
             }
 
             self.step_col(
