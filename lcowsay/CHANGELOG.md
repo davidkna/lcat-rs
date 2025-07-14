@@ -4,6 +4,12 @@
 * dependencies
 * lcat bumped from 0.7.11 to 0.7.12
 
+## [0.5.13](https://github.com/davidkna/lcat-rs/compare/lcowsay-v0.5.12...lcowsay-v0.5.13) - 2025-07-14
+
+### Other
+
+- updated the following local packages: lcat
+
 ## [0.5.12](https://github.com/davidkna/lcat-rs/compare/lcowsay-v0.5.11...lcowsay-v0.5.12) - 2025-07-14
 
 ### Other
