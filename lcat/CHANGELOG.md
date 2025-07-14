@@ -1,5 +1,26 @@
 # Changelog
 
+## [0.7.16](https://github.com/davidkna/lcat-rs/compare/lcat-v0.7.15...lcat-v0.7.16) - 2025-07-14
+
+### Added
+
+- add support for non-truecolor terminals
+
+### Other
+
+- use correcct enum variant
+- use anstyle color types
+- *(deps)* update rust crate clap to 4.5.41
+- *(deps)* update rust crate unicode-width to 0.2.1
+- *(deps)* update rust crate clap to 4.5.40
+- *(deps)* update rust crate colorgrad to 0.7.2 ([#185](https://github.com/davidkna/lcat-rs/pull/185))
+- *(deps)* update rust crate clap to 4.5.39 ([#183](https://github.com/davidkna/lcat-rs/pull/183))
+- *(deps)* update rust crate clap to 4.5.38 ([#176](https://github.com/davidkna/lcat-rs/pull/176))
+- *(deps)* update rust crate clap to 4.5.37
+- *(deps)* update rust crate clap to 4.5.36
+- *(deps)* update rust crate colorgrad to 0.7.1
+- *(deps)* update rust crate bstr to 1.12.0
+
 ## [0.7.15](https://github.com/davidkna/lcat-rs/compare/lcat-v0.7.14...lcat-v0.7.15) - 2025-04-02
 
 ### Added
