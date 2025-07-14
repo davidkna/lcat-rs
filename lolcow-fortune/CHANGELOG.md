@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.1.14](https://github.com/davidkna/lcat-rs/compare/lolcow-fortune-v0.1.13...lolcow-fortune-v0.1.14) - 2025-07-14
+
+### Other
+
+- updated the following local packages: lcat, lcowsay
+
 ## [0.1.13](https://github.com/davidkna/lcat-rs/compare/lolcow-fortune-v0.1.12...lolcow-fortune-v0.1.13) - 2025-07-14
 
 ### Other
