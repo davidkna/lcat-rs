@@ -1,7 +1,7 @@
 use std::io::{prelude::*, Write};
 
 pub use anstyle::Color;
-use anstyle::{AnsiColor, Ansi256Color, RgbColor};
+use anstyle::{Ansi256Color, AnsiColor, RgbColor};
 use bstr::{io::BufReadExt, ByteSlice};
 use unicode_segmentation::UnicodeSegmentation;
 use unicode_width::UnicodeWidthChar;
