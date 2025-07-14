@@ -309,6 +309,6 @@ mod tests {
         let grad = HsvGrad {};
         assert!(matches!(grad.color_at(0.), Color::Rgb(..)));
         let fallback_grad = AnsiFallbackGrad::new(grad);
-        assert!(matches!(fallback_grad.color_at(0.), Color::Ansi(..)));
+        assert!(matches!(fallback_grad.color_at(0.), Color::Ansi256(..)));
     }
 }
