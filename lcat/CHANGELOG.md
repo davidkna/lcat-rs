@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.7.17](https://github.com/davidkna/lcat-rs/compare/lcat-v0.7.16...lcat-v0.7.17) - 2025-07-21
+
+### Other
+
+- fmt
+
 ## [0.7.16](https://github.com/davidkna/lcat-rs/compare/lcat-v0.7.15...lcat-v0.7.16) - 2025-07-14
 
 ### Added
