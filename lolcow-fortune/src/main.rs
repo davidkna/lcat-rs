@@ -210,6 +210,6 @@ fn main() -> Result<(), lolcow_fortune::StrfileError> {
             let quote = get_random_quote(opt.strfiles)?;
             print!("{quote}");
         }
-    };
+    }
     Ok(())
 }

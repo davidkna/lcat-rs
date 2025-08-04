@@ -3,6 +3,7 @@
 use std::{
     fs::File,
     io::{self, BufReader},
+    num::NonZero,
     path::PathBuf,
 };
 
@@ -21,6 +22,11 @@ pub struct Cmdline {
     /// Print help
     #[clap(short = 'h', long)]
     help: bool,
+
+    /// Use streaming mode (process input as it arrives, don't wait for
+    /// newlines) [EXPERIMENTAL]
+    #[clap(short = 'r', long)]
+    streaming: bool,
 }
 
 fn main() -> Result<(), io::Error> {
@@ -40,11 +46,27 @@ fn main() -> Result<(), io::Error> {
     for path in opt.files {
         if path == PathBuf::from("-") {
             let mut stdin = io::stdin().lock();
-            rainbow.colorize_read(&mut stdin, &mut stdout)?;
+            if opt.streaming {
+                rainbow.colorize_read_streaming(
+                    &mut stdin,
+                    &mut stdout,
+                    NonZero::new(8192).unwrap(),
+                )?;
+            } else {
+                rainbow.colorize_read(&mut stdin, &mut stdout)?;
+            }
         } else {
             let f = File::open(path).unwrap();
             let mut b = BufReader::new(f);
-            rainbow.colorize_read(&mut b, &mut stdout)?;
+            if opt.streaming {
+                rainbow.colorize_read_streaming(
+                    &mut b,
+                    &mut stdout,
+                    NonZero::new(8192).unwrap(),
+                )?;
+            } else {
+                rainbow.colorize_read(&mut b, &mut stdout)?;
+            }
         }
     }
 

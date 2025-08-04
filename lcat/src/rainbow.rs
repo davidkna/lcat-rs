@@ -1,4 +1,7 @@
-use std::io::{prelude::*, Write};
+use std::{
+    io::{prelude::*, Write},
+    num::NonZero,
+};
 
 pub use anstyle::Color;
 use anstyle::{Ansi256Color, AnsiColor, RgbColor};
@@ -159,6 +162,7 @@ impl Rainbow {
                 out.write_all(b"\x1B[49m")?;
             }
             out.write_all(grapheme.as_bytes())?;
+
             return Ok(false);
         }
 
@@ -201,6 +205,7 @@ impl Rainbow {
         if self.invert {
             out.write_all(b"\x1B[49m")?;
         }
+
         out.flush()
     }
 
@@ -233,10 +238,83 @@ impl Rainbow {
             Ok(true)
         })
     }
+
+    /// # Errors
+    ///
+    /// Will return `Err` if `input` or `out` cause I/O errors
+    pub fn colorize_read_streaming(
+        &mut self,
+        input: &mut impl BufRead,
+        out: &mut impl Write,
+        buffer_size: NonZero<usize>,
+    ) -> std::io::Result<()> {
+        let mut buffer = vec![0u8; buffer_size.get()];
+        let mut bytes_in_buffer = 0;
+        let mut escaping = false;
+
+        loop {
+            let bytes_read = input.read(&mut buffer[bytes_in_buffer..])?;
+            bytes_in_buffer += bytes_read;
+
+            if bytes_read == 0 {
+                break;
+            }
+
+            // Try to split on a safe boundary
+            let Some(split_pos) = find_safe_boundary(&buffer[..bytes_in_buffer])
+                .or_else(|| (bytes_in_buffer == buffer_size.get()).then_some(buffer_size))
+            else {
+                continue;
+            };
+            let split_pos = split_pos.get();
+            // Process the safe portion
+            for grapheme in buffer[..split_pos].graphemes() {
+                escaping = self.handle_grapheme(out, grapheme, escaping)?;
+            }
+
+            // Move leftovers to the beginning of the buffer
+            if split_pos < bytes_in_buffer {
+                buffer.copy_within(split_pos..bytes_in_buffer, 0);
+            }
+            bytes_in_buffer -= split_pos;
+        }
+
+        // process any remaining bytes in buffer
+        if bytes_in_buffer > 0 {
+            for grapheme in buffer[..bytes_in_buffer].graphemes() {
+                escaping = self.handle_grapheme(out, grapheme, escaping)?;
+            }
+        }
+
+        out.write_all(b"\x1B[39m")?;
+        if self.invert {
+            out.write_all(b"\x1B[49m")?;
+        }
+
+        out.flush()
+    }
+}
+
+/// Find a safe boundary in the buffer where we can split without
+/// breaking graphemes or unicode characters
+///
+/// TODO: Extend this with proper grapheme boundary detection for
+/// complete correctness with complex scripts and emoji sequences
+fn find_safe_boundary(buffer: &[u8]) -> Option<NonZero<usize>> {
+    if buffer.is_empty() {
+        return None;
+    }
+
+    buffer
+        .iter()
+        .rposition(|&b| !(128..192).contains(&b))
+        .and_then(NonZero::new)
 }
 
 #[cfg(test)]
 mod tests {
+    use std::io::Cursor;
+
     use super::*;
 
     fn create_rb() -> Rainbow {
@@ -310,5 +388,90 @@ mod tests {
         assert!(matches!(grad.color_at(0.), Color::Rgb(..)));
         let fallback_grad = AnsiFallbackGrad::new(grad);
         assert!(matches!(fallback_grad.color_at(0.), Color::Ansi256(..)));
+    }
+
+    fn trim_buf_at_str(buf: &[u8], idx: NonZero<usize>) -> Result<&str, std::str::Utf8Error> {
+        let idx = idx.get();
+        std::str::from_utf8(&buf[..idx])
+    }
+
+    #[test]
+    fn test_streaming_with_ascii() {
+        let input = b"hello world this is streaming text";
+        let mut cursor = Cursor::new(input);
+
+        let mut rb_a = create_rb();
+        let mut out_a = Vec::new();
+        // Small buffer to force multiple reads
+        rb_a.colorize_read_streaming(&mut cursor, &mut out_a, NonZero::new(5).unwrap())
+            .unwrap();
+
+        let mut rb_b = create_rb();
+        let mut out_b = Vec::new();
+        rb_b.colorize(input, &mut out_b).unwrap();
+
+        assert_eq!(out_a, out_b);
+    }
+
+    #[test]
+    fn test_streaming_with_unicode() {
+        let input = "hello 世界 emoji 😀 test".as_bytes();
+        let mut cursor = Cursor::new(input);
+
+        let mut rb_a = create_rb();
+        let mut out_a = Vec::new();
+
+        // Small buffer to force splits in unicode str
+        rb_a.colorize_read_streaming(&mut cursor, &mut out_a, NonZero::new(4).unwrap())
+            .unwrap();
+
+        let mut rb_b = create_rb();
+        let mut out_b = Vec::new();
+        rb_b.colorize(input, &mut out_b).unwrap();
+
+        assert_eq!(out_a.as_bstr(), out_b.as_bstr());
+    }
+
+    #[test]
+    fn test_streaming_with_invalid_utf8() {
+        // Create some invalid UTF-8 by breaking a multi-byte sequence
+        let mut input = Vec::from(b"hello ");
+        input.extend_from_slice(&[0xe2, 0x82]); // Incomplete UTF-8 sequence
+        input.extend_from_slice(b" world");
+
+        let mut cursor = Cursor::new(&input);
+
+        let mut rb_a = create_rb();
+        let mut out_a = Vec::new();
+        // This should not panic even with invalid UTF-8
+        assert!(rb_a
+            .colorize_read_streaming(&mut cursor, &mut out_a, NonZero::new(3).unwrap())
+            .is_ok());
+
+        // The output should contain something (we don't test exact equality since
+        // the handling of invalid UTF-8 might differ between methods)
+        assert!(!out_a.is_empty());
+    }
+
+    #[test]
+    fn test_find_safe_boundary() -> Result<(), std::str::Utf8Error> {
+        // ASCII should find boundary after each character
+        let ascii_str = b"hello";
+        let pos = find_safe_boundary(ascii_str).unwrap();
+        assert_eq!("hell", trim_buf_at_str(ascii_str, pos)?);
+
+        // Unicode should find character boundaries
+        let mixed_str = "hello世界".as_bytes();
+        let pos = find_safe_boundary(mixed_str).unwrap();
+        assert_eq!("hello世", trim_buf_at_str(mixed_str, pos)?);
+
+        let unicode_str = "世界".as_bytes();
+        let pos = find_safe_boundary(unicode_str).unwrap();
+        assert_eq!("世", trim_buf_at_str(unicode_str, pos)?);
+
+        // Empty buffer should return None
+        assert_eq!(find_safe_boundary(&[]), None);
+
+        Ok(())
     }
 }
