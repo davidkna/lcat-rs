@@ -16,7 +16,7 @@ default = ["clap"]
 anstyle = "1.0.11"
 anstyle-lossy = "1.1.4"
 bstr = "1.12.0"
-clap = { version = "4.5.43", features = ["derive", "wrap_help"], optional = true }
+clap = { version = "4.5.44", features = ["derive", "wrap_help"], optional = true }
 colorgrad = { version = "0.7.2", default-features = false, features = ["preset"] }
 fastrand = "2.3.0"
 unicode-segmentation = "1.12.0"
