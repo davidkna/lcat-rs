@@ -1,5 +1,27 @@
 # Changelog
 
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [Unreleased]
+
+## [0.8.0](https://github.com/davidkna/lcat-rs/compare/lcat-v0.7.16...lcat-v0.8.0) - 2025-08-25
+
+### Added
+
+- [**breaking**] experimental streaming support
+
+### Other
+
+- *(deps)* update rust crate clap to 4.5.45
+- *(deps)* update rust crate clap to 4.5.44
+- *(deps)* update rust crate clap to 4.5.43
+- *(deps)* update rust crate clap to 4.5.42
+- fmt
+# Changelog
+
 ## [0.7.16](https://github.com/davidkna/lcat-rs/compare/lcat-v0.7.15...lcat-v0.7.16) - 2025-07-14
 
 ### Added
