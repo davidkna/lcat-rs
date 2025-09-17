@@ -17,6 +17,12 @@ pub enum ColorMode {
     Ansi256,
 }
 
+fn term_program_version() -> Option<u32> {
+    env::var("TERM_PROGRAM_VERSION")
+        .ok()
+        .and_then(|v| v.parse().ok())
+}
+
 impl ColorMode {
     pub fn from_env() -> Self {
         match env::var("COLORTERM")
@@ -29,7 +35,16 @@ impl ColorMode {
             // Any other unknown values maps to ANSI
             Some(_) => Self::Ansi256,
             // Apple Terminal does set COLORTERM and does not support Truecolor
-            None if env::var("TERM_PROGRAM").as_deref() == Ok("Apple_Terminal") => Self::Ansi256,
+            None if env::var("TERM_PROGRAM").as_deref() == Ok("Apple_Terminal") => {
+                // macOS 26 and later support Truecolor
+                // 464 is the version used on stable macOS 26.0
+                if let Some(v) = term_program_version() {
+                    if v >= 464 {
+                        return Self::TrueColor;
+                    }
+                }
+                Self::Ansi256
+            }
             // Assume Truecolor is supported unless directed otherwise
             _ => Self::TrueColor,
         }
