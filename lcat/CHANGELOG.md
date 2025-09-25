@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.8.0](https://github.com/davidkna/lcat-rs/compare/lcat-v0.7.16...lcat-v0.8.0) - 2025-09-25
+
+### Added
+
+- permit TrueColor on Terminal.app with macOS 26
+- [**breaking**] experimental streaming support
+
+### Other
+
+- *(deps)* update rust crate clap to 4.5.48
+- *(deps)* update rust crate clap to 4.5.47 ([#192](https://github.com/davidkna/lcat-rs/pull/192))
+- *(deps)* update rust crate clap to 4.5.46
+- *(deps)* update rust crate clap to 4.5.45
+- *(deps)* update rust crate clap to 4.5.44
+- *(deps)* update rust crate clap to 4.5.43
+- *(deps)* update rust crate clap to 4.5.42
+- fmt
+
 ## [0.7.16](https://github.com/davidkna/lcat-rs/compare/lcat-v0.7.15...lcat-v0.7.16) - 2025-07-14
 
 ### Added
