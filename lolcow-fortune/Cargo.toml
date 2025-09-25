@@ -38,7 +38,7 @@ download = [
 deku = "0.19.1"
 fastrand = "2.3.0"
 itertools = "0.14.0"
-memchr = "2.7.5"
+memchr = "2.7.6"
 thiserror = "2.0.16"
 
 # Binary
