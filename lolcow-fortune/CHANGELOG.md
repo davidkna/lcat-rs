@@ -1,5 +1,43 @@
 # Changelog
 
+## [0.2.0](https://github.com/davidkna/lcat-rs/compare/lolcow-fortune-v0.1.13...lolcow-fortune-v0.2.0) - 2025-10-31
+
+### Added
+
+- [**breaking**] experimental streaming support
+
+### Other
+
+- *(deps)* update rust crate clap to 4.5.51
+- *(deps)* update rust crate flate2 to 1.1.5
+- *(deps)* update rust crate rustls to 0.23.34
+- *(deps)* update rust crate clap to 4.5.50
+- *(deps)* update rust crate rustls to 0.23.33
+- *(deps)* update rust crate deku to 0.20.0
+- *(deps)* update rust crate clap to 4.5.49
+- *(deps)* update rust crate flate2 to 1.1.4 ([#197](https://github.com/davidkna/lcat-rs/pull/197))
+- *(deps)* update rust crate flate2 to 1.1.3 ([#196](https://github.com/davidkna/lcat-rs/pull/196))
+- *(deps)* update rust crate thiserror to 2.0.17 ([#194](https://github.com/davidkna/lcat-rs/pull/194))
+- *(deps)* update rust crate memchr to 2.7.6 ([#193](https://github.com/davidkna/lcat-rs/pull/193))
+- *(deps)* update rust crate clap to 4.5.48
+- *(deps)* update rust crate rustls to 0.23.32
+- *(deps)* update rust crate ureq to 3.1.2
+- *(deps)* update rust crate rustls-graviola to 0.3.1
+- *(deps)* update rust crate ureq to 3.1.1
+- *(deps)* update rust crate clap to 4.5.47 ([#192](https://github.com/davidkna/lcat-rs/pull/192))
+- *(deps)* update rust crate rustls-graviola to 0.3.0 ([#191](https://github.com/davidkna/lcat-rs/pull/191))
+- *(deps)* update rust crate clap to 4.5.46
+- *(deps)* update rust crate thiserror to 2.0.16
+- *(deps)* update rust crate ureq to 3.1.0
+- *(deps)* update rust crate thiserror to 2.0.15
+- *(deps)* update rust crate clap to 4.5.45
+- *(deps)* update rust crate thiserror to 2.0.14
+- *(deps)* update rust crate clap to 4.5.44
+- *(deps)* update rust crate clap to 4.5.43
+- *(deps)* update rust crate clap to 4.5.42
+- *(deps)* update rust crate rustls to 0.23.31
+- *(deps)* update rust crate rustls to 0.23.30
+
 ## [0.1.13](https://github.com/davidkna/lcat-rs/compare/lolcow-fortune-v0.1.12...lolcow-fortune-v0.1.13) - 2025-07-14
 
 ### Other
