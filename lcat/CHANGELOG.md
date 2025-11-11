@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.8.1](https://github.com/davidkna/lcat-rs/compare/lcat-v0.8.0...lcat-v0.8.1) - 2025-11-11
+
+### Other
+
+- *(deps)* update rust crate colorgrad to 0.8.0
+
 ## [0.8.0](https://github.com/davidkna/lcat-rs/compare/lcat-v0.7.16...lcat-v0.8.0) - 2025-10-31
 
 ### Added

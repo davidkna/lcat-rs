@@ -557,7 +557,7 @@ dependencies = [
 
 [[package]]
 name = "lcat"
-version = "0.8.0"
+version = "0.8.1"
 dependencies = [
  "anstyle",
  "anstyle-lossy",
@@ -571,7 +571,7 @@ dependencies = [
 
 [[package]]
 name = "lcowsay"
-version = "0.5.13"
+version = "0.5.14"
 dependencies = [
  "clap",
  "hyphenation",
@@ -669,7 +669,7 @@ checksum = "34080505efa8e45a4b816c349525ebe327ceaa8559756f0356cba97ef3bf7432"
 
 [[package]]
 name = "lolcow-fortune"
-version = "0.2.0"
+version = "0.2.1"
 dependencies = [
  "clap",
  "deku",
