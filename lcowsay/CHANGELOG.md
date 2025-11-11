@@ -4,6 +4,12 @@
 * dependencies
 * lcat bumped from 0.7.11 to 0.7.12
 
+## [0.5.14](https://github.com/davidkna/lcat-rs/compare/lcowsay-v0.5.13...lcowsay-v0.5.14) - 2025-11-11
+
+### Other
+
+- update Cargo.lock dependencies
+
 ## [0.5.13](https://github.com/davidkna/lcat-rs/compare/lcowsay-v0.5.12...lcowsay-v0.5.13) - 2025-10-31
 
 ### Other
