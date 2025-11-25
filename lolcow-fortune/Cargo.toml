@@ -35,7 +35,7 @@ download = [
 
 [dependencies]
 # Lib
-deku = "0.20.0"
+deku = "0.20.1"
 fastrand = "2.3.0"
 itertools = "0.14.0"
 memchr = "2.7.6"
