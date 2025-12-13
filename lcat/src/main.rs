@@ -4,7 +4,7 @@ use std::{
     fs::File,
     io::{self, BufReader},
     num::NonZero,
-    path::PathBuf,
+    path::{Path, PathBuf},
 };
 
 use clap::{CommandFactory, Parser};
@@ -44,7 +44,7 @@ fn main() -> Result<(), io::Error> {
     }
 
     for path in opt.files {
-        if path == PathBuf::from("-") {
+        if path == Path::new("-") {
             let mut stdin = io::stdin().lock();
             if opt.streaming {
                 rainbow.colorize_read_streaming(
