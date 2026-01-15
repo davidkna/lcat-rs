@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.2.1](https://github.com/davidkna/lcat-rs/compare/lolcow-fortune-v0.2.0...lolcow-fortune-v0.2.1) - 2026-01-15
+
+### Other
+
+- *(deps)* update rust crate deku to 0.20.3
+- *(deps)* update rust crate flate2 to 1.1.8
+- *(deps)* update rust crate rustls to 0.23.36
+- *(deps)* update rust crate clap to 4.5.54
+- *(deps)* update rust crate rustls-graviola to 0.3.2 ([#204](https://github.com/davidkna/lcat-rs/pull/204))
+- *(deps)* update rust crate flate2 to 1.1.7 ([#202](https://github.com/davidkna/lcat-rs/pull/202))
+- *(deps)* update rust crate deku to 0.20.2
+- *(deps)* update rust crate deku to 0.20.1
+- *(deps)* update rust crate clap to 4.5.53
+- *(deps)* update rust crate clap to 4.5.52
+- *(deps)* update rust crate ureq to 3.1.4
+- *(deps)* update rust crate rustls to 0.23.35
+
 ## [0.2.0](https://github.com/davidkna/lcat-rs/compare/lolcow-fortune-v0.1.13...lolcow-fortune-v0.2.0) - 2025-10-31
 
 ### Added
