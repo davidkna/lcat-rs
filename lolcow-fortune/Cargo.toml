@@ -50,7 +50,7 @@ flate2 = { version = "1.1.9", optional = true, default-features = false, feature
 rustls = { version = "0.23.36", optional = true, default-features = false }
 rustls-graviola = { version = "0.3.3", optional = true }
 tar = { version = "0.4.44", optional = true }
-ureq = { version = "3.1.4", optional = true, default-features = false, features = ["rustls-no-provider"] }
+ureq = { version = "3.2.0", optional = true, default-features = false, features = ["rustls-no-provider"] }
 
 [dependencies.lcowsay]
 version = "0.5.13"
