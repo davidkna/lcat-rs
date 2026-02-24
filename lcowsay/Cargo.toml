@@ -1,6 +1,6 @@
 [package]
 name = "lcowsay"
-version = "0.5.13"
+version = "0.5.14"
 authors = ["David Knaack <davidkna@users.noreply.github.com>"]
 documentation = "https://docs.rs/lcowsay/"
 edition = "2021"
@@ -28,6 +28,6 @@ textwrap = { version = "0.16.2", features = ["hyphenation"] }
 unicode-width = "0.2.2"
 
 [dependencies.lcat]
-version = "0.8.0"
+version = "0.8.1"
 path = "../lcat"
 optional = true

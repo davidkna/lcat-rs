@@ -1,6 +1,6 @@
 [package]
 name = "lolcow-fortune"
-version = "0.2.0"
+version = "0.2.1"
 authors = ["David Knaack <davidkna@users.noreply.github.com>"]
 edition = "2021"
 license = "MIT OR Apache-2.0"
@@ -53,11 +53,11 @@ tar = { version = "0.4.44", optional = true }
 ureq = { version = "3.2.0", optional = true, default-features = false, features = ["rustls-no-provider"] }
 
 [dependencies.lcowsay]
-version = "0.5.13"
+version = "0.5.14"
 path = "../lcowsay"
 optional = true
 
 [dependencies.lcat]
-version = "0.8.0"
+version = "0.8.1"
 path = "../lcat"
 optional = true
