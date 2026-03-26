@@ -1,5 +1,26 @@
 # Changelog
 
+## [0.8.1](https://github.com/davidkna/lcat-rs/compare/lcat-v0.8.0...lcat-v0.8.1) - 2026-03-26
+
+### Other
+
+- *(deps)* update rust crate unicode-segmentation to 1.13.2 ([#210](https://github.com/davidkna/lcat-rs/pull/210))
+- *(deps)* update rust crate unicode-segmentation to 1.13.1
+- *(deps)* update rust crate anstyle to 1.0.14
+- *(deps)* update rust crate anstyle-lossy to 1.1.5
+- *(deps)* update rust crate clap to 4.6.0
+- *(deps)* update rust crate clap to 4.5.60
+- *(deps)* update rust crate clap to 4.5.59
+- *(deps)* update rust crate clap to 4.5.58
+- *(deps)* update rust crate clap to 4.5.57
+- *(deps)* update rust crate clap to 4.5.56
+- *(deps)* update rust crate clap to 4.5.55
+- *(deps)* update rust crate clap to 4.5.54
+- fix clippy warning
+- *(deps)* update rust crate clap to 4.5.53
+- *(deps)* update rust crate clap to 4.5.52
+- *(deps)* update rust crate colorgrad to 0.8.0
+
 ## [0.8.0](https://github.com/davidkna/lcat-rs/compare/lcat-v0.7.16...lcat-v0.8.0) - 2025-10-31
 
 ### Added
