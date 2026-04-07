@@ -18,6 +18,6 @@ anstyle-lossy = "1.1.5"
 bstr = "1.12.1"
 clap = { version = "4.6.0", features = ["derive", "wrap_help"], optional = true }
 colorgrad = { version = "0.8.0", default-features = false, features = ["preset"] }
-fastrand = "2.4.0"
+fastrand = "2.4.1"
 unicode-segmentation = "1.13.2"
 unicode-width = "0.2.2"
