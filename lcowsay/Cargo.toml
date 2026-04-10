@@ -6,7 +6,7 @@ documentation = "https://docs.rs/lcowsay/"
 edition = "2021"
 license = "MIT OR Apache-2.0"
 readme = "README.md"
-repository = "https://github.com/davidkna/lcowsay-rs"
+repository = "https://github.com/davidkna/lcat-rs"
 description = "Cowsay, but combined with lolcat."
 
 [lib]
