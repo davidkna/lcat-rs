@@ -1,7 +1,12 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "github>davidkna/renovate-config"
+    "config:best-practices",
+    "security:openssf-scorecard",
+  ],
+  "ignoredPresets": [
+    ":dependencyDashboard",
+    ":semanticPrefixFixDepsChoreOthers"
   ],
   "rangeStrategy": "bump",
   "customManagers": [
