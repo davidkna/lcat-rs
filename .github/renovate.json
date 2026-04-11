@@ -3,10 +3,6 @@
   "extends": [
     "github>davidkna/renovate-config"
   ],
-  "ignoredPresets": [
-    ":dependencyDashboard",
-    ":semanticPrefixFixDepsChoreOthers"
-  ],
   "rangeStrategy": "bump",
   "customManagers": [
     {
