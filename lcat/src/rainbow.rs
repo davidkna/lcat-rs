@@ -1,11 +1,11 @@
 use std::{
-    io::{prelude::*, Write},
+    io::{Write, prelude::*},
     num::NonZero,
 };
 
 pub use anstyle::Color;
 use anstyle::{Ansi256Color, AnsiColor, RgbColor};
-use bstr::{io::BufReadExt, ByteSlice};
+use bstr::{ByteSlice, io::BufReadExt};
 use unicode_segmentation::UnicodeSegmentation;
 use unicode_width::UnicodeWidthChar;
 
@@ -110,23 +110,23 @@ impl Rainbow {
         }
     }
 
-    pub fn step_row(&mut self, n_row: usize) {
+    pub const fn step_row(&mut self, n_row: usize) {
         self.current_row += n_row;
-        self.position += n_row as f32 * self.shift_row;
+        self.position = (n_row as f32).mul_add(self.shift_row, self.position);
     }
 
-    pub fn step_col(&mut self, n_col: usize) {
+    pub const fn step_col(&mut self, n_col: usize) {
         self.current_col += n_col;
-        self.position += n_col as f32 * self.shift_col;
+        self.position = (n_col as f32).mul_add(self.shift_col, self.position);
     }
 
     pub fn reset_row(&mut self) {
-        self.position -= self.current_row as f32 * self.shift_row;
+        self.position = (self.current_row as f32).mul_add(-self.shift_row, self.position);
         self.current_row = 0;
     }
 
     pub fn reset_col(&mut self) {
-        self.position -= self.current_col as f32 * self.shift_col;
+        self.position = (self.current_col as f32).mul_add(-self.shift_col, self.position);
         self.current_col = 0;
     }
 
@@ -444,9 +444,10 @@ mod tests {
         let mut rb_a = create_rb();
         let mut out_a = Vec::new();
         // This should not panic even with invalid UTF-8
-        assert!(rb_a
-            .colorize_read_streaming(&mut cursor, &mut out_a, NonZero::new(3).unwrap())
-            .is_ok());
+        assert!(
+            rb_a.colorize_read_streaming(&mut cursor, &mut out_a, NonZero::new(3).unwrap())
+                .is_ok()
+        );
 
         // The output should contain something (we don't test exact equality since
         // the handling of invalid UTF-8 might differ between methods)

@@ -1,7 +1,7 @@
 use std::{
     convert::TryInto,
     fs::File,
-    io::{self, prelude::*, Seek, SeekFrom},
+    io::{self, Seek, SeekFrom, prelude::*},
     num::NonZeroU64,
     path::Path,
     result::Result,
