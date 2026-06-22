@@ -37,7 +37,7 @@ download = [
 # Lib
 deku = "0.20.3"
 fastrand = "2.4.1"
-itertools = "0.14.0"
+itertools = "0.15.0"
 memchr = "2.8.0"
 thiserror = "2.0.18"
 
