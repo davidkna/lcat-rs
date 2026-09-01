@@ -1,5 +1,27 @@
 # Changelog
 
+## [0.2.2](https://github.com/davidkna/lcat-rs/compare/lolcow-fortune-v0.2.1...lolcow-fortune-v0.2.2) - 2026-09-01
+
+### Other
+
+- *(deps)* update rust crate flate2 to 1.1.10 ([#256](https://github.com/davidkna/lcat-rs/pull/256))
+- *(deps)* update rust crate clap to 4.6.6 ([#244](https://github.com/davidkna/lcat-rs/pull/244))
+- *(deps)* update rust crate rustls to 0.23.43 ([#247](https://github.com/davidkna/lcat-rs/pull/247))
+- *(deps)* update rust crate thiserror to 2.0.20 ([#251](https://github.com/davidkna/lcat-rs/pull/251))
+- *(deps)* update rust crate ureq to 3.4.0 ([#252](https://github.com/davidkna/lcat-rs/pull/252))
+- *(deps)* update rust crate fastrand to 2.5.0 ([#246](https://github.com/davidkna/lcat-rs/pull/246))
+- *(deps)* update rust crate thiserror to 2.0.19 ([#245](https://github.com/davidkna/lcat-rs/pull/245))
+- *(deps)* update rust crate rustls to 0.23.42 ([#241](https://github.com/davidkna/lcat-rs/pull/241))
+- *(deps)* update rust crate memchr to 2.8.3 ([#238](https://github.com/davidkna/lcat-rs/pull/238))
+- *(deps)* update rust crate rustls to 0.23.41 ([#232](https://github.com/davidkna/lcat-rs/pull/232))
+- *(deps)* update rust crate memchr to 2.8.2 ([#226](https://github.com/davidkna/lcat-rs/pull/226))
+- *(deps)* update rust crate itertools to 0.15.0 ([#230](https://github.com/davidkna/lcat-rs/pull/230))
+- *(deps)* update rust crate rustls-graviola to 0.4.0 ([#231](https://github.com/davidkna/lcat-rs/pull/231))
+- *(deps)* update rust crate tar to 0.4.46 ([#225](https://github.com/davidkna/lcat-rs/pull/225))
+- *(deps)* update rust crate clap to 4.6.1 ([#218](https://github.com/davidkna/lcat-rs/pull/218))
+- *(deps)* update rust crate rustls to 0.23.40 ([#217](https://github.com/davidkna/lcat-rs/pull/217))
+- resolve clippy warnings ([#215](https://github.com/davidkna/lcat-rs/pull/215))
+
 ## [0.2.1](https://github.com/davidkna/lcat-rs/compare/lolcow-fortune-v0.2.0...lolcow-fortune-v0.2.1) - 2026-04-11
 
 ### Other
