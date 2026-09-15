@@ -112,10 +112,12 @@ fn toe(x: f32) -> f32 {
     let k_1: f32 = 0.206;
     let k_2: f32 = 0.03;
     let k_3: f32 = (1.0 + k_1) / (1.0 + k_2);
-    0.5 * (k_3 * x - k_1
-        + (k_3 * x - k_1)
+    f32::midpoint(
+        k_3 * x - k_1,
+        (k_3 * x - k_1)
             .mul_add(k_3 * x - k_1, 4.0 * k_2 * k_3 * x)
-            .sqrt())
+            .sqrt(),
+    )
 }
 
 // inverse toe function for L_r
@@ -160,7 +162,8 @@ impl From<&Hsv> for Lab {
         let mut L = v * L_v;
         let mut C = v * C_v;
 
-        // then we compensate for both toe and the curved top part of the triangle:
+        // then we compensate for both toe and the curved top part of the
+        // triangle:
         let L_vt = toe_inv(L_v);
         let C_vt = C_v * L_vt / L_v;
 
@@ -286,8 +289,8 @@ pub struct LC {
 
 fn compute_max_saturation(a: f32, b: f32) -> f32 {
     // Max saturation will be when one of r, g or b goes below zero.
-    // Select different coefficients depending on which component goes below zero
-    // first
+    // Select different coefficients depending on which component goes below
+    // zero first
     let k0: f32;
     let k1: f32;
     let k2: f32;
@@ -330,9 +333,9 @@ fn compute_max_saturation(a: f32, b: f32) -> f32 {
     // Approximate max saturation using a polynomial:
     let mut S: f32 = (k4 * a).mul_add(b, (k3 * a).mul_add(a, k2.mul_add(b, k1.mul_add(a, k0))));
     // Do one step Halley's method to get closer
-    // this gives an error less than 10e6, except for some blue hues where the dS/dh
-    // is close to infinite this should be sufficient for most applications,
-    // otherwise do two/three steps
+    // this gives an error less than 10e6, except for some blue hues where the
+    // dS/dh is close to infinite this should be sufficient for most
+    // applications, otherwise do two/three steps
     let k_l: f32 = 0.396_337_78_f32.mul_add(a, 0.215_803_76_f32 * b);
     let k_m: f32 = -0.105_561_346_f32 * a - 0.063_854_17_f32 * b;
     let k_s: f32 = -0.089_484_18_f32 * a - 1.291_485_5_f32 * b;
@@ -359,8 +362,8 @@ fn find_cusp(a: f32, b: f32) -> LC {
     // First, find the maximum saturation (saturation S = C/L)
     let S_cusp = compute_max_saturation(a, b);
 
-    // Convert to linear sRgb to find the first point where at least one of r,g or b
-    // >= 1:
+    // Convert to linear sRgb to find the first point where at least one of r,g
+    // or b >= 1:
     let rgb_at_max = LinRgb::from(&Lab {
         L: 1.0,
         a: S_cusp * a,

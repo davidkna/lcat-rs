@@ -449,9 +449,10 @@ mod tests {
                 .is_ok()
         );
 
-        // The output should contain something (we don't test exact equality since
-        // the handling of invalid UTF-8 might differ between methods)
-        assert!(!out_a.is_empty());
+        // The output should contain something (we don't test exact equality
+        // since the handling of invalid UTF-8 might differ between
+        // methods)
+        assert_ne!(out_a, [] as [u8; 0]);
     }
 
     #[test]
