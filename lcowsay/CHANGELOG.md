@@ -4,6 +4,17 @@
 * dependencies
 * lcat bumped from 0.7.11 to 0.7.12
 
+## [0.5.15](https://github.com/davidkna/lcat-rs/compare/lcowsay-v0.5.14...lcowsay-v0.5.15) - 2026-09-19
+
+### Other
+
+- *(deps)* update rust crate textwrap to 0.16.4 ([#265](https://github.com/davidkna/lcat-rs/pull/265))
+- *(deps)* update rust crate clap to 4.6.7 ([#266](https://github.com/davidkna/lcat-rs/pull/266))
+- *(deps)* update rust crate textwrap to 0.16.3 ([#262](https://github.com/davidkna/lcat-rs/pull/262))
+- *(deps)* lock file maintenance ([#250](https://github.com/davidkna/lcat-rs/pull/250))
+- *(deps)* update rust crate clap to 4.6.6 ([#244](https://github.com/davidkna/lcat-rs/pull/244))
+- *(deps)* update rust crate clap to 4.6.1 ([#218](https://github.com/davidkna/lcat-rs/pull/218))
+
 ## [0.5.14](https://github.com/davidkna/lcat-rs/compare/lcowsay-v0.5.13...lcowsay-v0.5.14) - 2026-04-11
 
 ### Other
